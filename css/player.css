@@ -1,0 +1,469 @@
+/* ========================================================
+   Audio Player Screen Styles - Luxury Pink & Rose Gold Theme
+   Islamic Medallion, Smooth Sliders, Wave Visualizer
+   ======================================================== */
+
+.player-screen {
+  position: fixed;
+  inset: 0;
+  max-width: 480px;
+  margin: 0 auto;
+  background-color: var(--bg-surface);
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+  padding: calc(var(--safe-top) + 6px) 16px calc(var(--safe-bottom) + 10px) 16px;
+  transform: translateY(100%);
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.player-screen.open {
+  transform: translateY(0);
+}
+
+/* Player Header */
+.player-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 6px;
+}
+
+.player-header-title {
+  font-size: 0.9rem;
+  font-weight: 800;
+  background: var(--grad-pink);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+}
+
+/* Center Artwork: Islamic Medallion (Pink & Rose Gold) */
+.player-artwork-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin: 2px 0 6px 0;
+  position: relative;
+}
+
+.medallion-container {
+  position: relative;
+  width: 125px;
+  height: 125px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.3s ease;
+}
+
+/* Outer Scalloped Islamic Emblem Ring */
+.medallion-scallop {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: radial-gradient(circle, var(--primary) 0%, var(--primary-dark) 100%);
+  box-shadow: 0 8px 24px rgba(224, 40, 117, 0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 3px solid #fbcfe8;
+}
+
+.medallion-scallop::before {
+  content: '';
+  position: absolute;
+  inset: 4px;
+  border-radius: 50%;
+  border: 1px dashed rgba(255, 255, 255, 0.55);
+}
+
+.player-screen.is-playing .medallion-container {
+  animation: subtleBreathing 4s infinite ease-in-out;
+}
+
+@keyframes subtleBreathing {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.03); }
+}
+
+.medallion-content {
+  position: relative;
+  z-index: 2;
+  text-align: center;
+  color: #ffffff;
+  padding: 6px;
+}
+
+.medallion-surah-label {
+  font-size: 0.72rem;
+  font-weight: 600;
+  opacity: 0.9;
+  letter-spacing: 0.5px;
+}
+
+.medallion-arabic-title {
+  font-family: var(--font-arabic);
+  font-size: 1.45rem;
+  line-height: 1.15;
+  font-weight: 700;
+  margin: 2px 0;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+.medallion-number-pill {
+  display: inline-block;
+  background: rgba(255, 255, 255, 0.25);
+  padding: 1px 8px;
+  border-radius: var(--radius-full);
+  font-size: 0.7rem;
+  font-weight: 800;
+}
+
+/* Sound Wave Visualizer Bars - Pink */
+.wave-visualizer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 3.5px;
+  height: 14px;
+  margin-top: 6px;
+}
+
+.wave-bar {
+  width: 3px;
+  height: 4px;
+  border-radius: 2px;
+  background-color: var(--primary);
+  transition: height 0.15s ease;
+}
+
+.player-screen.is-playing .wave-bar {
+  animation: waveAnim 1.2s infinite ease-in-out;
+}
+
+.player-screen.is-playing .wave-bar:nth-child(2) { animation-delay: 0.15s; }
+.player-screen.is-playing .wave-bar:nth-child(3) { animation-delay: 0.3s; }
+.player-screen.is-playing .wave-bar:nth-child(4) { animation-delay: 0.45s; }
+.player-screen.is-playing .wave-bar:nth-child(5) { animation-delay: 0.6s; }
+.player-screen.is-playing .wave-bar:nth-child(6) { animation-delay: 0.2s; }
+.player-screen.is-playing .wave-bar:nth-child(7) { animation-delay: 0.35s; }
+
+@keyframes waveAnim {
+  0%, 100% { height: 4px; opacity: 0.4; }
+  50% { height: 14px; opacity: 1; }
+}
+
+/* Surah Details */
+.player-meta-wrap {
+  text-align: center;
+  margin-bottom: 4px;
+}
+
+.player-surah-title {
+  font-size: 1.25rem;
+  font-weight: 800;
+  color: var(--text-primary);
+  letter-spacing: -0.3px;
+}
+
+.player-surah-subtitle {
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+  margin-top: 1px;
+  font-weight: 500;
+}
+
+/* Qari Badge Selector */
+.player-qari-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  margin-top: 4px;
+  padding: 3px 10px;
+  background: var(--primary-soft);
+  color: var(--primary);
+  border-radius: var(--radius-full);
+  font-size: 0.72rem;
+  font-weight: 700;
+  cursor: pointer;
+  border: 1px solid var(--border-light);
+  transition: var(--transition);
+}
+
+.player-qari-badge:active {
+  transform: scale(0.96);
+  background: var(--primary);
+  color: #fff;
+}
+
+.player-qari-badge:active {
+  transform: scale(0.96);
+  background: var(--primary);
+  color: #fff;
+}
+
+/* Murottal vs Terjemahan Toggle Switch */
+.murottal-toggle-wrap {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  margin-bottom: 6px;
+}
+
+.toggle-label {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--primary);
+}
+
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 42px;
+  height: 22px;
+}
+
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.slider-switch {
+  position: absolute;
+  cursor: pointer;
+  inset: 0;
+  background-color: #cbd5e1;
+  transition: 0.3s;
+  border-radius: 22px;
+}
+
+.slider-switch::before {
+  position: absolute;
+  content: "";
+  height: 16px;
+  width: 16px;
+  left: 3px;
+  bottom: 3px;
+  background-color: white;
+  transition: 0.3s;
+  border-radius: 50%;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+}
+
+input:checked + .slider-switch {
+  background-color: var(--primary);
+}
+
+input:checked + .slider-switch::before {
+  transform: translateX(20px);
+}
+
+/* Action Icons Row */
+.player-action-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  padding: 2px 10px 4px 10px;
+}
+
+.action-icon-btn {
+  background: none;
+  border: none;
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+.action-icon-btn:hover {
+  background-color: var(--primary-soft);
+  color: var(--primary);
+}
+
+.action-icon-btn:active {
+  transform: scale(0.9);
+}
+
+.action-icon-btn.active {
+  color: var(--primary);
+}
+
+.action-icon-btn.repeat-active {
+  color: var(--primary);
+  background: var(--primary-soft);
+}
+
+/* Duration Slider */
+.player-progress-wrap {
+  margin: 4px 0 6px 0;
+}
+
+.custom-range {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  height: 5px;
+  border-radius: 3px;
+  background: #fcd9e5;
+  outline: none;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+[data-theme="dark"] .custom-range {
+  background: #3d1a2f;
+}
+
+.custom-range::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: var(--primary);
+  cursor: pointer;
+  box-shadow: 0 2px 5px rgba(224, 40, 117, 0.4);
+  transition: transform 0.15s ease;
+}
+
+.custom-range::-webkit-slider-thumb:hover {
+  transform: scale(1.2);
+}
+
+.progress-timestamps {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.72rem;
+  color: var(--text-muted);
+  font-weight: 600;
+  margin-top: 4px;
+}
+
+/* Playback Controls */
+.player-controls-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 2px 6px 6px 6px;
+}
+
+.ctrl-btn {
+  background: none;
+  border: none;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-primary);
+  cursor: pointer;
+  transition: var(--transition);
+  position: relative;
+}
+
+.ctrl-btn:hover {
+  background-color: var(--primary-soft);
+}
+
+.ctrl-btn:active {
+  transform: scale(0.92);
+}
+
+.ctrl-btn-skip-sec {
+  font-size: 0.58rem;
+  font-weight: 800;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -46%);
+}
+
+/* Big Radiant Pink Play/Pause Button */
+.ctrl-btn-main {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: var(--grad-pink);
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 6px 20px var(--primary-glow);
+  cursor: pointer;
+  border: none;
+  transition: var(--transition);
+}
+
+.ctrl-btn-main:hover {
+  transform: scale(1.05);
+}
+
+.ctrl-btn-main:active {
+  transform: scale(0.95);
+}
+
+.ctrl-btn-main svg {
+  width: 26px;
+  height: 26px;
+}
+
+/* Volume Slider */
+.volume-control-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 2px 10px 4px 10px;
+  color: var(--text-muted);
+}
+
+.volume-slider {
+  flex: 1;
+  height: 4px;
+}
+
+/* Bottom Quick Action Buttons */
+.player-quick-tools {
+  display: flex;
+  gap: 8px;
+  margin-top: 6px;
+}
+
+.tool-chip-btn {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  padding: 8px 12px;
+  background: var(--bg-app);
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-md);
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+.tool-chip-btn:hover {
+  background: var(--primary-soft);
+  color: var(--primary);
+  border-color: var(--primary);
+}
+
+.tool-chip-btn:active {
+  transform: scale(0.98);
+}

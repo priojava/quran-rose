@@ -1,0 +1,55 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
+  <defs>
+    <radialGradient id="pinkEmblemGrad" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#ff4081" />
+      <stop offset="60%" stop-color="#e02875" />
+      <stop offset="100%" stop-color="#880e4f" />
+    </radialGradient>
+    <linearGradient id="roseGoldGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#ffe4ec" />
+      <stop offset="50%" stop-color="#f8bbd0" />
+      <stop offset="100%" stop-color="#f48fb1" />
+    </linearGradient>
+    <filter id="softPinkGlow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="8" stdDeviation="14" flood-color="#e02875" flood-opacity="0.38"/>
+    </filter>
+  </defs>
+
+  <!-- Outer 16-point Scallop / Star Rosette -->
+  <g filter="url(#softPinkGlow)">
+    <circle cx="256" cy="256" r="240" fill="none" stroke="url(#roseGoldGrad)" stroke-width="10" stroke-dasharray="14 10" />
+    <circle cx="256" cy="256" r="226" fill="url(#pinkEmblemGrad)" stroke="url(#roseGoldGrad)" stroke-width="6" />
+    <circle cx="256" cy="256" r="212" fill="none" stroke="#ffffff" stroke-width="2" stroke-opacity="0.4" stroke-dasharray="6 6" />
+  </g>
+
+  <!-- Quran Calligraphy Centerpiece Artwork -->
+  <g fill="#ffffff" transform="translate(256, 256) scale(0.85) translate(-256, -256)">
+    <!-- Decorative Ring -->
+    <path d="M256,70 C153.3,70 70,153.3 70,256 C70,358.7 153.3,442 256,442 C358.7,442 442,358.7 442,256 C442,153.3 358.7,70 256,70 Z M256,420 C165.4,420 92,346.6 92,256 C92,165.4 165.4,92 256,92 C346.6,92 420,165.4 420,256 C420,346.6 346.6,420 256,420 Z" opacity="0.18"/>
+    
+    <!-- Stylized Arabic Calligraphy Paths for Al-Quran Al-Karim -->
+    <path d="M245,130 Q256,115 267,130 Q280,180 256,220 Q232,180 245,130 Z" fill="#ffffff"/>
+    <path d="M190,160 Q210,130 230,170 Q240,240 180,260 Q150,220 190,160 Z" fill="#ffffff"/>
+    <path d="M322,160 Q302,130 282,170 Q272,240 332,260 Q362,220 322,160 Z" fill="#ffffff"/>
+    
+    <!-- Central Flowing Calligraphy Body -->
+    <path d="M140,280 C155,230 200,210 240,215 C275,220 310,205 340,175 C350,195 345,225 315,245 C285,265 245,255 220,265 C180,280 160,330 135,335 C125,338 120,310 140,280 Z" fill="#ffffff"/>
+    <path d="M370,280 C355,230 310,210 270,215 C235,220 200,205 170,175 C160,195 165,225 195,245 C225,265 265,255 290,265 C330,280 350,330 375,335 C385,338 390,310 370,280 Z" fill="#ffffff"/>
+    
+    <!-- Lower sweeping calligraphic swash -->
+    <path d="M150,330 C200,380 312,380 362,330 C340,360 260,395 200,370 C170,355 155,340 150,330 Z" fill="#ffffff"/>
+    <path d="M180,360 Q256,410 332,360 Q256,385 180,360 Z" fill="url(#roseGoldGrad)"/>
+
+    <!-- Diacritical Marks / Tashkeel -->
+    <circle cx="210" cy="140" r="7" fill="url(#roseGoldGrad)"/>
+    <circle cx="302" cy="140" r="7" fill="url(#roseGoldGrad)"/>
+    <circle cx="256" cy="175" r="6" fill="url(#roseGoldGrad)"/>
+    <circle cx="170" cy="220" r="6" fill="url(#roseGoldGrad)"/>
+    <circle cx="342" cy="220" r="6" fill="url(#roseGoldGrad)"/>
+    <circle cx="256" cy="325" r="8" fill="url(#roseGoldGrad)"/>
+  </g>
+
+  <!-- Decorative Rub el Hizb Star on Top and Bottom -->
+  <path d="M256,15 L263,27 L276,27 L268,36 L273,48 L256,40 L239,48 L244,36 L236,27 L249,27 Z" fill="url(#roseGoldGrad)"/>
+  <path d="M256,464 L263,476 L276,476 L268,485 L273,497 L256,489 L239,497 L244,485 L236,476 L249,476 Z" fill="url(#roseGoldGrad)"/>
+</svg>

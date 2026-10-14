@@ -1,0 +1,1118 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <meta name="theme-color" content="#e02875">
+  <meta name="description" content="Aplikasi Murottal Quran 30 Juz & Audio Terjemahan Indonesia Online dan Offline - Amal Jariyah Akhirat">
+  
+  <!-- iOS Meta Tags -->
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Murottal Quran">
+  <link rel="apple-touch-icon" href="assets/icons/icon-192.png">
+
+  <!-- Manifest -->
+  <link rel="manifest" href="manifest.json">
+  <link rel="icon" type="image/png" href="assets/icons/icon-192.png">
+  <link rel="apple-touch-icon" href="assets/icons/icon-192.png">
+
+  <title>Quran Rose - Murottal & Sholat</title>
+
+  <!-- Stylesheets with version query -->
+  <link rel="stylesheet" href="css/style.css?v=pink-v3">
+  <link rel="stylesheet" href="css/player.css?v=pink-v3">
+  <link rel="stylesheet" href="css/extra.css?v=pink-v3">
+</head>
+<body>
+
+  <div class="app-container">
+
+    <!-- Splash Screen (Screenshot 1) -->
+    <div class="splash-screen" id="splashScreen">
+      <div class="splash-logo-wrap" style="width:140px;height:140px;margin-bottom:18px;">
+        <div class="splash-glow-ring"></div>
+        <img src="assets/icons/logo.png" alt="Quran Rose" class="splash-logo-svg" style="border-radius:28px;box-shadow:0 12px 36px rgba(224,40,117,0.45);width:120px;height:120px;object-fit:cover;">
+      </div>
+      <h1 class="splash-title">Quran Rose</h1>
+      <p class="splash-subtitle">Al-Qur'an, Sholat & Asmaul Husna</p>
+      <div class="splash-loader"></div>
+    </div>
+
+    <!-- App Header (Screenshot 2) -->
+    <header class="app-header">
+      <button class="header-btn" id="btnOpenDrawer" aria-label="Menu">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="3" y1="12" x2="21" y2="12"></line>
+          <line x1="3" y1="6" x2="21" y2="6"></line>
+          <line x1="3" y1="18" x2="21" y2="18"></line>
+        </svg>
+      </button>
+
+      <div class="header-title">
+        <span>Quran Rose</span>
+        <span class="header-title-badge" id="timerRemainingBadge" style="display:none;"></span>
+      </div>
+
+      <button class="header-btn" id="btnToggleSearch" aria-label="Cari Surah">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="11" cy="11" r="8"></circle>
+          <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+        </svg>
+      </button>
+    </header>
+
+    <!-- Search Input Bar -->
+    <div class="search-container" id="searchContainer">
+      <div class="search-input-wrap">
+        <span class="search-icon">🔍</span>
+        <input type="text" class="search-input" id="searchInput" placeholder="Cari surah (misal: Al-Fatihah, Yasin, 36)..." autocomplete="off">
+        <button class="search-clear-btn" id="searchClearBtn">&times;</button>
+      </div>
+    </div>
+
+    <!-- Quick Dzikir Pagi & Petang Banner -->
+    <div class="dzikir-banner-home">
+      <div class="dzikir-quick-card" id="btnQuickDzikirPagi">
+        <div class="dzikir-quick-icon">🌅</div>
+        <div class="dzikir-quick-info">
+          <h4>Dzikir Pagi</h4>
+          <p>Al-Ma'tsurat & Sunnah</p>
+        </div>
+      </div>
+      <div class="dzikir-quick-card" id="btnQuickDzikirPetang">
+        <div class="dzikir-quick-icon">🌇</div>
+        <div class="dzikir-quick-info">
+          <h4>Dzikir Petang</h4>
+          <p>Al-Ma'tsurat & Sunnah</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Filter Chips (Semua, Makkiyyah, Madaniyyah, Favorit, Unduhan) -->
+    <div class="filter-chips-wrap">
+      <button class="chip-btn active" data-filter="all">Semua</button>
+      <button class="chip-btn" data-filter="makkiyyah">Makkiyyah</button>
+      <button class="chip-btn" data-filter="madaniyyah">Madaniyyah</button>
+      <button class="chip-btn" data-filter="favorit">⭐ Favorit</button>
+      <button class="chip-btn" data-filter="downloaded">☁️ Unduhan</button>
+    </div>
+
+    <!-- Main Scrollable Content Area -->
+    <main class="main-content">
+      
+      <!-- Continue Last Played Banner -->
+      <div class="last-played-banner" id="lastPlayedBanner" style="display:none;">
+        <div class="last-played-info">
+          <span class="last-played-tag">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+            Lanjutkan Terakhir Diputar
+          </span>
+          <div class="last-played-name" id="lastPlayedName">Surah</div>
+          <div class="last-played-qari" id="lastPlayedQari">Sentuh untuk memutar</div>
+        </div>
+        <div class="last-played-play-btn">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+            <polygon points="5 3 19 12 5 21 5 3"></polygon>
+          </svg>
+        </div>
+      </div>
+
+      <!-- Surah List Container (Screenshot 2) -->
+      <div class="surah-list" id="surahList">
+        <!-- Rendered dynamically by app.js -->
+      </div>
+    </main>
+
+    <!-- Mini Player Floating Bar -->
+    <div class="mini-player-bar hidden" id="miniPlayerBar">
+      <div class="mini-player-left">
+        <div class="mini-badge" id="miniBadge">1</div>
+        <div class="mini-info">
+          <div class="mini-title" id="miniTitle">Al-Fatihah</div>
+          <div class="mini-subtitle" id="miniSubtitle">Pembukaan • Misyari Rasyid</div>
+        </div>
+      </div>
+      <div class="mini-player-controls">
+        <button class="mini-btn play" id="miniPlayBtn" aria-label="Play/Pause">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+            <polygon points="5 3 19 12 5 21 5 3"></polygon>
+          </svg>
+        </button>
+        <button class="mini-btn" id="miniCloseBtn" aria-label="Tutup Mini Player">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="18" y1="6" x2="6" y2="18"></line>
+            <line x1="6" y1="6" x2="18" y2="18"></line>
+          </svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- Bottom Tab Navigation -->
+    <nav class="bottom-nav">
+      <button class="nav-tab-btn active" id="btnNavHome">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+          <polyline points="9 22 9 12 15 12 15 22"></polyline>
+        </svg>
+        <span>Al-Qur'an</span>
+      </button>
+
+      <button class="nav-tab-btn" id="btnNavSalat">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="12" cy="4" r="2"></circle>
+          <path d="M7 21v-4l4-3 2 4 4-2-2-5-4 1-2-3-3 1"></path>
+        </svg>
+        <span>Salat</span>
+      </button>
+
+      <button class="nav-tab-btn" id="btnNavQibla">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="12" cy="12" r="10"></circle>
+          <polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"></polygon>
+        </svg>
+        <span>Kiblat</span>
+      </button>
+
+      <button class="nav-tab-btn" id="btnNavAsmaul">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"></path>
+        </svg>
+        <span>Asmaul</span>
+      </button>
+
+      <button class="nav-tab-btn" id="btnNavMenu" onclick="document.getElementById('btnOpenDrawer').click()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <line x1="3" y1="12" x2="21" y2="12"></line>
+          <line x1="3" y1="6" x2="21" y2="6"></line>
+          <line x1="3" y1="18" x2="21" y2="18"></line>
+        </svg>
+        <span>Menu</span>
+      </button>
+    </nav>
+
+    <!-- ========================================================
+         AUDIO PLAYER SCREEN (Screenshot 3 & Enhanced Controls)
+         ======================================================== -->
+    <div class="player-screen" id="playerScreen">
+      <!-- Player Header -->
+      <div class="player-header">
+        <button class="header-btn" id="playerCloseBtn" aria-label="Tutup Pemutar">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="6 9 12 15 18 9"></polyline>
+          </svg>
+        </button>
+        <span class="player-header-title">Pemutar Audio Murottal</span>
+        <button class="header-btn" onclick="document.getElementById('btnMenuDoa').click()" title="Doa Khatam Al-Qur'an">
+          📖
+        </button>
+      </div>
+
+      <!-- Center Islamic Artwork Medallion (Screenshot 3) -->
+      <div class="player-artwork-wrap">
+        <div class="medallion-container">
+          <div class="medallion-scallop"></div>
+          <div class="medallion-content">
+            <div class="medallion-surah-label">سُورَةُ</div>
+            <div class="medallion-arabic-title" id="medallionArabic">الفاتحة</div>
+            <div class="medallion-number-pill" id="medallionNumber">1</div>
+          </div>
+        </div>
+
+        <!-- Animated Sound Wave Visualizer -->
+        <div class="wave-visualizer" id="waveVisualizer">
+          <div class="wave-bar"></div>
+          <div class="wave-bar"></div>
+          <div class="wave-bar"></div>
+          <div class="wave-bar"></div>
+          <div class="wave-bar"></div>
+          <div class="wave-bar"></div>
+          <div class="wave-bar"></div>
+        </div>
+      </div>
+
+      <!-- Surah Meta Info -->
+      <div class="player-meta-wrap">
+        <div class="player-surah-title" id="playerSurahTitle">1. Al-Fatihah</div>
+        <div class="player-surah-subtitle" id="playerSurahSubtitle">Pembukaan | 7 Ayat | Mekkah</div>
+        <button class="player-qari-badge" id="playerQariBadge" title="Ganti Pilihan Qari">
+          🎙️ Misyari Rasyid
+        </button>
+      </div>
+
+      <!-- Murottal vs Terjemahan Toggle Switch (Screenshot 3 & 4) -->
+      <div class="murottal-toggle-wrap">
+        <span class="toggle-label">Murottal Murni</span>
+        <label class="switch">
+          <input type="checkbox" id="murottalSwitch" checked>
+          <span class="slider-switch"></span>
+        </label>
+        <span style="font-size:0.8rem;color:var(--text-muted);font-weight:600;">(Nonaktifkan untuk suara Terjemahan RI)</span>
+      </div>
+
+      <!-- Action Icons Row: Star, Download Cloud, Share, Repeat (Screenshot 3) -->
+      <div class="player-action-row">
+        <!-- Favorite Star -->
+        <button class="action-icon-btn" id="btnFavorite" title="Simpan ke Favorit">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor">
+            <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+          </svg>
+        </button>
+
+        <!-- Download Offline Cloud -->
+        <button class="action-icon-btn" id="btnDownloadCurrent" title="Unduh Offline">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+            <polyline points="7 10 12 15 17 10"></polyline>
+            <line x1="12" y1="15" x2="12" y2="3"></line>
+          </svg>
+        </button>
+
+        <!-- Share (Amal Jariyah / Sebar Kebaikan) -->
+        <button class="action-icon-btn" id="btnShare" title="Bagikan & Raih Amal Jariyah">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="18" cy="5" r="3"></circle>
+            <circle cx="6" cy="12" r="3"></circle>
+            <circle cx="18" cy="19" r="3"></circle>
+            <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line>
+            <line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line>
+          </svg>
+        </button>
+
+        <!-- Repeat Mode Cycle -->
+        <button class="action-icon-btn repeat-active" id="btnRepeat" title="Mode Putar Ulang">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="17 1 21 5 17 9"></polyline>
+            <path d="M3 11V9a4 4 0 0 1 4-4h14"></path>
+            <polyline points="7 23 3 19 7 15"></polyline>
+            <path d="M21 13v2a4 4 0 0 1-4 4H3"></path>
+          </svg>
+        </button>
+      </div>
+
+      <!-- Duration Progress Slider (Screenshot 3) -->
+      <div class="player-progress-wrap">
+        <input type="range" class="custom-range" id="playerProgressBar" value="0" min="0" max="100" step="0.1">
+        <div class="progress-timestamps">
+          <span id="currentTime">00:00</span>
+          <span id="totalDuration">00:00</span>
+        </div>
+      </div>
+
+      <!-- Playback Controls Row (Screenshot 3) -->
+      <div class="player-controls-row">
+        <!-- Rewind 10s -->
+        <button class="ctrl-btn" id="rewind10Btn" title="Mundur 10 Detik">
+          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M1 4v6h6"></path>
+            <path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"></path>
+          </svg>
+          <span class="ctrl-btn-skip-sec">10</span>
+        </button>
+
+        <!-- Previous Surah -->
+        <button class="ctrl-btn" id="prevBtn" title="Surah Sebelumnya">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="currentColor">
+            <polygon points="11 19 2 12 11 5 11 19"></polygon>
+            <polygon points="22 19 13 12 22 5 22 19"></polygon>
+          </svg>
+        </button>
+
+        <!-- Big Round Play/Pause Button (Screenshot 3) -->
+        <button class="ctrl-btn-main" id="mainPlayBtn" aria-label="Putar / Jeda">
+          <svg width="34" height="34" viewBox="0 0 24 24" fill="currentColor">
+            <polygon points="5 3 19 12 5 21 5 3"></polygon>
+          </svg>
+        </button>
+
+        <!-- Next Surah -->
+        <button class="ctrl-btn" id="nextBtn" title="Surah Selanjutnya">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="currentColor">
+            <polygon points="13 19 22 12 13 5 13 19"></polygon>
+            <polygon points="2 19 11 12 2 5 2 19"></polygon>
+          </svg>
+        </button>
+
+        <!-- Forward 10s -->
+        <button class="ctrl-btn" id="forward10Btn" title="Maju 10 Detik">
+          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M23 4v6h-6"></path>
+            <path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"></path>
+          </svg>
+          <span class="ctrl-btn-skip-sec">10</span>
+        </button>
+      </div>
+
+      <!-- Volume Slider Row (Screenshot 3) -->
+      <div class="volume-control-row">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+        </svg>
+        <input type="range" class="custom-range volume-slider" id="volumeSlider" min="0" max="1" step="0.05" value="1">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+          <path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"></path>
+        </svg>
+      </div>
+
+      <!-- Enhanced Tools: Read Ayah & Sleep Timer -->
+      <div class="player-quick-tools">
+        <button class="tool-chip-btn" id="btnOpenAyah">
+          <span>📖</span> Baca Teks & Terjemahan
+        </button>
+        <button class="tool-chip-btn" id="btnOpenTimer">
+          <span>⏱️</span> Waktu Tidur
+        </button>
+      </div>
+    </div>
+
+    <!-- ========================================================
+         PAGE VIEW: PENGATURAN / SETTINGS (Screenshot 4)
+         ======================================================== -->
+    <div class="page-view" id="viewSettings">
+      <div class="page-header">
+        <button class="header-btn" id="settingsBackBtn" aria-label="Kembali">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+            <polyline points="15 18 9 12 15 6"></polyline>
+          </svg>
+        </button>
+        <h2>Pengaturan</h2>
+      </div>
+
+      <!-- Preferensi Pemutaran -->
+      <div class="settings-group">
+        <div class="settings-group-title">Preferensi Pemutaran</div>
+        <div class="settings-card">
+          <div class="settings-item">
+            <div class="settings-item-left">
+              <div class="settings-icon">🌐</div>
+              <div class="settings-text">
+                <h4>Bahasa Aplikasi</h4>
+                <p>Bahasa Indonesia</p>
+              </div>
+            </div>
+            <span class="settings-action-text">Aktif</span>
+          </div>
+
+          <div class="settings-item">
+            <div class="settings-item-left">
+              <div class="settings-icon">🔊</div>
+              <div class="settings-text">
+                <h4>Murottal Audio</h4>
+                <p>Aktifkan untuk mematikan audio terjemahan</p>
+              </div>
+            </div>
+            <label class="switch">
+              <input type="checkbox" checked onchange="document.getElementById('murottalSwitch').checked = this.checked; document.getElementById('murottalSwitch').dispatchEvent(new Event('change'))">
+              <span class="slider-switch"></span>
+            </label>
+          </div>
+        </div>
+      </div>
+
+      <!-- Umum -->
+      <div class="settings-group">
+        <div class="settings-group-title">Umum</div>
+        <div class="settings-card">
+          <div class="settings-item">
+            <div class="settings-item-left">
+              <div class="settings-icon">🔔</div>
+              <div class="settings-text">
+                <h4>Notifikasi</h4>
+                <p>Pengingat tilawah harian</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="settings-item">
+            <div class="settings-item-left">
+              <div class="settings-icon">🔒</div>
+              <div class="settings-text">
+                <h4>Status Aplikasi</h4>
+                <p>Versi Wakaf Penuh (Unduh Satuan Gratis)</p>
+              </div>
+            </div>
+            <span class="settings-action-text" style="color:var(--primary);">Gratis & Bebas Iklan</span>
+          </div>
+
+          <div class="settings-item" id="settingsClearCacheItem">
+            <div class="settings-item-left">
+              <div class="settings-icon">🗑️</div>
+              <div class="settings-text">
+                <h4>Bersihkan Cache</h4>
+                <p id="settingsCacheSize">0 KB</p>
+              </div>
+            </div>
+            <span class="settings-action-text" style="color:#ef4444;">Bersihkan</span>
+          </div>
+
+          <div class="settings-item" onclick="alert('Aplikasi ini didedikasikan sebagai amal jariyah untuk menyebarkan kalamullah. Data pribadi tidak pernah dikumpulkan atau dijual.')">
+            <div class="settings-item-left">
+              <div class="settings-icon">ℹ️</div>
+              <div class="settings-text">
+                <h4>Kebijakan Privasi</h4>
+                <p>100% Aman, tanpa pelacakan data pribadi</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="settings-item" onclick="alert('Murottal Quran v2.0\nAplikasi Audio Al-Qur\'an 30 Juz & Terjemahan Indonesia.\nDibuat dengan niat tulus untuk tabungan amal jariyah di akhirat kelak.')">
+            <div class="settings-item-left">
+              <div class="settings-icon">❓</div>
+              <div class="settings-text">
+                <h4>Tentang Aplikasi</h4>
+                <p>Murottal Quran v2.0 - Amal Jariyah</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Dukung Kami -->
+      <div class="settings-group">
+        <div class="settings-group-title">Dukung Kami & Sebar Kebaikan</div>
+        <div class="settings-card">
+          <div class="settings-item" onclick="document.getElementById('btnShare').click()">
+            <div class="settings-item-left">
+              <div class="settings-icon">⭐</div>
+              <div class="settings-text">
+                <h4>Beri Ulasan & Bagikan</h4>
+                <p>Bantu sebarkan aplikasi ini agar semakin banyak yang mendapat manfaat</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ========================================================
+         PAGE VIEW: UNDUHAN (OFFLINE DOWNLOADS)
+         ======================================================== -->
+    <div class="page-view" id="viewDownloads">
+      <div class="page-header">
+        <button class="header-btn" id="downloadsBackBtn" aria-label="Kembali">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+            <polyline points="15 18 9 12 15 6"></polyline>
+          </svg>
+        </button>
+        <h2>Surah Terunduh (Offline)</h2>
+      </div>
+
+      <!-- Storage Banner -->
+      <div class="downloads-summary-bar">
+        <div class="downloads-stats">
+          <h3 id="totalDownloadedCount">0 Surah</h3>
+          <p id="totalDownloadedSize">0 MB Tersimpan Offline</p>
+        </div>
+        <button class="clear-downloads-btn" id="btnClearAllCache">Bersihkan Semua</button>
+      </div>
+
+      <!-- List of Downloaded Surahs -->
+      <div class="surah-list" id="downloadsList">
+        <!-- Rendered dynamically -->
+      </div>
+    </div>
+
+    <!-- ========================================================
+         PAGE VIEW: DZIKIR PAGI & PETANG (Sunnah & Al-Ma'tsurat)
+         ======================================================== -->
+    <div class="page-view" id="viewDzikir">
+      <div class="page-header">
+        <button class="header-btn" id="dzikirBackBtn" aria-label="Kembali">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+            <polyline points="15 18 9 12 15 6"></polyline>
+          </svg>
+        </button>
+        <h2 id="dzikirPageTitle">Dzikir Pagi & Petang</h2>
+        <button class="header-btn" id="dzikirShareBtn" style="margin-left:auto;" title="Bagikan Dzikir">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="18" cy="5" r="3"></circle>
+            <circle cx="6" cy="12" r="3"></circle>
+            <circle cx="18" cy="19" r="3"></circle>
+            <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line>
+            <line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line>
+          </svg>
+        </button>
+      </div>
+
+      <!-- Segmented Tabs for Pagi and Petang -->
+      <div class="dzikir-tab-container">
+        <button class="dzikir-tab-btn active" id="tabDzikirPagi">
+          <span>🌅</span> Dzikir Pagi
+        </button>
+        <button class="dzikir-tab-btn" id="tabDzikirPetang">
+          <span>🌇</span> Dzikir Petang
+        </button>
+      </div>
+
+      <!-- Time info banner -->
+      <div style="padding: 12px 16px 0 16px;">
+        <div class="dzikir-time-info-box" id="dzikirTimeInfo">
+          <span>ℹ️</span>
+          <span id="dzikirTimeInfoText">Waktu utama: Dari setelah Subuh hingga terbit matahari (atau menjelang siang).</span>
+        </div>
+      </div>
+
+      <!-- Dzikir Items Container -->
+      <div class="dzikir-list-container" id="dzikirListContainer">
+        <!-- Rendered by JS -->
+      </div>
+    </div>
+
+    <!-- ========================================================
+         PAGE VIEW: JADWAL SHOLAT (Prayer Times - Screenshot 1 & 2)
+         ======================================================== -->
+    <!-- ========================================================
+         PAGE VIEW: JADWAL SHOLAT (Prayer Times - Screenshot 1 & 2)
+         ======================================================== -->
+    <div class="page-view" id="viewPrayer">
+      <div class="page-header">
+        <button class="header-btn" id="prayerBackBtn" aria-label="Kembali">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+            <polyline points="15 18 9 12 15 6"></polyline>
+          </svg>
+        </button>
+        <div>
+          <h2 id="prayerHeaderDate" style="font-size:1.05rem;">Hari ini, 14 Oktober</h2>
+          <p id="prayerHeaderHijri" style="font-size:0.75rem;color:var(--text-secondary);margin-top:1px;">3 Jumadil Awal 1448 H</p>
+        </div>
+        <button class="header-btn" id="btnPrayerAdzanFull" style="margin-left:auto;" title="Putar Adzan Merdu">
+          🔊
+        </button>
+      </div>
+
+      <!-- Colorful thin progress bar (Screenshot 1) -->
+      <div class="prayer-progress-bar-wrap">
+        <div class="prayer-progress-bar-fill" id="prayerProgressBarFill"></div>
+      </div>
+
+      <!-- Date selector row (7 days) -->
+      <div class="prayer-date-row" id="prayerDateRow">
+        <!-- Generated by JS -->
+      </div>
+
+      <!-- Location bar -->
+      <div class="prayer-location-bar">
+        <div class="prayer-location-chip" id="btnChangeCity">
+          <span>🇮🇩</span>
+          <span id="prayerCityName">Jakarta</span>
+          <span style="font-size:0.7rem;">▼</span>
+        </div>
+        <div class="prayer-method-badge">KEMENAG RI / SIHAT</div>
+      </div>
+
+      <!-- Prayer Times Cards -->
+      <div class="prayer-times-list" id="prayerTimesList">
+        <!-- Rendered by JS: Subuh, Terbit, Dzuhur, Ashar, Maghrib, Isya -->
+      </div>
+    </div>
+
+    <!-- ========================================================
+         PAGE VIEW: KOMPAS ARAH KIBLAT (Qibla Compass - Screenshot 3)
+         ======================================================== -->
+    <div class="page-view" id="viewQibla">
+      <div class="page-header">
+        <button class="header-btn" id="qiblaBackBtn" aria-label="Kembali">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+            <polyline points="15 18 9 12 15 6"></polyline>
+          </svg>
+        </button>
+        <h2>Kompas Arah Kiblat</h2>
+      </div>
+
+      <div class="qibla-container">
+        <!-- Status badges (Screenshot 3) -->
+        <div class="qibla-status-row">
+          <span class="qibla-pill-status" id="qiblaCityPill">📍 Lokasi: Jakarta</span>
+          <span class="qibla-pill-status" id="qiblaSensorPill">🧭 Kompas Siap</span>
+        </div>
+
+        <!-- Compass Visual with Top Alignment Line & Rotating Dial -->
+        <div class="compass-wrapper-area">
+          <div class="compass-top-sightline"></div>
+          
+          <div class="compass-visual-wrap" id="compassVisualWrap">
+            <div class="compass-outer-ring"></div>
+            <div class="compass-dial-plate skin-pink" id="compassDialPlate">
+              <span class="compass-direction-mark north">U</span>
+              <span class="compass-direction-mark east">T</span>
+              <span class="compass-direction-mark south">S</span>
+              <span class="compass-direction-mark west">B</span>
+              
+              <!-- Ka'bah Icon Marker located at Qibla angle -->
+              <div class="kaaba-direction-marker" id="kaabaMarker" title="Arah Ka'bah (Kiblat)">🕋</div>
+
+              <!-- Center needle & hub -->
+              <div class="compass-needle-arrow"></div>
+              <div class="compass-center-hub"></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="qibla-degree-title" id="qiblaDegreeText">295° Baratlaut</div>
+        <div class="qibla-distance-subtitle" id="qiblaDistanceText">Jarak ke Ka'bah: ~7.912 km</div>
+        <p class="qibla-instruction-text" id="qiblaInstructionText">
+          Putar HP Anda secara perlahan hingga jarum sejajar tepat dengan ikon Ka'bah (🕋).
+        </p>
+
+        <!-- Compass Dial Skin Selector (Screenshot 3) -->
+        <div class="compass-skin-selector-wrap">
+          <p class="compass-skin-title">Pilih Tema Kompas:</p>
+          <div class="compass-skins-row">
+            <button class="skin-thumb active" data-skin="pink" title="Pink Rose Gold">
+              <div class="skin-circle skin-circle-pink"><span>🧭</span></div>
+              <span class="skin-name">Rose</span>
+            </button>
+            <button class="skin-thumb" data-skin="green" title="Classic Emerald Green">
+              <div class="skin-circle skin-circle-green"><span>🧭</span></div>
+              <span class="skin-name">Green</span>
+            </button>
+            <button class="skin-thumb" data-skin="nautical" title="Nautical Navy">
+              <div class="skin-circle skin-circle-nautical"><span>🧭</span></div>
+              <span class="skin-name">Nautical</span>
+            </button>
+            <button class="skin-thumb" data-skin="gold" title="Arabesque Gold">
+              <div class="skin-circle skin-circle-gold"><span>🧭</span></div>
+              <span class="skin-name">Gold</span>
+            </button>
+            <button class="skin-thumb" data-skin="dark" title="Dark Obsidian">
+              <div class="skin-circle skin-circle-dark"><span>🧭</span></div>
+              <span class="skin-name">Dark</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Manual calibrate slider if sensors not available -->
+        <div style="margin-top:16px;width:100%;max-width:320px;" id="manualCompassControl">
+          <p style="font-size:0.75rem;color:var(--text-muted);margin-bottom:6px;">Putar manual (simulasi jika di PC / tanpa sensor):</p>
+          <input type="range" class="custom-range" id="manualHeadingSlider" min="0" max="360" value="0">
+        </div>
+      </div>
+    </div>
+
+    <!-- ========================================================
+         PAGE VIEW: 99 ASMAUL HUSNA (Audio, Teks Arab, & Arti)
+         ======================================================== -->
+    <div class="page-view" id="viewAsmaul">
+      <div class="page-header">
+        <button class="header-btn" id="asmaulBackBtn" aria-label="Kembali">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+            <polyline points="15 18 9 12 15 6"></polyline>
+          </svg>
+        </button>
+        <h2>99 Asmaul Husna</h2>
+        <button class="header-btn" id="asmaulShareBtn" style="margin-left:auto;" title="Bagikan Asmaul Husna">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="18" cy="5" r="3"></circle>
+            <circle cx="6" cy="12" r="3"></circle>
+            <circle cx="18" cy="19" r="3"></circle>
+            <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line>
+            <line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line>
+          </svg>
+        </button>
+      </div>
+
+      <!-- Full Audio Recitation Player Card -->
+      <div class="asmaul-full-audio-card" id="btnPlayAllAsmaul">
+        <div class="asmaul-audio-info">
+          <h4>Lantunan 99 Asmaul Husna</h4>
+          <p id="asmaulAudioStatus">Sentuh untuk memutar audio merdu</p>
+        </div>
+        <div class="asmaul-audio-play-circle" id="asmaulPlayCircleIcon">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor">
+            <polygon points="5 3 19 12 5 21 5 3"></polygon>
+          </svg>
+        </div>
+      </div>
+
+      <!-- Search Asmaul Husna -->
+      <div class="search-container">
+        <div class="search-input-wrap">
+          <span class="search-icon">🔍</span>
+          <input type="text" class="search-input" id="searchAsmaulInput" placeholder="Cari Asmaul Husna (Ar-Rahman, Pengasih)..." autocomplete="off">
+        </div>
+      </div>
+
+      <!-- Grid of 99 Names -->
+      <div class="asmaul-grid" id="asmaulGridContainer">
+        <!-- Rendered by JS -->
+      </div>
+    </div>
+
+    <!-- ========================================================
+         DRAWER SIDEBAR (Screenshot 5)
+         ======================================================== -->
+    <div class="modal-backdrop" id="modalBackdrop"></div>
+
+    <aside class="drawer-sidebar" id="drawerSidebar">
+      <div class="drawer-header">
+        <img src="assets/icons/logo.png" alt="Quran Rose Logo" class="drawer-logo" style="border-radius:12px;box-shadow:0 4px 14px rgba(224,40,117,0.3);width:46px;height:46px;object-fit:cover;">
+        <div class="drawer-app-info">
+          <h3>Quran Rose</h3>
+          <p>Murottal & Sholat Indonesia</p>
+        </div>
+      </div>
+
+      <nav class="drawer-menu-list">
+        <button class="drawer-item active" onclick="document.getElementById('modalBackdrop').click()">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+          </svg>
+          <span>Beranda</span>
+        </button>
+
+        <button class="drawer-item" id="btnMenuDownloads">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+            <polyline points="7 10 12 15 17 10"></polyline>
+            <line x1="12" y1="15" x2="12" y2="3"></line>
+          </svg>
+          <span>Unduhan (Offline)</span>
+        </button>
+
+        <div class="drawer-section-title">Sholat, Kiblat & Asmaul Husna</div>
+
+        <button class="drawer-item" id="btnMenuPrayer">
+          <span style="font-size:1.25rem;">🕌</span>
+          <span>Jadwal Sholat & Adzan</span>
+        </button>
+
+        <button class="drawer-item" id="btnMenuQibla">
+          <span style="font-size:1.25rem;">🧭</span>
+          <span>Kompas Arah Kiblat</span>
+        </button>
+
+        <button class="drawer-item" id="btnMenuAsmaul">
+          <span style="font-size:1.25rem;">✨</span>
+          <span>99 Asmaul Husna (Suara)</span>
+        </button>
+
+        <div class="drawer-section-title">Dzikir & Doa Harian</div>
+
+        <button class="drawer-item" id="btnMenuDzikirPagi">
+          <span style="font-size:1.25rem;">🌅</span>
+          <span>Dzikir Pagi (Al-Ma'tsurat)</span>
+        </button>
+
+        <button class="drawer-item" id="btnMenuDzikirPetang">
+          <span style="font-size:1.25rem;">🌇</span>
+          <span>Dzikir Petang (Al-Ma'tsurat)</span>
+        </button>
+
+        <div class="drawer-section-title">Fitur Ibadah & Jariyah</div>
+
+        <button class="drawer-item" id="btnMenuTasbih">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="9"></circle>
+            <circle cx="12" cy="12" r="3"></circle>
+          </svg>
+          <span>Tasbih Digital Interaktif</span>
+        </button>
+
+        <button class="drawer-item" id="btnMenuDoa">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
+            <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
+          </svg>
+          <span>Doa Khatam Al-Qur'an</span>
+        </button>
+
+        <div class="drawer-section-title">Aplikasi</div>
+
+        <button class="drawer-item" id="btnMenuSettings">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="3"></circle>
+            <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+          </svg>
+          <span>Pengaturan</span>
+        </button>
+      </nav>
+
+      <div class="drawer-footer">
+        <span class="drawer-version">v2.0 • Amal Jariyah</span>
+        <button class="theme-toggle-btn" id="themeToggleBtn">
+          🌙 Mode Malam
+        </button>
+      </div>
+    </aside>
+
+    <!-- ========================================================
+         BOTTOM SHEETS / MODALS
+         ======================================================== -->
+
+    <!-- Qari Picker Sheet -->
+    <div class="bottom-sheet" id="qariSheet">
+      <div class="sheet-handle"></div>
+      <div class="sheet-header">
+        <h3>Pilih Qari (Pembaca Murottal)</h3>
+        <button class="header-btn" onclick="document.getElementById('modalBackdrop').click()">&times;</button>
+      </div>
+      <div class="sheet-body" id="qariList">
+        <!-- Rendered by JS -->
+      </div>
+    </div>
+
+    <!-- Ayah Reader Modal (Read Along / Karaoke) -->
+    <div class="bottom-sheet" id="ayahSheet" style="max-height:92vh;">
+      <div class="sheet-handle"></div>
+      <div class="sheet-header" style="padding-bottom:8px;">
+        <div style="flex:1;">
+          <h3 id="ayahSheetTitle">Teks & Terjemahan Surah</h3>
+          <span id="ayahCountBadge" style="font-size:0.75rem;color:var(--text-muted);">Memuat ayat...</span>
+        </div>
+        <button class="header-btn" onclick="document.getElementById('modalBackdrop').click()">&times;</button>
+      </div>
+
+      <!-- Search Input inside Teks & Terjemahan -->
+      <div class="ayah-search-box-wrap" style="padding: 6px 18px 10px 18px; background: var(--bg-surface); border-bottom: 1px solid var(--border-light); position: sticky; top: 0; z-index: 10;">
+        <div style="display:flex; align-items:center; background:var(--bg-app); border:1px solid var(--border-light); border-radius:var(--radius-full); padding: 7px 14px; gap:8px;">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" style="color:var(--primary);flex-shrink:0;">
+            <circle cx="11" cy="11" r="8"></circle>
+            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+          </svg>
+          <input type="text" id="searchAyahInput" placeholder="Cari nomor ayat (cth: 255) atau terjemahan..." style="flex:1; border:none; background:transparent; font-size:0.86rem; color:var(--text-primary); outline:none; font-family:inherit;" autocomplete="off">
+          <button id="btnClearAyahSearch" style="display:none; background:none; border:none; color:var(--text-muted); cursor:pointer; font-size:1.1rem; padding:0 4px; line-height:1;">&times;</button>
+        </div>
+        <div id="ayahSearchResultCount" style="display:none; font-size:0.75rem; color:var(--primary); font-weight:700; margin-top:5px; padding-left:6px;"></div>
+      </div>
+
+      <div class="sheet-body" id="ayahSheetBody">
+        <!-- Rendered by JS -->
+      </div>
+    </div>
+
+    <!-- Sleep Timer Sheet -->
+    <div class="bottom-sheet" id="timerSheet">
+      <div class="sheet-handle"></div>
+      <div class="sheet-header">
+        <h3>Pengatur Waktu Tidur</h3>
+        <button class="header-btn" onclick="document.getElementById('modalBackdrop').click()">&times;</button>
+      </div>
+      <div class="sheet-body">
+        <div class="sleep-timer-options">
+          <button class="timer-option-btn active" data-minutes="0">
+            <span>Matikan Timer</span>
+            <span>✕</span>
+          </button>
+          <button class="timer-option-btn" data-minutes="15">
+            <span>15 Menit</span>
+            <span>⏱️</span>
+          </button>
+          <button class="timer-option-btn" data-minutes="30">
+            <span>30 Menit</span>
+            <span>⏱️</span>
+          </button>
+          <button class="timer-option-btn" data-minutes="45">
+            <span>45 Menit</span>
+            <span>⏱️</span>
+          </button>
+          <button class="timer-option-btn" data-minutes="60">
+            <span>60 Menit (1 Jam)</span>
+            <span>⏱️</span>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Tasbih Digital Interaktif Sheet -->
+    <div class="bottom-sheet" id="tasbihSheet" style="max-height:90vh;">
+      <div class="sheet-handle"></div>
+      <div class="sheet-header">
+        <h3>Tasbih Digital Interaktif</h3>
+        <button class="header-btn" onclick="document.getElementById('modalBackdrop').click()">&times;</button>
+      </div>
+      <div class="sheet-body">
+        <div class="tasbih-container">
+          <select class="tasbih-preset-select" id="tasbihPresetSelect">
+            <option value="subhanallah">Subhanallah (33x)</option>
+            <option value="alhamdulillah">Alhamdulillah (33x)</option>
+            <option value="allahuakbar">Allahu Akbar (33x)</option>
+            <option value="istighfar">Astaghfirullah (100x)</option>
+            <option value="tahlil">Laa ilaha illallah (100x)</option>
+            <option value="shalawat">Shalawat Nabi (100x)</option>
+          </select>
+
+          <div class="tasbih-arabic-display" id="tasbihArabic">سُبْحَانَ اللّٰهِ</div>
+          <div class="tasbih-latin-display" id="tasbihLatin">Subhanallah (Maha Suci Allah)</div>
+
+          <div class="tasbih-dial-wrap">
+            <button class="tasbih-tap-btn" id="tasbihTapBtn" aria-label="Sentuh untuk Hitung Dzikir">
+              <span class="tasbih-count-num" id="tasbihCount">0</span>
+              <span class="tasbih-count-target" id="tasbihTarget">/ 33</span>
+            </button>
+          </div>
+
+          <div class="tasbih-actions-row">
+            <button class="tasbih-reset-btn" id="tasbihResetBtn">Ulangi dari 0</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Doa Khatam Al-Quran Sheet -->
+    <div class="bottom-sheet" id="doaSheet" style="max-height:90vh;">
+      <div class="sheet-handle"></div>
+      <div class="sheet-header">
+        <h3>Doa Khatam Al-Qur'an</h3>
+        <button class="header-btn" onclick="document.getElementById('modalBackdrop').click()">&times;</button>
+      </div>
+      <div class="sheet-body">
+        <div class="ayah-card" style="margin-bottom:14px;">
+          <div class="ayah-arabic" style="font-size:1.8rem;line-height:2.4;">
+            اَللّٰهُمَّ ارْحَمْنَا بِالْقُرْآنِ، وَاجْعَلْهُ لَنَا إِمَامًا وَنُورًا وَهُدًى وَرَحْمَةً
+          </div>
+          <div class="ayah-latin">
+            "Allahummarhamnaa bil Qur'aan, waj'alhu lanaa imaaman wa nuuran wa hudan wa rahmah."
+          </div>
+          <div class="ayah-translation">
+            "Ya Allah, rahmatilah kami dengan Al-Qur'an. Jadikanlah ia bagi kami sebagai pemimpin, cahaya, petunjuk, dan rahmat."
+          </div>
+        </div>
+
+        <div class="ayah-card">
+          <div class="ayah-arabic" style="font-size:1.8rem;line-height:2.4;">
+            اَللّٰهُمَّ ذَكِّرْنَا مِنْهُ مَا نَسِيْنَا، وَعَلِّمْنَا مِنْهُ مَا جَهِلْنَا، وَارْزُقْنَا تِلَاوَتَهُ آنَاءَ اللَّيْلِ وَأَطْرَافَ النَّهَارِ، وَاجْعَلْهُ لَنَا حُجَّةً يَا رَبَّ الْعَالَمِيْنَ
+          </div>
+          <div class="ayah-latin">
+            "Allahumma dzakkirnaa minhu maa nasiinaa, wa 'allimnaa minhu maa jahilnaa, warzuqnaa tilaawatahu aanaa-al layli wa athraafan nahaar, waj'alhu lanaa hujjatan yaa Rabbal 'aalamiin."
+          </div>
+          <div class="ayah-translation">
+            "Ya Allah, ingatkanlah kami apa yang kami lupakan darinya, ajarkanlah kami apa yang belum kami ketahui darinya, anugerahilah kami kemampuan membacanya di sepanjang malam dan di ujung siang, dan jadikanlah ia hujjah (pembela) bagi kami, wahai Tuhan semesta alam."
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Prayer Notification Modal (Screenshot 2) -->
+    <div class="bottom-sheet" id="prayerNotifSheet" style="max-height:88vh;">
+      <div class="sheet-handle"></div>
+      <div class="sheet-header">
+        <h3 id="notifSheetPrayerTitle" style="font-size:1.05rem;font-weight:700;">Subuh pengaturan pemberitahuan</h3>
+        <button class="header-btn" id="btnNotifSheetClose" aria-label="Tutup">&times;</button>
+      </div>
+      <div class="sheet-body" style="padding: 16px 20px 24px 20px;">
+        <!-- Switches Group -->
+        <div class="notif-modal-group">
+          <div class="notif-toggle-row">
+            <div class="notif-text-col">
+              <span class="notif-row-title">Pemberitahuan</span>
+              <span class="notif-row-sub">Peringatan masuk waktu sholat</span>
+            </div>
+            <label class="switch">
+              <input type="checkbox" id="notifToggleActive" checked>
+              <span class="slider-switch"></span>
+            </label>
+          </div>
+
+          <div class="notif-toggle-row">
+            <div class="notif-text-col">
+              <span class="notif-row-title">Aktifkan alarm untuk adzan lengkap</span>
+              <span class="notif-row-sub">Putar lantunan adzan saat masuk waktu</span>
+            </div>
+            <label class="switch">
+              <input type="checkbox" id="notifToggleAdzan" checked>
+              <span class="slider-switch"></span>
+            </label>
+          </div>
+        </div>
+
+        <!-- Repeat Days Row (Screenshot 2) -->
+        <div class="notif-modal-group">
+          <div class="notif-group-header">
+            <span class="notif-group-label">Mengulang</span>
+            <span class="notif-repeat-val" id="notifRepeatLabel">Setiap hari</span>
+          </div>
+          <div class="notif-days-row" id="notifDaysRow">
+            <button class="notif-day-pill active" data-day="0">M</button>
+            <button class="notif-day-pill active" data-day="1">S</button>
+            <button class="notif-day-pill active" data-day="2">S</button>
+            <button class="notif-day-pill active" data-day="3">R</button>
+            <button class="notif-day-pill active" data-day="4">K</button>
+            <button class="notif-day-pill active" data-day="5">J</button>
+            <button class="notif-day-pill active" data-day="6">S</button>
+          </div>
+        </div>
+
+        <!-- Notification Sound & Lead Reminder (Screenshot 2) -->
+        <div class="notif-modal-group">
+          <div class="notif-select-row" id="btnNotifSoundRow">
+            <div class="notif-text-col">
+              <span class="notif-row-title">Suara pemberitahuan</span>
+              <span class="notif-row-sub" id="notifSoundTitle">Adhan (Madina)</span>
+            </div>
+            <div class="notif-row-right">
+              <button class="notif-play-preview-btn" id="btnPreviewAdzanSound" title="Tes Suara Adzan">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+                  <polygon points="5 3 19 12 5 21 5 3"></polygon>
+                </svg>
+              </button>
+              <span class="notif-chevron">›</span>
+            </div>
+          </div>
+
+          <div class="notif-select-row" id="btnNotifLeadRow">
+            <div class="notif-text-col">
+              <span class="notif-row-title">Pengingat Sebelum Azan</span>
+              <span class="notif-row-sub" id="notifLeadTitle">Tepat waktu</span>
+            </div>
+            <div class="notif-row-right">
+              <span class="notif-chevron">›</span>
+            </div>
+          </div>
+        </div>
+
+        <button class="save-notif-btn" id="btnSavePrayerNotif">Simpan</button>
+      </div>
+    </div>
+
+    <!-- City Picker Sheet -->
+    <div class="bottom-sheet" id="citySheet">
+      <div class="sheet-handle"></div>
+      <div class="sheet-header">
+        <h3>Pilih Kota / Lokasi Sholat</h3>
+        <button class="header-btn" onclick="document.getElementById('modalBackdrop').click()">&times;</button>
+      </div>
+      <div class="sheet-body">
+        <button class="qari-item" id="btnDetectGPS" style="background:var(--primary-soft);border-color:var(--primary);margin-bottom:12px;width:100%;">
+          <div class="qari-item-info">
+            <h4>📡 Gunakan GPS Otomatis (Lokasi Saat Ini)</h4>
+            <p>Mendeteksi koordinat dan arah kiblat presisi dari perangkat Anda</p>
+          </div>
+        </button>
+        <div id="cityListContainer">
+          <!-- Rendered by JS -->
+        </div>
+      </div>
+    </div>
+
+    <!-- Toast Notification (Screenshot 2 & 3) -->
+    <div class="app-toast" id="appToast">
+      <span class="app-toast-icon">✓</span>
+      <span id="toastText">Diperbarui</span>
+    </div>
+
+  </div>
+
+  <!-- Application Logic Scripts with version query -->
+  <script src="js/quran-data.js?v=pink-v3"></script>
+  <script src="js/dzikir-data.js?v=pink-v3"></script>
+  <script src="js/prayer-times.js?v=pink-v3"></script>
+  <script src="js/asmaul-husna-data.js?v=pink-v3"></script>
+  <script src="js/storage.js?v=pink-v3"></script>
+  <script src="js/audio-manager.js?v=pink-v3"></script>
+  <script src="js/app.js?v=pink-v3"></script>
+
+  <!-- Service Worker Registration for Offline PWA -->
+  <script>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('./sw.js').then((reg) => {
+          console.log('ServiceWorker registered:', reg.scope);
+        }).catch((err) => {
+          console.warn('ServiceWorker registration failed:', err);
+        });
+      });
+    }
+  </script>
+</body>
+</html>

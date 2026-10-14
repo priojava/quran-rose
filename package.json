@@ -1,0 +1,23 @@
+{
+  "name": "quran-rose",
+  "version": "1.0.0",
+  "description": "Quran Rose: Murottal 30 Juz, Jadwal Sholat, Kiblat & Asmaul Husna",
+  "main": "index.html",
+  "scripts": {
+    "start": "npx serve .",
+    "expo:start": "npm --prefix expo-app start",
+    "expo:android": "npm --prefix expo-app run android",
+    "build:apk": "cd expo-app && npx eas-cli build -p android --profile preview",
+    "cap:sync": "npx cap sync android",
+    "cap:open": "npx cap open android"
+  },
+  "keywords": [
+    "quran",
+    "murottal",
+    "sholat",
+    "kiblat",
+    "asmaul-husna"
+  ],
+  "author": "Amal Jariyah",
+  "license": "MIT"
+}

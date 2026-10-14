@@ -1,0 +1,25 @@
+{
+  "name": "Quran Rose: Murottal & Sholat",
+  "short_name": "Quran Rose",
+  "description": "Aplikasi Audio Murottal Al-Quran 30 Juz, Terjemahan, Jadwal Sholat, Kiblat & Asmaul Husna",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#e02875",
+  "theme_color": "#e02875",
+  "orientation": "portrait",
+  "categories": ["books", "education", "lifestyle"],
+  "icons": [
+    {
+      "src": "assets/icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "assets/icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}
