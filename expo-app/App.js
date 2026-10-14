@@ -48,7 +48,7 @@ export default function App() {
 
   return (
     <SafeAreaProvider>
-      <SafeAreaView style={styles.container} edges={['top', 'left', 'right']}>
+      <SafeAreaView style={styles.container} edges={['left', 'right']}>
         <StatusBar barStyle="light-content" backgroundColor="#0d1017" translucent={false} />
 
         {hasError ? (
