@@ -224,7 +224,7 @@ html, body {
   z-index: 100;
   background-color: var(--bg-surface);
   border-bottom: 1px solid var(--border-light);
-  padding: 10px 16px;
+  padding: calc(var(--safe-top) + 14px) 16px 12px;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -237,14 +237,18 @@ html, body {
   border: none;
   outline: none;
   cursor: pointer;
-  width: 42px;
-  height: 42px;
+  width: 44px;
+  height: 44px;
+  min-width: 44px;
+  min-height: 44px;
   border-radius: var(--radius-sm);
   display: flex;
   align-items: center;
   justify-content: center;
   color: var(--text-primary);
   transition: var(--transition);
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
 }
 
 .header-btn:active {

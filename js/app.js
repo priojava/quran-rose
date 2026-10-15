@@ -1071,10 +1071,19 @@ document.addEventListener('DOMContentLoaded', async () => {
   // Page View Routing Helpers
   // ========================================================
   function closeAllPageViews() {
-    [viewPrayer, viewQibla, viewAsmaul, viewDzikir, viewSettings, viewDownloads].forEach(v => {
+    [
+      viewPrayer, viewQibla, viewAsmaul, viewDzikir, viewSettings, viewDownloads,
+      document.getElementById('viewWudhu'),
+      document.getElementById('viewPanduanSalat'),
+      document.getElementById('viewSholawat'),
+      document.getElementById('viewKajian'),
+      document.getElementById('viewKajianVideos')
+    ].forEach(v => {
       if (v) {
         v.classList.remove('active');
+        v.style.display = '';
         v.scrollTop = 0;
+        v.scrollLeft = 0;
       }
     });
   }
@@ -1201,12 +1210,43 @@ document.addEventListener('DOMContentLoaded', async () => {
   }
 
   // Full Adzan audio player (Local offline bundled + CDN fallback)
-  const adzanAudio = new Audio('./assets/audio/adzan-madinah.mp3');
+  const adzanAudio = new Audio('assets/audio/adzan-madinah.mp3');
+  adzanAudio.preload = 'auto';
+  let isAdzanPlaying = false;
+  let isAdzanLoading = false;
+
   adzanAudio.onerror = () => {
     console.warn('Local adzan audio failed, trying fallback CDN...');
     adzanAudio.src = 'https://raw.githubusercontent.com/Kiwifu/adhan-mp3/master/' + encodeURIComponent('Adhan_Al_Haram_Al_Madani_-_Al_Madinah_1_(أذان_الحرم_المدني_-_المدينة_المنورة).mp3');
   };
-  let isAdzanPlaying = false;
+
+  function updateAdzanUI(playing, loading = false) {
+    if (loading) {
+      btnPrayerAdzanFull.textContent = '⏳';
+      btnPreviewAdzanSound.classList.add('loading');
+      btnPreviewAdzanSound.classList.remove('playing');
+      btnPreviewAdzanSound.innerHTML = `<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" class="spin-icon"><circle cx="12" cy="12" r="10" stroke-opacity="0.25"></circle><path d="M12 2a10 10 0 0 1 10 10"></path></svg>`;
+    } else if (playing) {
+      btnPrayerAdzanFull.textContent = '⏸️';
+      btnPreviewAdzanSound.classList.remove('loading');
+      btnPreviewAdzanSound.classList.add('playing');
+      btnPreviewAdzanSound.innerHTML = `<svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><rect x="6" y="4" width="4" height="16" rx="1"></rect><rect x="14" y="4" width="4" height="16" rx="1"></rect></svg>`;
+    } else {
+      btnPrayerAdzanFull.textContent = '🔊';
+      btnPreviewAdzanSound.classList.remove('loading', 'playing');
+      btnPreviewAdzanSound.innerHTML = `<svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>`;
+    }
+  }
+
+  function stopAdzanPlayback() {
+    if (isAdzanPlaying || isAdzanLoading) {
+      adzanAudio.pause();
+      adzanAudio.currentTime = 0;
+      isAdzanPlaying = false;
+      isAdzanLoading = false;
+      updateAdzanUI(false);
+    }
+  }
 
   btnPrayerAdzanFull.addEventListener('click', () => {
     toggleAdzanPlayback();
@@ -1217,29 +1257,58 @@ document.addEventListener('DOMContentLoaded', async () => {
     toggleAdzanPlayback();
   });
 
+  // Clicking the whole notification sound row triggers play immediately
+  btnNotifSoundRow.addEventListener('click', () => {
+    toggleAdzanPlayback();
+  });
+
   function toggleAdzanPlayback() {
+    if (isAdzanLoading) return;
+
     if (isAdzanPlaying) {
       adzanAudio.pause();
       isAdzanPlaying = false;
-      btnPrayerAdzanFull.textContent = '🔊';
-      btnPreviewAdzanSound.innerHTML = `<svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>`;
-      showToast('Audio adzan dijeda');
-    } else {
-      adzanAudio.play().then(() => {
+      updateAdzanUI(false);
+      showToast('Audio adzan dijeda', '⏸️');
+      return;
+    }
+
+    // Stop background Quran murottal if currently playing
+    if (window.audioManager && typeof window.audioManager.pause === 'function') {
+      window.audioManager.pause();
+    }
+
+    isAdzanLoading = true;
+    updateAdzanUI(false, true);
+
+    const playPromise = adzanAudio.play();
+    if (playPromise !== undefined) {
+      playPromise.then(() => {
+        isAdzanLoading = false;
         isAdzanPlaying = true;
-        btnPrayerAdzanFull.textContent = '⏸️';
-        btnPreviewAdzanSound.innerHTML = `<svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><rect x="6" y="4" width="4" height="16" rx="1"></rect><rect x="14" y="4" width="4" height="16" rx="1"></rect></svg>`;
+        updateAdzanUI(true);
         showToast('Memutar Lantunan Adzan Madinah Merdu 🕌', '🔊');
-      }).catch(e => {
-        showToast('Gagal memutar audio adzan.');
+      }).catch(err => {
+        isAdzanLoading = false;
+        isAdzanPlaying = false;
+        updateAdzanUI(false);
+        console.warn('Adzan play error, trying reload:', err);
+        adzanAudio.load();
+        adzanAudio.play().then(() => {
+          isAdzanPlaying = true;
+          updateAdzanUI(true);
+          showToast('Memutar Lantunan Adzan Madinah Merdu 🕌', '🔊');
+        }).catch(() => {
+          showToast('Gagal memutar audio adzan.', '⚠️');
+        });
       });
     }
   }
 
   adzanAudio.addEventListener('ended', () => {
     isAdzanPlaying = false;
-    btnPrayerAdzanFull.textContent = '🔊';
-    btnPreviewAdzanSound.innerHTML = `<svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>`;
+    isAdzanLoading = false;
+    updateAdzanUI(false);
   });
 
   // Prayer Notification Modal Handlers (Screenshot 2)
@@ -1275,7 +1344,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   btnNotifSheetClose.addEventListener('click', () => {
     prayerNotifSheet.classList.remove('open');
     modalBackdrop.classList.remove('open');
-    if (isAdzanPlaying) adzanAudio.pause();
+    stopAdzanPlayback();
   });
 
   notifDaysRow.querySelectorAll('.notif-day-pill').forEach((pill) => {
@@ -1326,7 +1395,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     localStorage.setItem('prayer_notif_config', JSON.stringify(prayerNotifConfig));
     prayerNotifSheet.classList.remove('open');
     modalBackdrop.classList.remove('open');
-    if (isAdzanPlaying) adzanAudio.pause();
+    stopAdzanPlayback();
     showToast(`Pengaturan notifikasi ${selectedNotifPrayer.name} berhasil disimpan! 🔔`, '✓');
     renderPrayerTimes();
   });
@@ -1627,8 +1696,10 @@ document.addEventListener('DOMContentLoaded', async () => {
     setActiveBottomNav('btnNavHome');
   });
 
-  document.getElementById('btnNavAsmaul').addEventListener('click', openAsmaulView);
-  document.getElementById('btnMenuAsmaul').addEventListener('click', openAsmaulView);
+  const btnNavAsmaul = document.getElementById('btnNavAsmaul');
+  if (btnNavAsmaul) btnNavAsmaul.addEventListener('click', openAsmaulView);
+  const btnMenuAsmaul = document.getElementById('btnMenuAsmaul');
+  if (btnMenuAsmaul) btnMenuAsmaul.addEventListener('click', openAsmaulView);
 
   btnPlayAllAsmaul.addEventListener('click', () => {
     if (isAsmaulPlaying) {
@@ -1767,12 +1838,485 @@ document.addEventListener('DOMContentLoaded', async () => {
     if (target) target.classList.add('active');
   }
 
-  // Update Countdown Timer & Prayer Times every 30 seconds
+  // Automatic Adzan Alarm Monitor
+  let lastAdzanTriggerKey = '';
+
+  function checkPrayerTimeAdzanAlarm() {
+    try {
+      if (!window.PrayerTimesEngine) return;
+      const now = new Date();
+      const dateKey = now.toDateString();
+      const times = window.PrayerTimesEngine.calculate(
+        now,
+        currentCity.lat,
+        currentCity.lng,
+        currentCity.timezone
+      );
+
+      const hh = String(now.getHours()).padStart(2, '0');
+      const mm = String(now.getMinutes()).padStart(2, '0');
+      const curTimeStr = `${hh}:${mm}`;
+
+      const prayers = [
+        { key: 'subuh', name: 'Subuh', time: times.subuh },
+        { key: 'dzuhur', name: 'Dzuhur', time: times.dzuhur },
+        { key: 'ashar', name: 'Ashar', time: times.ashar },
+        { key: 'maghrib', name: 'Maghrib', time: times.maghrib },
+        { key: 'isya', name: 'Isya', time: times.isya }
+      ];
+
+      for (const p of prayers) {
+        if (p.time === curTimeStr) {
+          const triggerId = `${dateKey}_${p.key}_${curTimeStr}`;
+          if (lastAdzanTriggerKey !== triggerId) {
+            lastAdzanTriggerKey = triggerId;
+            const notifCfg = prayerNotifConfig[p.key] || { enabled: true, adzanAlarm: true };
+            if (notifCfg.enabled !== false) {
+              showToast(`🕌 Waktu Sholat ${p.name} Telah Tiba! (${p.time})`, '🔔');
+              // Play adzan if alarm enabled
+              if (notifCfg.adzanAlarm !== false && !isAdzanPlaying) {
+                toggleAdzanPlayback();
+              }
+            }
+          }
+          break;
+        }
+      }
+    } catch (e) {
+      console.warn('Prayer alarm check error:', e);
+    }
+  }
+
+  // Update Countdown Timer & Prayer Times & check alarm every 20 seconds
   setInterval(() => {
+    checkPrayerTimeAdzanAlarm();
     if (viewPrayer.classList.contains('active')) {
       renderPrayerTimes();
     }
-  }, 30000);
+  }, 20000);
+
+  // Expose showToast globally for kajian.js
+  window.showAppToast = showToast;
+
+  // ========================================================
+  // FITUR BARU: TATA CARA WUDHU
+  // ========================================================
+  const viewWudhu = document.getElementById('viewWudhu');
+
+  function openWudhuView() {
+    closeAllPageViews();
+    closeAllModals();
+    viewWudhu.classList.add('active');
+    renderWudhuContent();
+    setActiveBottomNav('');
+  }
+
+  function renderWudhuContent() {
+    if (!window.WUDHU_DATA) return;
+    const data = window.WUDHU_DATA;
+
+    // Dalil Banner
+    const dalilArab = document.getElementById('wudhuDalilArab');
+    const dalilLatin = document.getElementById('wudhuDalilLatin');
+    const dalilTerjemahan = document.getElementById('wudhuDalilTerjemahan');
+    const dalilSumber = document.getElementById('wudhuDalilSumber');
+    if (dalilArab) dalilArab.textContent = data.intro.dalil.arab;
+    if (dalilLatin) dalilLatin.textContent = data.intro.dalil.latin;
+    if (dalilTerjemahan) dalilTerjemahan.textContent = data.intro.dalil.terjemahan;
+    if (dalilSumber) dalilSumber.textContent = '📖 ' + data.intro.dalil.sumber;
+
+    // Rukun list
+    const rukunList = document.getElementById('wudhuRukunList');
+    if (rukunList) {
+      rukunList.innerHTML = data.rukunRingkasan.map(r => `<div class="feature-summary-item">✅ ${r}</div>`).join('');
+    }
+
+    // Langkah-langkah
+    const langkahContainer = document.getElementById('wudhuLangkahContainer');
+    if (langkahContainer) {
+      langkahContainer.innerHTML = '';
+      data.langkah.forEach(step => {
+        const card = document.createElement('div');
+        card.className = 'dzikir-card wudhu-step-card';
+        const isRukun = step.status === 'rukun';
+        const kartunSvg = window.KartunIllustrations ? window.KartunIllustrations.getWudhuSvg(step.nomor) : '';
+        card.innerHTML = `
+          <div class="wudhu-step-header">
+            <div class="wudhu-step-num">${step.nomor}</div>
+            <div class="wudhu-step-emoji">${step.emoji || '💧'}</div>
+            <div class="wudhu-step-nama">${step.nama}</div>
+            <span class="wudhu-status-badge ${isRukun ? 'badge-rukun' : 'badge-sunah'}">${isRukun ? 'RUKUN' : 'SUNAH'}</span>
+          </div>
+          ${kartunSvg ? `<div class="kartun-step-visual">${kartunSvg}</div>` : ''}
+          ${step.arab ? `<div class="dzikir-arab-text" style="font-size:1.5rem;margin:10px 0;">${step.arab}</div>` : ''}
+          ${step.latin ? `<div class="dzikir-latin-text">${step.latin}</div>` : ''}
+          ${step.terjemahan ? `<div class="dzikir-translation-text" style="margin-bottom:8px;">"${step.terjemahan}"</div>` : ''}
+          <div class="wudhu-step-keterangan">${step.keterangan}</div>
+          ${step.catatan ? `<div class="feature-catatan-inline">ℹ️ <em>${step.catatan}</em></div>` : ''}
+          ${step.referensi ? `<div class="feature-referensi">📚 ${step.referensi}</div>` : ''}
+        `;
+        langkahContainer.appendChild(card);
+      });
+    }
+
+    // Pembatal Wudhu
+    const pembatalContainer = document.getElementById('wudhuPembatalContainer');
+    if (pembatalContainer) {
+      pembatalContainer.innerHTML = '';
+      data.pembatalWudhu.forEach(item => {
+        const card = document.createElement('div');
+        card.className = 'dzikir-card';
+        card.innerHTML = `
+          <div class="wudhu-step-header">
+            <div class="wudhu-step-num">${item.no}</div>
+            <div class="wudhu-step-nama">${item.nama}</div>
+          </div>
+          <div class="wudhu-step-keterangan">${item.keterangan}</div>
+          ${item.catatan ? `<div class="feature-catatan-inline">ℹ️ <em>${item.catatan}</em></div>` : ''}
+          ${item.dalil ? `<div class="feature-referensi">📚 ${item.dalil}</div>` : ''}
+        `;
+        pembatalContainer.appendChild(card);
+      });
+    }
+
+    // Catatan penting
+    const catatanEl = document.getElementById('wudhuCatatan');
+    if (catatanEl) catatanEl.textContent = '⚠️ ' + data.catatanPenting;
+
+    // Tab switching
+    const tabLangkah = document.getElementById('tabWudhuLangkah');
+    const tabPembatal = document.getElementById('tabWudhuPembatal');
+    if (tabLangkah) {
+      tabLangkah.onclick = () => {
+        tabLangkah.classList.add('active'); tabPembatal.classList.remove('active');
+        langkahContainer.style.display = 'block'; pembatalContainer.style.display = 'none';
+      };
+    }
+    if (tabPembatal) {
+      tabPembatal.onclick = () => {
+        tabPembatal.classList.add('active'); tabLangkah.classList.remove('active');
+        pembatalContainer.style.display = 'block'; langkahContainer.style.display = 'none';
+      };
+    }
+  }
+
+  const wudhuBackBtn = document.getElementById('wudhuBackBtn');
+  if (wudhuBackBtn) wudhuBackBtn.addEventListener('click', () => { viewWudhu.classList.remove('active'); setActiveBottomNav('btnNavHome'); });
+  const btnMenuWudhu = document.getElementById('btnMenuWudhu');
+  if (btnMenuWudhu) btnMenuWudhu.addEventListener('click', () => { closeAllModals(); openWudhuView(); });
+
+  // ========================================================
+  // FITUR BARU: PANDUAN SALAT
+  // ========================================================
+  const viewPanduanSalat = document.getElementById('viewPanduanSalat');
+  let salatCurrentStep = 0;
+
+  function openPanduanSalatView() {
+    closeAllPageViews();
+    closeAllModals();
+    viewPanduanSalat.classList.add('active');
+    viewPanduanSalat.scrollTop = 0;
+    viewPanduanSalat.scrollLeft = 0;
+    salatCurrentStep = 0;
+    renderPanduanSalatContent();
+    setActiveBottomNav('');
+  }
+
+  function renderPanduanSalatContent() {
+    if (!window.SALAT_DATA) return;
+    const data = window.SALAT_DATA;
+
+    // Step Navigator (pill buttons)
+    const stepNav = document.getElementById('salatStepNav');
+    if (stepNav) {
+      stepNav.innerHTML = data.langkah.map((step, i) => `
+        <button class="salat-step-pill ${i === salatCurrentStep ? 'active' : ''}" data-step="${i}" title="${step.nama}">
+          ${i + 1}
+        </button>
+      `).join('');
+
+      function scrollPill(btn) {
+        if (!btn || !stepNav) return;
+        const target = btn.offsetLeft - (stepNav.clientWidth / 2) + (btn.clientWidth / 2);
+        stepNav.scrollTo({ left: Math.max(0, target), behavior: 'smooth' });
+      }
+
+      const activeBtn = stepNav.querySelector('.salat-step-pill.active');
+      if (activeBtn) {
+        setTimeout(() => scrollPill(activeBtn), 50);
+      }
+      stepNav.querySelectorAll('.salat-step-pill').forEach(btn => {
+        btn.addEventListener('click', () => {
+          salatCurrentStep = parseInt(btn.dataset.step);
+          renderSalatStepDetail();
+          stepNav.querySelectorAll('.salat-step-pill').forEach(b => b.classList.remove('active'));
+          btn.classList.add('active');
+          scrollPill(btn);
+        });
+      });
+    }
+
+    renderSalatStepDetail();
+
+    // Syarat Sholat
+    const syaratCard = document.getElementById('salatSyaratCard');
+    const syaratList = document.getElementById('salatSyaratList');
+    if (syaratList && data.syarat) {
+      syaratList.innerHTML = data.syarat.items.map(s => `
+        <div class="feature-summary-item"><strong>${s.nama}:</strong> ${s.keterangan}</div>
+      `).join('');
+      if (syaratCard) syaratCard.style.display = 'block';
+    }
+
+    // Sholat Wajib
+    const wajibList = document.getElementById('salatWajibList');
+    if (wajibList && data.shalatWajib) {
+      wajibList.innerHTML = data.shalatWajib.map(s => `
+        <div class="salat-wajib-item">
+          <div class="salat-wajib-nama">${s.nama}</div>
+          <div class="salat-wajib-info">${s.rakaat} rakaat · ${s.bacaanJahr}</div>
+          <div class="salat-wajib-waktu">${s.waktu}</div>
+        </div>
+      `).join('');
+    }
+
+    // Catatan
+    const catatanEl = document.getElementById('salatCatatan');
+    if (catatanEl) catatanEl.textContent = '⚠️ ' + data.catatanPenting;
+  }
+
+  function renderSalatStepDetail() {
+    if (!window.SALAT_DATA) return;
+    const step = window.SALAT_DATA.langkah[salatCurrentStep];
+    if (!step) return;
+    const detail = document.getElementById('salatStepDetail');
+    if (!detail) return;
+    const isRukun = step.status === 'rukun';
+    const total = window.SALAT_DATA.langkah.length;
+    const kartunSvg = window.KartunIllustrations ? window.KartunIllustrations.getSalatSvg(step.id) : '';
+    detail.innerHTML = `
+      <div class="salat-step-card">
+        <div class="salat-step-card-header">
+          <div class="wudhu-step-num">${step.nomor}</div>
+          <div class="wudhu-step-emoji">${step.emoji || '🙏'}</div>
+          <div class="wudhu-step-nama">${step.nama}</div>
+          <span class="wudhu-status-badge ${isRukun ? 'badge-rukun' : 'badge-sunah'}">${isRukun ? 'RUKUN' : 'SUNAH'}</span>
+        </div>
+        ${kartunSvg ? `<div class="kartun-step-visual">${kartunSvg}</div>` : ''}
+        ${step.bacaanArab ? `<div class="dzikir-arab-text" style="font-size:1.5rem;padding:12px 0;">${step.bacaanArab}</div>` : ''}
+        ${step.bacaanLatin ? `<div class="dzikir-latin-text">${step.bacaanLatin}</div>` : ''}
+        ${step.bacaanTerjemahan ? `<div class="dzikir-translation-text">"${step.bacaanTerjemahan}"</div>` : ''}
+        ${step.bacaanTambahan ? `
+          <div style="margin-top:8px;padding:10px;background:var(--primary-soft);border-radius:var(--radius-sm);">
+            <div class="dzikir-arab-text" style="font-size:1.2rem;">${step.bacaanTambahan.arab}</div>
+            <div class="dzikir-latin-text">${step.bacaanTambahan.latin}</div>
+            <div class="dzikir-translation-text">"${step.bacaanTambahan.terjemahan}"</div>
+          </div>` : ''}
+        <div class="wudhu-step-keterangan" style="margin-top:10px;">${step.penjelasan}</div>
+        ${step.catatan ? `<div class="feature-catatan-inline">ℹ️ <em>${step.catatan}</em></div>` : ''}
+        ${step.referensi ? `<div class="feature-referensi">📚 ${step.referensi}</div>` : ''}
+        <div class="salat-step-nav-btns">
+          ${salatCurrentStep > 0 ? `<button class="chip-btn" id="salatPrevBtn">◀ Sebelumnya</button>` : '<div></div>'}
+          <span style="font-size:0.8rem;color:var(--text-muted);">${salatCurrentStep + 1} / ${total}</span>
+          ${salatCurrentStep < total - 1 ? `<button class="chip-btn active" id="salatNextBtn">Selanjutnya ▶</button>` : '<button class="chip-btn" style="background:var(--primary);color:white;">✅ Selesai</button>'}
+        </div>
+      </div>
+    `;
+    detail.querySelector('#salatPrevBtn')?.addEventListener('click', () => {
+      salatCurrentStep--;
+      renderPanduanSalatContent();
+    });
+    detail.querySelector('#salatNextBtn')?.addEventListener('click', () => {
+      salatCurrentStep++;
+      renderPanduanSalatContent();
+    });
+  }
+
+  const panduanSalatBackBtn = document.getElementById('panduanSalatBackBtn');
+  if (panduanSalatBackBtn) panduanSalatBackBtn.addEventListener('click', () => { viewPanduanSalat.classList.remove('active'); setActiveBottomNav('btnNavHome'); });
+  const btnMenuPanduanSalat = document.getElementById('btnMenuPanduanSalat');
+  if (btnMenuPanduanSalat) btnMenuPanduanSalat.addEventListener('click', () => { closeAllModals(); openPanduanSalatView(); });
+
+  // ========================================================
+  // FITUR BARU: SHOLAWAT NABI
+  // ========================================================
+  const viewSholawat = document.getElementById('viewSholawat');
+  let sholawatActiveKategori = 'semua';
+  let sholawatQuery = '';
+  let sholawatFavIds = new Set(JSON.parse(localStorage.getItem('sholawat_favorites') || '[]'));
+
+  function openSholawatView() {
+    closeAllPageViews();
+    closeAllModals();
+    viewSholawat.classList.add('active');
+    renderSholawatKategori();
+    renderSholawatList();
+    setActiveBottomNav('btnNavSholawat');
+  }
+
+  function renderSholawatKategori() {
+    const chips = document.getElementById('sholawatKategoriChips');
+    if (!chips || !window.SHOLAWAT_KATEGORI) return;
+    chips.innerHTML = '';
+    window.SHOLAWAT_KATEGORI.forEach(kat => {
+      const btn = document.createElement('button');
+      btn.className = `chip-btn ${kat.id === sholawatActiveKategori ? 'active' : ''}`;
+      btn.textContent = `${kat.emoji} ${kat.nama}`;
+      btn.addEventListener('click', () => {
+        sholawatActiveKategori = kat.id;
+        renderSholawatKategori();
+        renderSholawatList();
+      });
+      chips.appendChild(btn);
+    });
+  }
+
+  function renderSholawatList() {
+    const container = document.getElementById('sholawatListContainer');
+    if (!container || !window.SHOLAWAT_DATA) return;
+    container.innerHTML = '';
+
+    const filtered = window.SHOLAWAT_DATA.filter(s => {
+      if (sholawatActiveKategori === 'semua') return true;
+      if (sholawatActiveKategori === 'terverifikasi') return s.statusVerifikasi === 'terverifikasi';
+      return s.kategori === sholawatActiveKategori;
+    }).filter(s => {
+      if (!sholawatQuery) return true;
+      const q = sholawatQuery.toLowerCase();
+      return s.nama.toLowerCase().includes(q) || s.latin.toLowerCase().includes(q);
+    });
+
+    if (filtered.length === 0) {
+      container.innerHTML = '<div class="empty-state"><div class="empty-state-title">Tidak ditemukan</div></div>';
+      return;
+    }
+
+    filtered.forEach(item => {
+      const card = document.createElement('div');
+      card.className = 'dzikir-card sholawat-card';
+      const isFav = sholawatFavIds.has(item.id);
+      const statusIcon = item.statusVerifikasi === 'terverifikasi' ? '✅' : item.statusVerifikasi === 'qurani' ? '📖' : '📜';
+      card.innerHTML = `
+        <div class="sholawat-card-header">
+          <div>
+            <div class="sholawat-nama">${item.nama}</div>
+            <span class="sholawat-status">${statusIcon} ${item.statusVerifikasi === 'terverifikasi' ? 'Dari Hadis Shahih' : item.statusVerifikasi === 'teks-terverifikasi-bukan-hadis' ? 'Tradisi Ulama' : 'Dari Al-Qur\'an'}</span>
+          </div>
+          <button class="sholawat-fav-btn ${isFav ? 'active' : ''}" data-id="${item.id}">${isFav ? '❤️' : '🤍'}</button>
+        </div>
+        <div class="dzikir-arab-text" style="font-size:1.5rem;margin:10px 0;text-align:right;">${item.arab}</div>
+        <div class="dzikir-latin-text">${item.latin}</div>
+        <div class="dzikir-translation-text">"${item.terjemahan}"</div>
+        <div class="feature-referensi" style="margin-top:8px;">📚 ${item.sumber}</div>
+        ${item.catatan ? `<div class="feature-catatan-inline">ℹ️ ${item.catatan}</div>` : ''}
+        <div class="sholawat-keterangan" style="margin-top:6px;font-size:0.82rem;color:var(--text-secondary);">${item.keterangan}</div>
+        ${item.hasAudio && item.youtubeId ? `
+          <div class="sholawat-audio-wrap">
+            <button class="sholawat-play-btn" data-videoid="${item.youtubeId}">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+              <span>Putar Audio & Video (${item.penyanyi || 'Merdu'})</span>
+            </button>
+            <a href="${item.youtubeUrl}" target="_blank" rel="noopener noreferrer" class="sholawat-yt-link" title="Buka di YouTube">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M23.5 6.19a3.02 3.02 0 00-2.13-2.14C19.5 3.6 12 3.6 12 3.6s-7.5 0-9.37.44A3.02 3.02 0 00.5 6.19C.06 8.07 0 12 0 12s.06 3.93.5 5.81a3.02 3.02 0 002.13 2.13C4.5 20.4 12 20.4 12 20.4s7.5 0 9.37-.46a3.02 3.02 0 002.13-2.13C23.94 15.93 24 12 24 12s-.06-3.93-.5-5.81zM9.6 15.6V8.4l6.4 3.6-6.4 3.6z"></path></svg>
+              <span>YouTube</span>
+            </a>
+          </div>
+        ` : `<div class="sholawat-no-audio">📖 Khusus Bacaan Teks & Terjemahan</div>`}
+      `;
+
+      const playBtn = card.querySelector('.sholawat-play-btn');
+      if (playBtn) {
+        playBtn.addEventListener('click', (e) => {
+          e.stopPropagation();
+          if (window.KajianManager && window.KajianManager.openVideoPlayer) {
+            window.KajianManager.openVideoPlayer({
+              videoId: item.youtubeId,
+              judul: item.nama,
+              channelTitle: item.penyanyi || 'Lantunan Sholawat Merdu',
+              url: item.youtubeUrl
+            });
+          }
+        });
+      }
+
+      card.querySelector('.sholawat-fav-btn').addEventListener('click', (e) => {
+        e.stopPropagation();
+        if (sholawatFavIds.has(item.id)) {
+          sholawatFavIds.delete(item.id);
+          e.currentTarget.textContent = '🤍';
+          e.currentTarget.classList.remove('active');
+        } else {
+          sholawatFavIds.add(item.id);
+          e.currentTarget.textContent = '❤️';
+          e.currentTarget.classList.add('active');
+        }
+        localStorage.setItem('sholawat_favorites', JSON.stringify([...sholawatFavIds]));
+      });
+
+      container.appendChild(card);
+    });
+  }
+
+  const sholawatBackBtn = document.getElementById('sholawatBackBtn');
+  if (sholawatBackBtn) sholawatBackBtn.addEventListener('click', () => { viewSholawat.classList.remove('active'); setActiveBottomNav('btnNavHome'); });
+
+  const sholawatSearchToggleBtn = document.getElementById('sholawatSearchToggleBtn');
+  const sholawatSearchBar = document.getElementById('sholawatSearchBar');
+  if (sholawatSearchToggleBtn) {
+    sholawatSearchToggleBtn.addEventListener('click', () => {
+      const isVisible = sholawatSearchBar.style.display !== 'none';
+      sholawatSearchBar.style.display = isVisible ? 'none' : 'block';
+      if (!isVisible) document.getElementById('sholawatSearchInput')?.focus();
+    });
+  }
+
+  const sholawatSearchInput = document.getElementById('sholawatSearchInput');
+  if (sholawatSearchInput) {
+    sholawatSearchInput.addEventListener('input', () => {
+      sholawatQuery = sholawatSearchInput.value.trim();
+      renderSholawatList();
+    });
+  }
+
+  const btnNavSholawat = document.getElementById('btnNavSholawat');
+  if (btnNavSholawat) btnNavSholawat.addEventListener('click', openSholawatView);
+  const btnMenuSholawat = document.getElementById('btnMenuSholawat');
+  if (btnMenuSholawat) btnMenuSholawat.addEventListener('click', () => { closeAllModals(); openSholawatView(); });
+
+  // ========================================================
+  // FITUR BARU: KAJIAN USTAZ (YouTube)
+  // ========================================================
+  const viewKajian = document.getElementById('viewKajian');
+
+  function openKajianView() {
+    closeAllPageViews();
+    closeAllModals();
+    viewKajian.style.display = '';
+    const viewVideos = document.getElementById('viewKajianVideos');
+    if (viewVideos) {
+      viewVideos.style.display = '';
+      viewVideos.classList.remove('active');
+    }
+    viewKajian.classList.add('active');
+    setActiveBottomNav('');
+    // Load channels on first open
+    if (window.KajianManager && window.KajianManager.loadChannels) {
+      window.KajianManager.loadChannels();
+    }
+  }
+
+  const kajianBackBtn = document.getElementById('kajianBackBtn');
+  if (kajianBackBtn) kajianBackBtn.addEventListener('click', () => {
+    viewKajian.classList.remove('active');
+    const viewVideos = document.getElementById('viewKajianVideos');
+    if (viewVideos) viewVideos.classList.remove('active');
+    setActiveBottomNav('btnNavHome');
+  });
+  const btnMenuKajian = document.getElementById('btnMenuKajian');
+  if (btnMenuKajian) btnMenuKajian.addEventListener('click', () => { closeAllModals(); openKajianView(); });
+
+  // Initialize KajianManager
+  if (window.KajianManager) window.KajianManager.init();
 
   // Initial Render
   renderSurahList();
@@ -1783,3 +2327,4 @@ document.addEventListener('DOMContentLoaded', async () => {
     if (splash) splash.classList.add('fade-out');
   }, 1000);
 });
+

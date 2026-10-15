@@ -20,3 +20,7 @@ web-build/
 .DS_Store
 Thumbs.db
 *.log
+
+# API Secrets & Cache
+api/config.php
+api/cache/

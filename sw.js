@@ -2,7 +2,7 @@
 // Service Worker for Murottal Quran (Offline PWA) - Pink Edition
 // ========================================================
 
-const CACHE_NAME = 'murottal-quran-v3-adzan';
+const CACHE_NAME = 'quran-rose-v2.6-header-adzan-fix';
 const STATIC_ASSETS = [
   './',
   './index.html',
@@ -14,10 +14,17 @@ const STATIC_ASSETS = [
   './js/dzikir-data.js',
   './js/prayer-times.js',
   './js/asmaul-husna-data.js',
+  './js/wudhu-data.js',
+  './js/salat-data.js',
+  './js/sholawat-data.js',
+  './js/kartun-illustrations.js',
   './js/storage.js',
   './js/audio-manager.js',
+  './js/kajian.js',
   './js/app.js',
   './assets/icons/logo.svg',
+  './assets/images/banner_sholat.jpg',
+  './assets/images/banner_wudhu.jpg',
   './assets/audio/adzan-madinah.mp3'
 ];
 

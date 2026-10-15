@@ -20,9 +20,9 @@
   <title>Quran Rose - Murottal & Sholat</title>
 
   <!-- Stylesheets with version query -->
-  <link rel="stylesheet" href="css/style.css?v=pink-v3">
-  <link rel="stylesheet" href="css/player.css?v=pink-v3">
-  <link rel="stylesheet" href="css/extra.css?v=pink-v3">
+  <link rel="stylesheet" href="css/style.css?v=2.6">
+  <link rel="stylesheet" href="css/player.css?v=2.6">
+  <link rel="stylesheet" href="css/extra.css?v=2.6">
 </head>
 <body>
 
@@ -174,11 +174,11 @@
         <span>Kiblat</span>
       </button>
 
-      <button class="nav-tab-btn" id="btnNavAsmaul">
+      <button class="nav-tab-btn" id="btnNavSholawat">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-          <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"></path>
+          <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
         </svg>
-        <span>Asmaul</span>
+        <span>Sholawat</span>
       </button>
 
       <button class="nav-tab-btn" id="btnNavMenu" onclick="document.getElementById('btnOpenDrawer').click()">
@@ -787,6 +787,28 @@
           <span>99 Asmaul Husna (Suara)</span>
         </button>
 
+        <button class="drawer-item" id="btnMenuWudhu">
+          <span style="font-size:1.25rem;">💧</span>
+          <span>Tata Cara Wudhu</span>
+        </button>
+
+        <button class="drawer-item" id="btnMenuPanduanSalat">
+          <span style="font-size:1.25rem;">🙏</span>
+          <span>Panduan Salat Sesuai Sunah</span>
+        </button>
+
+        <div class="drawer-section-title">Sholawat & Kajian</div>
+
+        <button class="drawer-item" id="btnMenuSholawat">
+          <span style="font-size:1.25rem;">❤️</span>
+          <span>Sholawat Nabi</span>
+        </button>
+
+        <button class="drawer-item" id="btnMenuKajian">
+          <span style="font-size:1.25rem;">📺</span>
+          <span>Kajian Ustaz (YouTube)</span>
+        </button>
+
         <div class="drawer-section-title">Dzikir & Doa Harian</div>
 
         <button class="drawer-item" id="btnMenuDzikirPagi">
@@ -1091,6 +1113,203 @@
       <span id="toastText">Diperbarui</span>
     </div>
 
+    <!-- ========================================================
+         PAGE VIEW: TATA CARA WUDHU
+         ======================================================== -->
+    <div class="page-view" id="viewWudhu">
+      <div class="page-header">
+        <button class="header-btn" id="wudhuBackBtn" aria-label="Kembali">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><polyline points="15 18 9 12 15 6"></polyline></svg>
+        </button>
+        <h2>Tata Cara Wudhu</h2>
+        <button class="header-btn" onclick="document.getElementById('btnOpenDrawer').click()" aria-label="Menu">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
+        </button>
+      </div>
+
+      <!-- Kartun Hero Banner -->
+      <div class="kartun-hero-card">
+        <img src="assets/images/banner_wudhu.jpg" alt="Panduan Wudhu" class="kartun-hero-img">
+        <div class="kartun-hero-badge">💧 Bersuci & Wudhu Sesuai Sunnah</div>
+      </div>
+
+      <!-- Dalil Banner -->
+      <div class="feature-dalil-banner" id="wudhuDalilBanner">
+        <div class="feature-dalil-arab" id="wudhuDalilArab"></div>
+        <div class="feature-dalil-latin" id="wudhuDalilLatin"></div>
+        <div class="feature-dalil-terjemahan" id="wudhuDalilTerjemahan"></div>
+        <div class="feature-dalil-sumber" id="wudhuDalilSumber"></div>
+      </div>
+
+      <!-- Ringkasan Rukun -->
+      <div class="feature-summary-card" id="wudhuRukunCard">
+        <div class="feature-summary-title">🟢 Rukun Wudhu (6 Rukun)</div>
+        <div id="wudhuRukunList" class="feature-summary-list"></div>
+      </div>
+
+      <!-- Tab: Langkah / Pembatal -->
+      <div class="dzikir-tab-container" style="margin: 0 16px 8px;">
+        <button class="dzikir-tab-btn active" id="tabWudhuLangkah">📋 Langkah-langkah</button>
+        <button class="dzikir-tab-btn" id="tabWudhuPembatal">⚠️ Pembatal Wudhu</button>
+      </div>
+
+      <div id="wudhuLangkahContainer" class="dzikir-list-container"></div>
+      <div id="wudhuPembatalContainer" class="dzikir-list-container" style="display:none;"></div>
+
+      <div class="feature-catatan-box" id="wudhuCatatan"></div>
+    </div>
+
+    <!-- ========================================================
+         PAGE VIEW: PANDUAN SALAT SESUAI SUNAH
+         ======================================================== -->
+    <div class="page-view" id="viewPanduanSalat">
+      <div class="page-header">
+        <button class="header-btn" id="panduanSalatBackBtn" aria-label="Kembali">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><polyline points="15 18 9 12 15 6"></polyline></svg>
+        </button>
+        <h2>Panduan Salat</h2>
+        <button class="header-btn" onclick="document.getElementById('btnOpenDrawer').click()" aria-label="Menu">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
+        </button>
+      </div>
+
+      <!-- Kartun Hero Banner -->
+      <div class="kartun-hero-card">
+        <img src="assets/images/banner_sholat.jpg" alt="Panduan Salat" class="kartun-hero-img">
+        <div class="kartun-hero-badge">🙏 Panduan Sholat Lengkap Sesuai Sunnah</div>
+      </div>
+
+      <!-- Step Navigator -->
+      <div class="salat-step-nav" id="salatStepNav"></div>
+
+      <!-- Step Detail Card -->
+      <div class="salat-step-detail" id="salatStepDetail"></div>
+
+      <!-- Syarat Sholat Card -->
+      <div class="feature-summary-card" id="salatSyaratCard" style="display:none;">
+        <div class="feature-summary-title">✅ Syarat Sah Sholat</div>
+        <div id="salatSyaratList" class="feature-summary-list"></div>
+      </div>
+
+      <!-- Waktu Sholat Wajib -->
+      <div class="feature-summary-card" id="salatWajibCard" style="margin:0 16px 16px;">
+        <div class="feature-summary-title">🕌 Sholat Wajib Lima Waktu</div>
+        <div id="salatWajibList"></div>
+      </div>
+
+      <div class="feature-catatan-box" id="salatCatatan"></div>
+    </div>
+
+    <!-- ========================================================
+         PAGE VIEW: SHOLAWAT NABI
+         ======================================================== -->
+    <div class="page-view" id="viewSholawat">
+      <div class="page-header">
+        <button class="header-btn" id="sholawatBackBtn" aria-label="Kembali">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><polyline points="15 18 9 12 15 6"></polyline></svg>
+        </button>
+        <h2>Sholawat Nabi</h2>
+        <div style="display:flex;gap:4px;align-items:center;">
+          <button class="header-btn" id="sholawatSearchToggleBtn" aria-label="Cari Sholawat">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+          </button>
+          <button class="header-btn" onclick="document.getElementById('btnOpenDrawer').click()" aria-label="Menu">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
+          </button>
+        </div>
+      </div>
+
+      <!-- Dalil QS Al-Ahzab: 56 -->
+      <div class="feature-dalil-banner" style="margin-bottom:8px;">
+        <div class="feature-dalil-arab">إِنَّ اللَّهَ وَمَلَائِكَتَهُ يُصَلُّونَ عَلَى النَّبِيِّ ۚ يَا أَيُّهَا الَّذِينَ آمَنُوا صَلُّوا عَلَيْهِ وَسَلِّمُوا تَسْلِيمًا</div>
+        <div class="feature-dalil-sumber">QS Al-Ahzab (33): 56</div>
+      </div>
+
+      <!-- Search -->
+      <div class="search-container" id="sholawatSearchBar" style="display:none;">
+        <div class="search-input-wrap">
+          <span class="search-icon">🔍</span>
+          <input type="text" class="search-input" id="sholawatSearchInput" placeholder="Cari sholawat..." autocomplete="off">
+        </div>
+      </div>
+
+      <!-- Kategori Filter -->
+      <div class="filter-chips-wrap" id="sholawatKategoriChips"></div>
+
+      <!-- Sholawat List -->
+      <div class="dzikir-list-container" id="sholawatListContainer"></div>
+    </div>
+
+    <!-- ========================================================
+         PAGE VIEW: KAJIAN USTAZ (YouTube)
+         ======================================================== -->
+    <div class="page-view" id="viewKajian">
+      <div class="page-header">
+        <button class="header-btn" id="kajianBackBtn" aria-label="Kembali">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><polyline points="15 18 9 12 15 6"></polyline></svg>
+        </button>
+        <h2>Kajian Ustaz</h2>
+        <button class="header-btn" onclick="document.getElementById('btnOpenDrawer').click()" aria-label="Menu">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
+        </button>
+      </div>
+
+      <!-- Search -->
+      <div class="search-container">
+        <div class="search-input-wrap">
+          <span class="search-icon">🔍</span>
+          <input type="text" class="search-input" id="kajianSearchInput" placeholder="Cari kajian (min. 3 karakter)..." autocomplete="off">
+        </div>
+      </div>
+
+      <!-- Search Results -->
+      <div id="kajianSearchResults" class="kajian-video-grid" style="padding: 0 16px;"></div>
+
+      <!-- Channel List -->
+      <div style="padding: 12px 16px 6px;"><p style="font-size:0.85rem;font-weight:700;color:var(--text-secondary);">📚 Pilih Ustaz</p></div>
+      <div id="kajianChannelList" style="padding: 0 16px 80px;"></div>
+    </div>
+
+    <!-- PAGE VIEW: Video List dari Channel -->
+    <div class="page-view" id="viewKajianVideos">
+      <div class="page-header">
+        <button class="header-btn" id="kajianVideosBackBtn" aria-label="Kembali">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><polyline points="15 18 9 12 15 6"></polyline></svg>
+        </button>
+        <h2 id="kajianVideosTitle">Video Kajian</h2>
+        <button class="header-btn" onclick="document.getElementById('btnOpenDrawer').click()" aria-label="Menu">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
+        </button>
+      </div>
+      <div id="kajianVideoList" class="kajian-video-grid" style="padding: 16px 16px 80px;"></div>
+    </div>
+
+    <!-- ========================================================
+         KAJIAN VIDEO PLAYER MODAL
+         ======================================================== -->
+    <div class="kajian-video-modal" id="kajianVideoModal">
+      <div class="kajian-modal-inner">
+        <div class="kajian-modal-header">
+          <div>
+            <div class="kajian-modal-title" id="kajianModalTitle">Judul Video</div>
+            <div class="kajian-modal-channel" id="kajianModalChannel">Nama Ustaz</div>
+          </div>
+          <button class="header-btn" id="kajianModalClose" aria-label="Tutup">&times;</button>
+        </div>
+        <div class="kajian-iframe-wrap">
+          <iframe id="kajianIframe" src="" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen title="Kajian Video"></iframe>
+          <div class="kajian-iframe-fallback" id="kajianIframeFallback" style="display:none;">
+            <p>⚠️ Video tidak dapat diputar di sini karena kebijakan YouTube.</p>
+            <a id="kajianModalYtLinkFallback" href="#" target="_blank" rel="noopener noreferrer" class="kajian-open-yt-btn">▶ Buka di YouTube</a>
+          </div>
+        </div>
+        <a id="kajianModalYtLink" href="#" target="_blank" rel="noopener noreferrer" class="kajian-open-yt-btn" style="margin: 12px 16px; display:flex; align-items:center; gap:8px; justify-content:center;">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M23.5 6.19a3.02 3.02 0 00-2.13-2.14C19.5 3.6 12 3.6 12 3.6s-7.5 0-9.37.44A3.02 3.02 0 00.5 6.19C.06 8.07 0 12 0 12s.06 3.93.5 5.81a3.02 3.02 0 002.13 2.13C4.5 20.4 12 20.4 12 20.4s7.5 0 9.37-.46a3.02 3.02 0 002.13-2.13C23.94 15.93 24 12 24 12s-.06-3.93-.5-5.81zM9.6 15.6V8.4l6.4 3.6-6.4 3.6z"></path></svg>
+          Buka di YouTube
+        </a>
+      </div>
+    </div>
+
   </div>
 
   <!-- Application Logic Scripts with version query -->
@@ -1098,16 +1317,22 @@
   <script src="js/dzikir-data.js?v=pink-v3"></script>
   <script src="js/prayer-times.js?v=pink-v3"></script>
   <script src="js/asmaul-husna-data.js?v=pink-v3"></script>
+  <script src="js/wudhu-data.js?v=2.3"></script>
+  <script src="js/salat-data.js?v=2.3"></script>
+  <script src="js/sholawat-data.js?v=2.3"></script>
+  <script src="js/kartun-illustrations.js?v=2.3"></script>
   <script src="js/storage.js?v=pink-v3"></script>
   <script src="js/audio-manager.js?v=pink-v3"></script>
-  <script src="js/app.js?v=pink-v3"></script>
+  <script src="js/kajian.js?v=2.6"></script>
+  <script src="js/app.js?v=2.6"></script>
 
   <!-- Service Worker Registration for Offline PWA -->
   <script>
     if ('serviceWorker' in navigator) {
       window.addEventListener('load', () => {
-        navigator.serviceWorker.register('./sw.js').then((reg) => {
-          console.log('ServiceWorker registered:', reg.scope);
+        navigator.serviceWorker.register('./sw.js?v=2.6').then((reg) => {
+          reg.update();
+          console.log('ServiceWorker registered & updated:', reg.scope);
         }).catch((err) => {
           console.warn('ServiceWorker registration failed:', err);
         });

@@ -48,8 +48,8 @@ export default function App() {
 
   return (
     <SafeAreaProvider>
-      <SafeAreaView style={styles.container} edges={['left', 'right']}>
-        <StatusBar barStyle="light-content" backgroundColor="#0d1017" translucent={false} />
+      <SafeAreaView style={styles.container} edges={['top', 'left', 'right']}>
+        <StatusBar barStyle="dark-content" backgroundColor="#ffffff" translucent={false} />
 
         {hasError ? (
           <View style={styles.errorContainer}>
@@ -115,16 +115,16 @@ export default function App() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#0d1017',
+    backgroundColor: '#ffffff',
   },
   webWrapper: {
     flex: 1,
     position: 'relative',
-    backgroundColor: '#0d1017',
+    backgroundColor: '#ffffff',
   },
   webview: {
     flex: 1,
-    backgroundColor: '#0d1017',
+    backgroundColor: '#ffffff',
   },
   loadingOverlay: {
     ...StyleSheet.absoluteFillObject,
