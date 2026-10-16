@@ -46,10 +46,41 @@ export default function App() {
     }
   };
 
+  const [isDarkMode, setIsDarkMode] = useState(false);
+
+  // Script untuk mendeteksi perubahan tema (light/dark) di WebView secara otomatis
+  const themeObserverScript = `
+    (function() {
+      function checkTheme() {
+        var isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+        if (window.ReactNativeWebView) {
+          window.ReactNativeWebView.postMessage(JSON.stringify({
+            type: 'THEME_CHANGE',
+            isDark: isDark
+          }));
+        }
+      }
+      var observer = new MutationObserver(checkTheme);
+      observer.observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
+      checkTheme();
+    })();
+    true;
+  `;
+
   return (
     <SafeAreaProvider>
-      <SafeAreaView style={styles.container} edges={['top', 'left', 'right']}>
-        <StatusBar barStyle="dark-content" backgroundColor="#ffffff" translucent={false} />
+      <SafeAreaView
+        style={[
+          styles.container,
+          { backgroundColor: isDarkMode ? '#1a0d18' : '#ffffff' }
+        ]}
+        edges={['top', 'left', 'right']}
+      >
+        <StatusBar
+          barStyle={isDarkMode ? 'light-content' : 'dark-content'}
+          backgroundColor="transparent"
+          translucent={true}
+        />
 
         {hasError ? (
           <View style={styles.errorContainer}>
@@ -70,6 +101,7 @@ export default function App() {
               ref={webViewRef}
               source={{ uri: APP_URL }}
               style={styles.webview}
+              injectedJavaScript={themeObserverScript}
               javaScriptEnabled={true}
               domStorageEnabled={true}
               allowFileAccess={true}
@@ -78,6 +110,14 @@ export default function App() {
               mediaPlaybackRequiresUserAction={false}
               mixedContentMode="always"
               cacheEnabled={true}
+              onMessage={(event) => {
+                try {
+                  const data = JSON.parse(event.nativeEvent.data);
+                  if (data && data.type === 'THEME_CHANGE') {
+                    setIsDarkMode(Boolean(data.isDark));
+                  }
+                } catch (e) {}
+              }}
               onNavigationStateChange={(navState) => {
                 setCanGoBack(navState.canGoBack);
               }}
