@@ -5,9 +5,45 @@
 
 window.KajianManager = (function() {
   const API_BASE = './api/youtube.php';
+  const CLIENT_YOUTUBE_API_KEY = 'AIzaSyBD0g2rC558meIUVJ7R3m6l_ODb0K_Q4J0';
   const LS_FAVORITES = 'kajian_favorites';
   const LS_HISTORY = 'kajian_history';
   const LS_CHANNELS = 'kajian_channels_cache';
+
+  const DEFAULT_CHANNELS = [
+    {
+      id: "CH_USTAZA",
+      nama: "Ustaz Adi Hidayat",
+      channelId: "UC5KW9VowHehb_jHAhDMZpEQ",
+      channelTitle: "Adi Hidayat Official",
+      status: "terverifikasi",
+      catatan: "Kanal YouTube resmi terverifikasi"
+    },
+    {
+      id: "CH_USTAZS",
+      nama: "Ustaz Abdul Somad",
+      channelId: "UClvc6c04-xEYKFFyeP3yjKA",
+      channelTitle: "Ustadz Abdul Somad Official",
+      status: "terverifikasi",
+      catatan: "Kanal YouTube resmi terverifikasi"
+    },
+    {
+      id: "CH_USTAZH",
+      nama: "Ustaz Hanan Attaki",
+      channelId: "UCIm0qD-5Yk38NM6KuQvfjfQ",
+      channelTitle: "Hanan Attaki",
+      status: "terverifikasi",
+      catatan: "Kanal YouTube resmi terverifikasi"
+    },
+    {
+      id: "CH_USTAZK",
+      nama: "Ustaz Khalid Basalamah",
+      channelId: "UCJHC3VbFsp7kJ2NxPGltwiw",
+      channelTitle: "Khalid Basalamah Official",
+      status: "terverifikasi",
+      catatan: "Kanal YouTube resmi terverifikasi"
+    }
+  ];
 
   let channels = [];
   let currentChannelId = null;
@@ -41,6 +77,10 @@ window.KajianManager = (function() {
 
   // ---- API ----
   async function checkApiAvailability() {
+    if (CLIENT_YOUTUBE_API_KEY) {
+      apiAvailable = true;
+      return true;
+    }
     if (apiAvailable !== null) return apiAvailable;
     try {
       const res = await fetch(`${API_BASE}?action=channels`, { signal: AbortSignal.timeout(5000) });
@@ -51,7 +91,7 @@ window.KajianManager = (function() {
         apiAvailable = true;
       }
     } catch (e) {
-      apiAvailable = false;
+      apiAvailable = Boolean(CLIENT_YOUTUBE_API_KEY);
     }
     return apiAvailable;
   }
@@ -60,16 +100,64 @@ window.KajianManager = (function() {
     try {
       const res = await fetch(`${API_BASE}?action=channels`);
       const data = await res.json();
-      if (data.status === 'ok') {
+      if (data.status === 'ok' && Array.isArray(data.channels) && data.channels.length > 0) {
         channels = data.channels;
         localStorage.setItem(LS_CHANNELS, JSON.stringify(channels));
         return channels;
       }
     } catch (e) {}
-    // Fallback ke cache
-    const cached = localStorage.getItem(LS_CHANNELS);
-    if (cached) { channels = JSON.parse(cached); return channels; }
-    return [];
+
+    // Fallback ke daftar channel default
+    channels = DEFAULT_CHANNELS;
+    localStorage.setItem(LS_CHANNELS, JSON.stringify(channels));
+    return channels;
+  }
+
+  async function fetchVideosDirect(channelId, pageToken = null) {
+    try {
+      // 1. Dapatkan uploads playlist ID dari channel
+      const chUrl = `https://www.googleapis.com/youtube/v3/channels?part=contentDetails,snippet&id=${encodeURIComponent(channelId)}&key=${CLIENT_YOUTUBE_API_KEY}`;
+      const chRes = await fetch(chUrl);
+      const chData = await chRes.json();
+      if (!chData.items || chData.items.length === 0) {
+        throw new Error('Channel tidak ditemukan di YouTube.');
+      }
+      const chSnippet = chData.items[0].snippet || {};
+      const channelTitle = chSnippet.title || 'Kajian Ustaz';
+      const uploadsPlaylistId = chData.items[0].contentDetails?.relatedPlaylists?.uploads;
+      if (!uploadsPlaylistId) throw new Error('Playlist video tidak ditemukan.');
+
+      // 2. Ambil video dari playlist uploads
+      let plUrl = `https://www.googleapis.com/youtube/v3/playlistItems?part=snippet&playlistId=${encodeURIComponent(uploadsPlaylistId)}&maxResults=12&key=${CLIENT_YOUTUBE_API_KEY}`;
+      if (pageToken) plUrl += `&pageToken=${encodeURIComponent(pageToken)}`;
+      const plRes = await fetch(plUrl);
+      const plData = await plRes.json();
+      if (!plData.items) throw new Error(plData.error?.message || 'Gagal memuat video playlist.');
+
+      const videos = plData.items.map(item => {
+        const s = item.snippet || {};
+        const vId = s.resourceId?.videoId;
+        return {
+          videoId: vId,
+          judul: s.title || '',
+          deskripsi: (s.description || '').substring(0, 300),
+          thumbnail: s.thumbnails?.high?.url || s.thumbnails?.medium?.url || s.thumbnails?.default?.url || '',
+          channelTitle: s.channelTitle || channelTitle,
+          tanggalPublikasi: s.publishedAt || '',
+          url: `https://www.youtube.com/watch?v=${vId}`
+        };
+      }).filter(v => v.videoId);
+
+      return {
+        status: 'ok',
+        channelTitle: channelTitle,
+        videos: videos,
+        nextPageToken: plData.nextPageToken || null,
+        totalResults: plData.pageInfo?.totalResults || videos.length
+      };
+    } catch (err) {
+      return { status: 'error', message: err.message || 'Gagal memuat video YouTube.' };
+    }
   }
 
   async function fetchVideos(channelId, pageToken = null) {
@@ -80,11 +168,48 @@ window.KajianManager = (function() {
       if (pageToken) url += `&pageToken=${encodeURIComponent(pageToken)}`;
       const res = await fetch(url);
       const data = await res.json();
-      isLoading = false;
-      return data;
+      if (data && data.status === 'ok') {
+        isLoading = false;
+        return data;
+      }
+      throw new Error(data?.message || 'PHP API response invalid');
     } catch (e) {
+      // Fallback langsung ke YouTube API via client key
+      const directData = await fetchVideosDirect(channelId, pageToken);
       isLoading = false;
-      return { status: 'error', message: 'Gagal memuat video. Cek koneksi internet.' };
+      return directData;
+    }
+  }
+
+  async function searchVideosDirect(query, channelId = '') {
+    try {
+      let url = `https://www.googleapis.com/youtube/v3/search?part=snippet&q=${encodeURIComponent(query)}&maxResults=12&type=video&key=${CLIENT_YOUTUBE_API_KEY}`;
+      if (channelId) url += `&channelId=${encodeURIComponent(channelId)}`;
+      const res = await fetch(url);
+      const data = await res.json();
+      if (!data.items) throw new Error(data.error?.message || 'Gagal mencari video.');
+
+      const videos = data.items.map(item => {
+        const s = item.snippet || {};
+        const vId = item.id?.videoId;
+        return {
+          videoId: vId,
+          judul: s.title || '',
+          deskripsi: (s.description || '').substring(0, 300),
+          thumbnail: s.thumbnails?.high?.url || s.thumbnails?.medium?.url || s.thumbnails?.default?.url || '',
+          channelTitle: s.channelTitle || '',
+          tanggalPublikasi: s.publishedAt || '',
+          url: `https://www.youtube.com/watch?v=${vId}`
+        };
+      }).filter(v => v.videoId);
+
+      return {
+        status: 'ok',
+        videos: videos,
+        nextPageToken: data.nextPageToken || null
+      };
+    } catch (err) {
+      return { status: 'error', message: err.message || 'Gagal mencari video.' };
     }
   }
 
@@ -93,9 +218,13 @@ window.KajianManager = (function() {
       let url = `${API_BASE}?action=search&q=${encodeURIComponent(query)}&maxResults=10`;
       if (channelId) url += `&channelId=${encodeURIComponent(channelId)}`;
       const res = await fetch(url);
-      return await res.json();
+      const data = await res.json();
+      if (data && data.status === 'ok') {
+        return data;
+      }
+      throw new Error(data?.message || 'PHP API search failed');
     } catch (e) {
-      return { status: 'error', message: 'Gagal mencari video.' };
+      return await searchVideosDirect(query, channelId);
     }
   }
 

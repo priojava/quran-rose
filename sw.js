@@ -2,7 +2,7 @@
 // Service Worker for Murottal Quran (Offline PWA) - Pink Edition
 // ========================================================
 
-const CACHE_NAME = 'quran-rose-v2.9-privacy-policy';
+const CACHE_NAME = 'quran-rose-v3.0-kajian-api-and-nav-fix';
 const STATIC_ASSETS = [
   './',
   './index.html',
