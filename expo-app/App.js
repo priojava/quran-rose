@@ -12,8 +12,8 @@ import {
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 import { WebView } from 'react-native-webview';
 
-// URL Publik GitHub Pages Quran Rose
-const APP_URL = 'https://priojava.github.io/quran-rose/';
+// URL Publik GitHub Pages Quran Rose (ditambahkan cache buster)
+const APP_URL = 'https://priojava.github.io/quran-rose/?v=3.1';
 
 export default function App() {
   const webViewRef = useRef(null);
@@ -74,7 +74,7 @@ export default function App() {
           styles.container,
           { backgroundColor: isDarkMode ? '#1a0d18' : '#ffffff' }
         ]}
-        edges={['top', 'left', 'right']}
+        edges={['top', 'bottom', 'left', 'right']}
       >
         <StatusBar
           barStyle={isDarkMode ? 'light-content' : 'dark-content'}
