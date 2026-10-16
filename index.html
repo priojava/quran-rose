@@ -1,11 +1,14 @@
 <!DOCTYPE html>
 <html lang="id">
+
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <meta name="viewport"
+    content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
   <meta name="theme-color" content="#e02875">
-  <meta name="description" content="Aplikasi Murottal Quran 30 Juz & Audio Terjemahan Indonesia Online dan Offline - Amal Jariyah Akhirat">
-  
+  <meta name="description"
+    content="Aplikasi Murottal Quran 30 Juz & Audio Terjemahan Indonesia Online dan Offline - Amal Jariyah Akhirat">
+
   <!-- iOS Meta Tags -->
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -24,6 +27,7 @@
   <link rel="stylesheet" href="css/player.css?v=2.6">
   <link rel="stylesheet" href="css/extra.css?v=2.6">
 </head>
+
 <body>
 
   <div class="app-container">
@@ -32,7 +36,8 @@
     <div class="splash-screen" id="splashScreen">
       <div class="splash-logo-wrap" style="width:140px;height:140px;margin-bottom:18px;">
         <div class="splash-glow-ring"></div>
-        <img src="assets/icons/logo.png" alt="Quran Rose" class="splash-logo-svg" style="border-radius:28px;box-shadow:0 12px 36px rgba(224,40,117,0.45);width:120px;height:120px;object-fit:cover;">
+        <img src="assets/icons/logo.png" alt="Quran Rose" class="splash-logo-svg"
+          style="border-radius:28px;box-shadow:0 12px 36px rgba(224,40,117,0.45);width:120px;height:120px;object-fit:cover;">
       </div>
       <h1 class="splash-title">Quran Rose</h1>
       <p class="splash-subtitle">Al-Qur'an, Sholat & Asmaul Husna</p>
@@ -42,7 +47,8 @@
     <!-- App Header (Screenshot 2) -->
     <header class="app-header">
       <button class="header-btn" id="btnOpenDrawer" aria-label="Menu">
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"
+          stroke-linecap="round" stroke-linejoin="round">
           <line x1="3" y1="12" x2="21" y2="12"></line>
           <line x1="3" y1="6" x2="21" y2="6"></line>
           <line x1="3" y1="18" x2="21" y2="18"></line>
@@ -55,7 +61,8 @@
       </div>
 
       <button class="header-btn" id="btnToggleSearch" aria-label="Cari Surah">
-        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"
+          stroke-linecap="round" stroke-linejoin="round">
           <circle cx="11" cy="11" r="8"></circle>
           <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
         </svg>
@@ -66,7 +73,8 @@
     <div class="search-container" id="searchContainer">
       <div class="search-input-wrap">
         <span class="search-icon">🔍</span>
-        <input type="text" class="search-input" id="searchInput" placeholder="Cari surah (misal: Al-Fatihah, Yasin, 36)..." autocomplete="off">
+        <input type="text" class="search-input" id="searchInput"
+          placeholder="Cari surah (misal: Al-Fatihah, Yasin, 36)..." autocomplete="off">
         <button class="search-clear-btn" id="searchClearBtn">&times;</button>
       </div>
     </div>
@@ -77,14 +85,12 @@
         <div class="dzikir-quick-icon">🌅</div>
         <div class="dzikir-quick-info">
           <h4>Dzikir Pagi</h4>
-          <p>Al-Ma'tsurat & Sunnah</p>
         </div>
       </div>
       <div class="dzikir-quick-card" id="btnQuickDzikirPetang">
         <div class="dzikir-quick-icon">🌇</div>
         <div class="dzikir-quick-info">
           <h4>Dzikir Petang</h4>
-          <p>Al-Ma'tsurat & Sunnah</p>
         </div>
       </div>
     </div>
@@ -100,12 +106,14 @@
 
     <!-- Main Scrollable Content Area -->
     <main class="main-content">
-      
+
       <!-- Continue Last Played Banner -->
       <div class="last-played-banner" id="lastPlayedBanner" style="display:none;">
         <div class="last-played-info">
           <span class="last-played-tag">
-            <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor">
+              <polygon points="5 3 19 12 5 21 5 3"></polygon>
+            </svg>
             Lanjutkan Terakhir Diputar
           </span>
           <div class="last-played-name" id="lastPlayedName">Surah</div>
@@ -176,7 +184,9 @@
 
       <button class="nav-tab-btn" id="btnNavSholawat">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-          <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+          <path
+            d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z">
+          </path>
         </svg>
         <span>Sholawat</span>
       </button>
@@ -198,7 +208,8 @@
       <!-- Player Header -->
       <div class="player-header">
         <button class="header-btn" id="playerCloseBtn" aria-label="Tutup Pemutar">
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"
+            stroke-linecap="round" stroke-linejoin="round">
             <polyline points="6 9 12 15 18 9"></polyline>
           </svg>
         </button>
@@ -247,7 +258,8 @@
           <input type="checkbox" id="murottalSwitch" checked>
           <span class="slider-switch"></span>
         </label>
-        <span style="font-size:0.8rem;color:var(--text-muted);font-weight:600;">(Nonaktifkan untuk suara Terjemahan RI)</span>
+        <span style="font-size:0.8rem;color:var(--text-muted);font-weight:600;">(Nonaktifkan untuk suara Terjemahan
+          RI)</span>
       </div>
 
       <!-- Action Icons Row: Star, Download Cloud, Share, Repeat (Screenshot 3) -->
@@ -255,7 +267,9 @@
         <!-- Favorite Star -->
         <button class="action-icon-btn" id="btnFavorite" title="Simpan ke Favorit">
           <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor">
-            <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+            <polygon
+              points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2">
+            </polygon>
           </svg>
         </button>
 
@@ -403,7 +417,8 @@
               </div>
             </div>
             <label class="switch">
-              <input type="checkbox" checked onchange="document.getElementById('murottalSwitch').checked = this.checked; document.getElementById('murottalSwitch').dispatchEvent(new Event('change'))">
+              <input type="checkbox" checked
+                onchange="document.getElementById('murottalSwitch').checked = this.checked; document.getElementById('murottalSwitch').dispatchEvent(new Event('change'))">
               <span class="slider-switch"></span>
             </label>
           </div>
@@ -446,7 +461,8 @@
             <span class="settings-action-text" style="color:#ef4444;">Bersihkan</span>
           </div>
 
-          <div class="settings-item" onclick="alert('Aplikasi ini didedikasikan sebagai amal jariyah untuk menyebarkan kalamullah. Data pribadi tidak pernah dikumpulkan atau dijual.')">
+          <div class="settings-item"
+            onclick="alert('Aplikasi ini didedikasikan sebagai amal jariyah untuk menyebarkan kalamullah. Data pribadi tidak pernah dikumpulkan atau dijual.')">
             <div class="settings-item-left">
               <div class="settings-icon">ℹ️</div>
               <div class="settings-text">
@@ -456,7 +472,8 @@
             </div>
           </div>
 
-          <div class="settings-item" onclick="alert('Murottal Quran v2.0\nAplikasi Audio Al-Qur\'an 30 Juz & Terjemahan Indonesia.\nDibuat dengan niat tulus untuk tabungan amal jariyah di akhirat kelak.')">
+          <div class="settings-item"
+            onclick="alert('Murottal Quran v2.0\nAplikasi Audio Al-Qur\'an 30 Juz & Terjemahan Indonesia.\nDibuat dengan niat tulus untuk tabungan amal jariyah di akhirat kelak.')">
             <div class="settings-item-left">
               <div class="settings-icon">❓</div>
               <div class="settings-text">
@@ -549,7 +566,8 @@
       <div style="padding: 12px 16px 0 16px;">
         <div class="dzikir-time-info-box" id="dzikirTimeInfo">
           <span>ℹ️</span>
-          <span id="dzikirTimeInfoText">Waktu utama: Dari setelah Subuh hingga terbit matahari (atau menjelang siang).</span>
+          <span id="dzikirTimeInfoText">Waktu utama: Dari setelah Subuh hingga terbit matahari (atau menjelang
+            siang).</span>
         </div>
       </div>
 
@@ -574,7 +592,8 @@
         </button>
         <div>
           <h2 id="prayerHeaderDate" style="font-size:1.05rem;">Hari ini, 14 Oktober</h2>
-          <p id="prayerHeaderHijri" style="font-size:0.75rem;color:var(--text-secondary);margin-top:1px;">3 Jumadil Awal 1448 H</p>
+          <p id="prayerHeaderHijri" style="font-size:0.75rem;color:var(--text-secondary);margin-top:1px;">3 Jumadil Awal
+            1448 H</p>
         </div>
         <button class="header-btn" id="btnPrayerAdzanFull" style="margin-left:auto;" title="Putar Adzan Merdu">
           🔊
@@ -630,7 +649,7 @@
         <!-- Compass Visual with Top Alignment Line & Rotating Dial -->
         <div class="compass-wrapper-area">
           <div class="compass-top-sightline"></div>
-          
+
           <div class="compass-visual-wrap" id="compassVisualWrap">
             <div class="compass-outer-ring"></div>
             <div class="compass-dial-plate skin-pink" id="compassDialPlate">
@@ -638,7 +657,7 @@
               <span class="compass-direction-mark east">T</span>
               <span class="compass-direction-mark south">S</span>
               <span class="compass-direction-mark west">B</span>
-              
+
               <!-- Ka'bah Icon Marker located at Qibla angle -->
               <div class="kaaba-direction-marker" id="kaabaMarker" title="Arah Ka'bah (Kiblat)">🕋</div>
 
@@ -684,7 +703,8 @@
 
         <!-- Manual calibrate slider if sensors not available -->
         <div style="margin-top:16px;width:100%;max-width:320px;" id="manualCompassControl">
-          <p style="font-size:0.75rem;color:var(--text-muted);margin-bottom:6px;">Putar manual (simulasi jika di PC / tanpa sensor):</p>
+          <p style="font-size:0.75rem;color:var(--text-muted);margin-bottom:6px;">Putar manual (simulasi jika di PC /
+            tanpa sensor):</p>
           <input type="range" class="custom-range" id="manualHeadingSlider" min="0" max="360" value="0">
         </div>
       </div>
@@ -729,7 +749,8 @@
       <div class="search-container">
         <div class="search-input-wrap">
           <span class="search-icon">🔍</span>
-          <input type="text" class="search-input" id="searchAsmaulInput" placeholder="Cari Asmaul Husna (Ar-Rahman, Pengasih)..." autocomplete="off">
+          <input type="text" class="search-input" id="searchAsmaulInput"
+            placeholder="Cari Asmaul Husna (Ar-Rahman, Pengasih)..." autocomplete="off">
         </div>
       </div>
 
@@ -746,7 +767,8 @@
 
     <aside class="drawer-sidebar" id="drawerSidebar">
       <div class="drawer-header">
-        <img src="assets/icons/logo.png" alt="Quran Rose Logo" class="drawer-logo" style="border-radius:12px;box-shadow:0 4px 14px rgba(224,40,117,0.3);width:46px;height:46px;object-fit:cover;">
+        <img src="assets/icons/logo.png" alt="Quran Rose Logo" class="drawer-logo"
+          style="border-radius:12px;box-shadow:0 4px 14px rgba(224,40,117,0.3);width:46px;height:46px;object-fit:cover;">
         <div class="drawer-app-info">
           <h3>Quran Rose</h3>
           <p>Murottal & Sholat Indonesia</p>
@@ -844,7 +866,9 @@
         <button class="drawer-item" id="btnMenuSettings">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
             <circle cx="12" cy="12" r="3"></circle>
-            <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+            <path
+              d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z">
+            </path>
           </svg>
           <span>Pengaturan</span>
         </button>
@@ -886,16 +910,24 @@
       </div>
 
       <!-- Search Input inside Teks & Terjemahan -->
-      <div class="ayah-search-box-wrap" style="padding: 6px 18px 10px 18px; background: var(--bg-surface); border-bottom: 1px solid var(--border-light); position: sticky; top: 0; z-index: 10;">
-        <div style="display:flex; align-items:center; background:var(--bg-app); border:1px solid var(--border-light); border-radius:var(--radius-full); padding: 7px 14px; gap:8px;">
-          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" style="color:var(--primary);flex-shrink:0;">
+      <div class="ayah-search-box-wrap"
+        style="padding: 6px 18px 10px 18px; background: var(--bg-surface); border-bottom: 1px solid var(--border-light); position: sticky; top: 0; z-index: 10;">
+        <div
+          style="display:flex; align-items:center; background:var(--bg-app); border:1px solid var(--border-light); border-radius:var(--radius-full); padding: 7px 14px; gap:8px;">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"
+            style="color:var(--primary);flex-shrink:0;">
             <circle cx="11" cy="11" r="8"></circle>
             <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
           </svg>
-          <input type="text" id="searchAyahInput" placeholder="Cari nomor ayat (cth: 255) atau terjemahan..." style="flex:1; border:none; background:transparent; font-size:0.86rem; color:var(--text-primary); outline:none; font-family:inherit;" autocomplete="off">
-          <button id="btnClearAyahSearch" style="display:none; background:none; border:none; color:var(--text-muted); cursor:pointer; font-size:1.1rem; padding:0 4px; line-height:1;">&times;</button>
+          <input type="text" id="searchAyahInput" placeholder="Cari nomor ayat (cth: 255) atau terjemahan..."
+            style="flex:1; border:none; background:transparent; font-size:0.86rem; color:var(--text-primary); outline:none; font-family:inherit;"
+            autocomplete="off">
+          <button id="btnClearAyahSearch"
+            style="display:none; background:none; border:none; color:var(--text-muted); cursor:pointer; font-size:1.1rem; padding:0 4px; line-height:1;">&times;</button>
         </div>
-        <div id="ayahSearchResultCount" style="display:none; font-size:0.75rem; color:var(--primary); font-weight:700; margin-top:5px; padding-left:6px;"></div>
+        <div id="ayahSearchResultCount"
+          style="display:none; font-size:0.75rem; color:var(--primary); font-weight:700; margin-top:5px; padding-left:6px;">
+        </div>
       </div>
 
       <div class="sheet-body" id="ayahSheetBody">
@@ -987,19 +1019,24 @@
             "Allahummarhamnaa bil Qur'aan, waj'alhu lanaa imaaman wa nuuran wa hudan wa rahmah."
           </div>
           <div class="ayah-translation">
-            "Ya Allah, rahmatilah kami dengan Al-Qur'an. Jadikanlah ia bagi kami sebagai pemimpin, cahaya, petunjuk, dan rahmat."
+            "Ya Allah, rahmatilah kami dengan Al-Qur'an. Jadikanlah ia bagi kami sebagai pemimpin, cahaya, petunjuk, dan
+            rahmat."
           </div>
         </div>
 
         <div class="ayah-card">
           <div class="ayah-arabic" style="font-size:1.8rem;line-height:2.4;">
-            اَللّٰهُمَّ ذَكِّرْنَا مِنْهُ مَا نَسِيْنَا، وَعَلِّمْنَا مِنْهُ مَا جَهِلْنَا، وَارْزُقْنَا تِلَاوَتَهُ آنَاءَ اللَّيْلِ وَأَطْرَافَ النَّهَارِ، وَاجْعَلْهُ لَنَا حُجَّةً يَا رَبَّ الْعَالَمِيْنَ
+            اَللّٰهُمَّ ذَكِّرْنَا مِنْهُ مَا نَسِيْنَا، وَعَلِّمْنَا مِنْهُ مَا جَهِلْنَا، وَارْزُقْنَا تِلَاوَتَهُ
+            آنَاءَ اللَّيْلِ وَأَطْرَافَ النَّهَارِ، وَاجْعَلْهُ لَنَا حُجَّةً يَا رَبَّ الْعَالَمِيْنَ
           </div>
           <div class="ayah-latin">
-            "Allahumma dzakkirnaa minhu maa nasiinaa, wa 'allimnaa minhu maa jahilnaa, warzuqnaa tilaawatahu aanaa-al layli wa athraafan nahaar, waj'alhu lanaa hujjatan yaa Rabbal 'aalamiin."
+            "Allahumma dzakkirnaa minhu maa nasiinaa, wa 'allimnaa minhu maa jahilnaa, warzuqnaa tilaawatahu aanaa-al
+            layli wa athraafan nahaar, waj'alhu lanaa hujjatan yaa Rabbal 'aalamiin."
           </div>
           <div class="ayah-translation">
-            "Ya Allah, ingatkanlah kami apa yang kami lupakan darinya, ajarkanlah kami apa yang belum kami ketahui darinya, anugerahilah kami kemampuan membacanya di sepanjang malam dan di ujung siang, dan jadikanlah ia hujjah (pembela) bagi kami, wahai Tuhan semesta alam."
+            "Ya Allah, ingatkanlah kami apa yang kami lupakan darinya, ajarkanlah kami apa yang belum kami ketahui
+            darinya, anugerahilah kami kemampuan membacanya di sepanjang malam dan di ujung siang, dan jadikanlah ia
+            hujjah (pembela) bagi kami, wahai Tuhan semesta alam."
           </div>
         </div>
       </div>
@@ -1095,7 +1132,8 @@
         <button class="header-btn" onclick="document.getElementById('modalBackdrop').click()">&times;</button>
       </div>
       <div class="sheet-body">
-        <button class="qari-item" id="btnDetectGPS" style="background:var(--primary-soft);border-color:var(--primary);margin-bottom:12px;width:100%;">
+        <button class="qari-item" id="btnDetectGPS"
+          style="background:var(--primary-soft);border-color:var(--primary);margin-bottom:12px;width:100%;">
           <div class="qari-item-info">
             <h4>📡 Gunakan GPS Otomatis (Lokasi Saat Ini)</h4>
             <p>Mendeteksi koordinat dan arah kiblat presisi dari perangkat Anda</p>
@@ -1119,11 +1157,17 @@
     <div class="page-view" id="viewWudhu">
       <div class="page-header">
         <button class="header-btn" id="wudhuBackBtn" aria-label="Kembali">
-          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><polyline points="15 18 9 12 15 6"></polyline></svg>
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+            <polyline points="15 18 9 12 15 6"></polyline>
+          </svg>
         </button>
         <h2>Tata Cara Wudhu</h2>
         <button class="header-btn" onclick="document.getElementById('btnOpenDrawer').click()" aria-label="Menu">
-          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+            <line x1="3" y1="12" x2="21" y2="12"></line>
+            <line x1="3" y1="6" x2="21" y2="6"></line>
+            <line x1="3" y1="18" x2="21" y2="18"></line>
+          </svg>
         </button>
       </div>
 
@@ -1165,11 +1209,17 @@
     <div class="page-view" id="viewPanduanSalat">
       <div class="page-header">
         <button class="header-btn" id="panduanSalatBackBtn" aria-label="Kembali">
-          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><polyline points="15 18 9 12 15 6"></polyline></svg>
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+            <polyline points="15 18 9 12 15 6"></polyline>
+          </svg>
         </button>
         <h2>Panduan Salat</h2>
         <button class="header-btn" onclick="document.getElementById('btnOpenDrawer').click()" aria-label="Menu">
-          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+            <line x1="3" y1="12" x2="21" y2="12"></line>
+            <line x1="3" y1="6" x2="21" y2="6"></line>
+            <line x1="3" y1="18" x2="21" y2="18"></line>
+          </svg>
         </button>
       </div>
 
@@ -1206,22 +1256,32 @@
     <div class="page-view" id="viewSholawat">
       <div class="page-header">
         <button class="header-btn" id="sholawatBackBtn" aria-label="Kembali">
-          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><polyline points="15 18 9 12 15 6"></polyline></svg>
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+            <polyline points="15 18 9 12 15 6"></polyline>
+          </svg>
         </button>
         <h2>Sholawat Nabi</h2>
         <div style="display:flex;gap:4px;align-items:center;">
           <button class="header-btn" id="sholawatSearchToggleBtn" aria-label="Cari Sholawat">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="11" cy="11" r="8"></circle>
+              <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+            </svg>
           </button>
           <button class="header-btn" onclick="document.getElementById('btnOpenDrawer').click()" aria-label="Menu">
-            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+              <line x1="3" y1="12" x2="21" y2="12"></line>
+              <line x1="3" y1="6" x2="21" y2="6"></line>
+              <line x1="3" y1="18" x2="21" y2="18"></line>
+            </svg>
           </button>
         </div>
       </div>
 
       <!-- Dalil QS Al-Ahzab: 56 -->
       <div class="feature-dalil-banner" style="margin-bottom:8px;">
-        <div class="feature-dalil-arab">إِنَّ اللَّهَ وَمَلَائِكَتَهُ يُصَلُّونَ عَلَى النَّبِيِّ ۚ يَا أَيُّهَا الَّذِينَ آمَنُوا صَلُّوا عَلَيْهِ وَسَلِّمُوا تَسْلِيمًا</div>
+        <div class="feature-dalil-arab">إِنَّ اللَّهَ وَمَلَائِكَتَهُ يُصَلُّونَ عَلَى النَّبِيِّ ۚ يَا أَيُّهَا
+          الَّذِينَ آمَنُوا صَلُّوا عَلَيْهِ وَسَلِّمُوا تَسْلِيمًا</div>
         <div class="feature-dalil-sumber">QS Al-Ahzab (33): 56</div>
       </div>
 
@@ -1229,7 +1289,8 @@
       <div class="search-container" id="sholawatSearchBar" style="display:none;">
         <div class="search-input-wrap">
           <span class="search-icon">🔍</span>
-          <input type="text" class="search-input" id="sholawatSearchInput" placeholder="Cari sholawat..." autocomplete="off">
+          <input type="text" class="search-input" id="sholawatSearchInput" placeholder="Cari sholawat..."
+            autocomplete="off">
         </div>
       </div>
 
@@ -1246,11 +1307,17 @@
     <div class="page-view" id="viewKajian">
       <div class="page-header">
         <button class="header-btn" id="kajianBackBtn" aria-label="Kembali">
-          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><polyline points="15 18 9 12 15 6"></polyline></svg>
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+            <polyline points="15 18 9 12 15 6"></polyline>
+          </svg>
         </button>
         <h2>Kajian Ustaz</h2>
         <button class="header-btn" onclick="document.getElementById('btnOpenDrawer').click()" aria-label="Menu">
-          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+            <line x1="3" y1="12" x2="21" y2="12"></line>
+            <line x1="3" y1="6" x2="21" y2="6"></line>
+            <line x1="3" y1="18" x2="21" y2="18"></line>
+          </svg>
         </button>
       </div>
 
@@ -1258,7 +1325,8 @@
       <div class="search-container">
         <div class="search-input-wrap">
           <span class="search-icon">🔍</span>
-          <input type="text" class="search-input" id="kajianSearchInput" placeholder="Cari kajian (min. 3 karakter)..." autocomplete="off">
+          <input type="text" class="search-input" id="kajianSearchInput" placeholder="Cari kajian (min. 3 karakter)..."
+            autocomplete="off">
         </div>
       </div>
 
@@ -1266,7 +1334,9 @@
       <div id="kajianSearchResults" class="kajian-video-grid" style="padding: 0 16px;"></div>
 
       <!-- Channel List -->
-      <div style="padding: 12px 16px 6px;"><p style="font-size:0.85rem;font-weight:700;color:var(--text-secondary);">📚 Pilih Ustaz</p></div>
+      <div style="padding: 12px 16px 6px;">
+        <p style="font-size:0.85rem;font-weight:700;color:var(--text-secondary);">📚 Pilih Ustaz</p>
+      </div>
       <div id="kajianChannelList" style="padding: 0 16px 80px;"></div>
     </div>
 
@@ -1274,11 +1344,17 @@
     <div class="page-view" id="viewKajianVideos">
       <div class="page-header">
         <button class="header-btn" id="kajianVideosBackBtn" aria-label="Kembali">
-          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><polyline points="15 18 9 12 15 6"></polyline></svg>
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+            <polyline points="15 18 9 12 15 6"></polyline>
+          </svg>
         </button>
         <h2 id="kajianVideosTitle">Video Kajian</h2>
         <button class="header-btn" onclick="document.getElementById('btnOpenDrawer').click()" aria-label="Menu">
-          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+            <line x1="3" y1="12" x2="21" y2="12"></line>
+            <line x1="3" y1="6" x2="21" y2="6"></line>
+            <line x1="3" y1="18" x2="21" y2="18"></line>
+          </svg>
         </button>
       </div>
       <div id="kajianVideoList" class="kajian-video-grid" style="padding: 16px 16px 80px;"></div>
@@ -1297,14 +1373,22 @@
           <button class="header-btn" id="kajianModalClose" aria-label="Tutup">&times;</button>
         </div>
         <div class="kajian-iframe-wrap">
-          <iframe id="kajianIframe" src="" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen title="Kajian Video"></iframe>
+          <iframe id="kajianIframe" src="" frameborder="0"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+            allowfullscreen title="Kajian Video"></iframe>
           <div class="kajian-iframe-fallback" id="kajianIframeFallback" style="display:none;">
             <p>⚠️ Video tidak dapat diputar di sini karena kebijakan YouTube.</p>
-            <a id="kajianModalYtLinkFallback" href="#" target="_blank" rel="noopener noreferrer" class="kajian-open-yt-btn">▶ Buka di YouTube</a>
+            <a id="kajianModalYtLinkFallback" href="#" target="_blank" rel="noopener noreferrer"
+              class="kajian-open-yt-btn">▶ Buka di YouTube</a>
           </div>
         </div>
-        <a id="kajianModalYtLink" href="#" target="_blank" rel="noopener noreferrer" class="kajian-open-yt-btn" style="margin: 12px 16px; display:flex; align-items:center; gap:8px; justify-content:center;">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M23.5 6.19a3.02 3.02 0 00-2.13-2.14C19.5 3.6 12 3.6 12 3.6s-7.5 0-9.37.44A3.02 3.02 0 00.5 6.19C.06 8.07 0 12 0 12s.06 3.93.5 5.81a3.02 3.02 0 002.13 2.13C4.5 20.4 12 20.4 12 20.4s7.5 0 9.37-.46a3.02 3.02 0 002.13-2.13C23.94 15.93 24 12 24 12s-.06-3.93-.5-5.81zM9.6 15.6V8.4l6.4 3.6-6.4 3.6z"></path></svg>
+        <a id="kajianModalYtLink" href="#" target="_blank" rel="noopener noreferrer" class="kajian-open-yt-btn"
+          style="margin: 12px 16px; display:flex; align-items:center; gap:8px; justify-content:center;">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+            <path
+              d="M23.5 6.19a3.02 3.02 0 00-2.13-2.14C19.5 3.6 12 3.6 12 3.6s-7.5 0-9.37.44A3.02 3.02 0 00.5 6.19C.06 8.07 0 12 0 12s.06 3.93.5 5.81a3.02 3.02 0 002.13 2.13C4.5 20.4 12 20.4 12 20.4s7.5 0 9.37-.46a3.02 3.02 0 002.13-2.13C23.94 15.93 24 12 24 12s-.06-3.93-.5-5.81zM9.6 15.6V8.4l6.4 3.6-6.4 3.6z">
+            </path>
+          </svg>
           Buka di YouTube
         </a>
       </div>
@@ -1340,4 +1424,5 @@
     }
   </script>
 </body>
+
 </html>
