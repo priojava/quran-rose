@@ -3,9 +3,9 @@
   "version": "1.0.0",
   "main": "index.js",
   "dependencies": {
-    "expo": "~57.0.28",
-    "expo-build-properties": "^58.0.11",
-    "expo-navigation-bar": "^58.0.4",
+    "expo": "~57.0.31",
+    "expo-build-properties": "~57.0.22",
+    "expo-navigation-bar": "~57.0.3",
     "expo-status-bar": "~57.0.1",
     "react": "19.2.3",
     "react-native": "0.86.3",
