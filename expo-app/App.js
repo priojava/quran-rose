@@ -162,9 +162,7 @@ export default function App() {
               allowsInlineMediaPlayback={true}
               mediaPlaybackRequiresUserAction={false}
               mixedContentMode="always"
-              cacheEnabled={false}
-              cacheMode="LOAD_NO_CACHE"
-              incognito={true}
+              cacheEnabled={true}
               onMessage={(event) => {
                 try {
                   const data = JSON.parse(event.nativeEvent.data);
