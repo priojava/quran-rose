@@ -14,8 +14,8 @@ import { StatusBar } from 'expo-status-bar';
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 import { WebView } from 'react-native-webview';
 
-// URL Publik GitHub Pages Quran Rose (ditambahkan cache buster v3.3)
-const APP_URL = 'https://priojava.github.io/quran-rose/?v=3.3';
+// URL Publik GitHub Pages Quran Rose (ditambahkan cache buster v3.4)
+const APP_URL = 'https://priojava.github.io/quran-rose/?v=3.4';
 
 export default function App() {
   const webViewRef = useRef(null);

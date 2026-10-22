@@ -859,15 +859,22 @@ document.addEventListener('DOMContentLoaded', async () => {
   const wallpaperThumbs = document.querySelectorAll('.wallpaper-thumb');
 
   function applyWallpaper(bgValue, labelText) {
+    const appContainer = document.querySelector('.app-container');
     if (!bgValue || bgValue === 'default') {
       document.body.classList.remove('has-custom-wallpaper');
       document.body.style.backgroundImage = '';
+      if (appContainer) {
+        appContainer.style.backgroundImage = '';
+      }
       localStorage.removeItem('quran_rose_wallpaper');
       localStorage.removeItem('quran_rose_wallpaper_label');
       if (currentWallpaperLabel) currentWallpaperLabel.textContent = 'Tema Glass Pink Rose Default';
     } else {
       document.body.classList.add('has-custom-wallpaper');
       document.body.style.backgroundImage = `url("${bgValue}")`;
+      if (appContainer) {
+        appContainer.style.backgroundImage = `url("${bgValue}")`;
+      }
       localStorage.setItem('quran_rose_wallpaper', bgValue);
       localStorage.setItem('quran_rose_wallpaper_label', labelText || 'Foto Wallpaper Aktif');
       if (currentWallpaperLabel) currentWallpaperLabel.textContent = labelText || 'Foto Wallpaper Aktif';

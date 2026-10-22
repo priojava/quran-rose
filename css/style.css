@@ -843,6 +843,7 @@ html, body {
 
 /* ========================================================
    Custom Background Wallpaper & Pink Glassmorphism System
+   (Aktif Menyeluruh di Semua Menu: Al-Qur'an, Sholat, Kiblat, Sholawat & Sidebar Kiri)
    ======================================================== */
 body.has-custom-wallpaper {
   background-size: cover !important;
@@ -852,38 +853,108 @@ body.has-custom-wallpaper {
 }
 
 body.has-custom-wallpaper .app-container {
-  background: rgba(255, 245, 248, 0.45) !important;
-  -webkit-backdrop-filter: blur(8px);
-  backdrop-filter: blur(8px);
+  background-size: cover !important;
+  background-position: center center !important;
+  background-repeat: no-repeat !important;
+  background-color: transparent !important;
 }
 
-[data-theme="dark"] body.has-custom-wallpaper .app-container {
+body.has-custom-wallpaper .main-content {
+  background: transparent !important;
+}
+
+/* Translucent Glass for ALL page views (Sholat, Kiblat, Sholawat, Asmaul, Dzikir, dll.) */
+body.has-custom-wallpaper .page-view {
+  background: rgba(255, 245, 248, 0.45) !important;
+  -webkit-backdrop-filter: blur(8px) !important;
+  backdrop-filter: blur(8px) !important;
+}
+
+[data-theme="dark"] body.has-custom-wallpaper .page-view {
   background: rgba(20, 7, 15, 0.55) !important;
 }
 
-body.has-custom-wallpaper .app-header {
+/* Header Glass */
+body.has-custom-wallpaper .app-header,
+body.has-custom-wallpaper .page-header {
   background: rgba(255, 255, 255, 0.82) !important;
   -webkit-backdrop-filter: blur(16px);
   backdrop-filter: blur(16px);
-  border-bottom: 1px solid rgba(244, 143, 177, 0.35);
+  border-bottom: 1px solid rgba(244, 143, 177, 0.35) !important;
 }
 
-[data-theme="dark"] body.has-custom-wallpaper .app-header {
+[data-theme="dark"] body.has-custom-wallpaper .app-header,
+[data-theme="dark"] body.has-custom-wallpaper .page-header {
   background: rgba(28, 10, 20, 0.85) !important;
-  border-bottom: 1px solid rgba(255, 64, 129, 0.3);
+  border-bottom: 1px solid rgba(255, 64, 129, 0.3) !important;
 }
 
+/* Left Sidebar Drawer Glass (Menu Samping Kiri) */
+body.has-custom-wallpaper .drawer-sidebar {
+  background: rgba(255, 245, 248, 0.86) !important;
+  -webkit-backdrop-filter: blur(24px) saturate(180%) !important;
+  backdrop-filter: blur(24px) saturate(180%) !important;
+  border-right: 1.5px solid rgba(244, 143, 177, 0.45) !important;
+  box-shadow: 10px 0 35px rgba(224, 40, 117, 0.18) !important;
+}
+
+[data-theme="dark"] body.has-custom-wallpaper .drawer-sidebar {
+  background: rgba(30, 10, 22, 0.88) !important;
+  border-right: 1.5px solid rgba(255, 64, 129, 0.35) !important;
+  box-shadow: 10px 0 35px rgba(0, 0, 0, 0.45) !important;
+}
+
+body.has-custom-wallpaper .drawer-header {
+  background: rgba(255, 235, 243, 0.65) !important;
+  border-bottom: 1px solid rgba(244, 143, 177, 0.3) !important;
+}
+
+body.has-custom-wallpaper .drawer-item {
+  background: rgba(255, 255, 255, 0.45) !important;
+  border-radius: 12px !important;
+  margin: 3px 12px !important;
+}
+
+body.has-custom-wallpaper .drawer-footer {
+  background: rgba(255, 235, 243, 0.65) !important;
+  border-top: 1px solid rgba(244, 143, 177, 0.3) !important;
+}
+
+/* Fullscreen Audio Player Glass */
+body.has-custom-wallpaper .player-screen {
+  background: rgba(255, 245, 248, 0.90) !important;
+  -webkit-backdrop-filter: blur(20px) saturate(180%) !important;
+  backdrop-filter: blur(20px) saturate(180%) !important;
+}
+
+[data-theme="dark"] body.has-custom-wallpaper .player-screen {
+  background: rgba(26, 8, 19, 0.92) !important;
+}
+
+/* Translucent Frosted Glass for Cards Across ALL Views (Al-Qur'an, Sholat, Kiblat, Sholawat, dll.) */
 body.has-custom-wallpaper .surah-card,
 body.has-custom-wallpaper .dzikir-quick-card,
 body.has-custom-wallpaper .settings-card,
 body.has-custom-wallpaper .filter-chips-wrap,
 body.has-custom-wallpaper .prayer-hero,
 body.has-custom-wallpaper .prayer-card,
+body.has-custom-wallpaper .prayer-time-item,
+body.has-custom-wallpaper .prayer-next-banner,
 body.has-custom-wallpaper .qibla-card,
+body.has-custom-wallpaper .qibla-compass-wrap,
+body.has-custom-wallpaper .qibla-stat-card,
 body.has-custom-wallpaper .asmaul-card,
-body.has-custom-wallpaper .sholawat-card {
-  background: rgba(255, 255, 255, 0.80) !important;
-  border: 1px solid rgba(244, 143, 177, 0.35) !important;
+body.has-custom-wallpaper .sholawat-card,
+body.has-custom-wallpaper .dzikir-card,
+body.has-custom-wallpaper .salat-step-detail,
+body.has-custom-wallpaper .salat-step-card,
+body.has-custom-wallpaper .feature-summary-card,
+body.has-custom-wallpaper .feature-catatan-box,
+body.has-custom-wallpaper .kartun-hero-card,
+body.has-custom-wallpaper .kajian-video-card,
+body.has-custom-wallpaper .downloads-summary-bar {
+  background: rgba(255, 255, 255, 0.74) !important;
+  border: 1px solid rgba(244, 143, 177, 0.40) !important;
   -webkit-backdrop-filter: blur(14px) saturate(160%) !important;
   backdrop-filter: blur(14px) saturate(160%) !important;
   box-shadow: 0 6px 20px rgba(224, 40, 117, 0.08) !important;
@@ -895,11 +966,23 @@ body.has-custom-wallpaper .sholawat-card {
 [data-theme="dark"] body.has-custom-wallpaper .filter-chips-wrap,
 [data-theme="dark"] body.has-custom-wallpaper .prayer-hero,
 [data-theme="dark"] body.has-custom-wallpaper .prayer-card,
+[data-theme="dark"] body.has-custom-wallpaper .prayer-time-item,
+[data-theme="dark"] body.has-custom-wallpaper .prayer-next-banner,
 [data-theme="dark"] body.has-custom-wallpaper .qibla-card,
+[data-theme="dark"] body.has-custom-wallpaper .qibla-compass-wrap,
+[data-theme="dark"] body.has-custom-wallpaper .qibla-stat-card,
 [data-theme="dark"] body.has-custom-wallpaper .asmaul-card,
-[data-theme="dark"] body.has-custom-wallpaper .sholawat-card {
-  background: rgba(34, 12, 24, 0.82) !important;
-  border: 1px solid rgba(255, 64, 129, 0.3) !important;
+[data-theme="dark"] body.has-custom-wallpaper .sholawat-card,
+[data-theme="dark"] body.has-custom-wallpaper .dzikir-card,
+[data-theme="dark"] body.has-custom-wallpaper .salat-step-detail,
+[data-theme="dark"] body.has-custom-wallpaper .salat-step-card,
+[data-theme="dark"] body.has-custom-wallpaper .feature-summary-card,
+[data-theme="dark"] body.has-custom-wallpaper .feature-catatan-box,
+[data-theme="dark"] body.has-custom-wallpaper .kartun-hero-card,
+[data-theme="dark"] body.has-custom-wallpaper .kajian-video-card,
+[data-theme="dark"] body.has-custom-wallpaper .downloads-summary-bar {
+  background: rgba(34, 12, 24, 0.76) !important;
+  border: 1px solid rgba(255, 64, 129, 0.32) !important;
   box-shadow: 0 6px 20px rgba(0, 0, 0, 0.35) !important;
 }
 
