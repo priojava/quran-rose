@@ -14,8 +14,8 @@ import { StatusBar } from 'expo-status-bar';
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 import { WebView } from 'react-native-webview';
 
-// URL Publik GitHub Pages Quran Rose (ditambahkan cache buster)
-const APP_URL = 'https://priojava.github.io/quran-rose/?v=3.2';
+// URL Publik GitHub Pages Quran Rose (ditambahkan cache buster v3.3)
+const APP_URL = 'https://priojava.github.io/quran-rose/?v=3.3';
 
 export default function App() {
   const webViewRef = useRef(null);
@@ -151,7 +151,9 @@ export default function App() {
               allowsInlineMediaPlayback={true}
               mediaPlaybackRequiresUserAction={false}
               mixedContentMode="always"
-              cacheEnabled={true}
+              cacheEnabled={false}
+              cacheMode="LOAD_NO_CACHE"
+              incognito={true}
               onMessage={(event) => {
                 try {
                   const data = JSON.parse(event.nativeEvent.data);
