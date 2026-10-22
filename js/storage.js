@@ -139,38 +139,56 @@ const StorageManager = {
     });
   },
 
-  // Smart Stream Downloader with Real-time Progress (0 - 100%)
+  // Smart Stream Downloader with Real-time Progress (0 - 100%) & Safe Fallback
   async downloadAudioFile(url, onProgress) {
-    const response = await fetch(url);
-    if (!response.ok) throw new Error(`HTTP error ${response.status}`);
+    try {
+      if (onProgress) onProgress(10);
+      const response = await fetch(url, { mode: 'cors' });
+      if (!response.ok) throw new Error(`HTTP error ${response.status}`);
 
-    const contentLength = response.headers.get('content-length');
-    const total = contentLength ? parseInt(contentLength, 10) : 0;
+      const contentLength = response.headers.get('content-length');
+      const total = contentLength ? parseInt(contentLength, 10) : 0;
 
-    if (!response.body || !total) {
-      // Fallback if content-length missing
-      if (onProgress) onProgress(50);
-      const blob = await response.blob();
-      if (onProgress) onProgress(100);
-      return blob;
-    }
-
-    const reader = response.body.getReader();
-    let received = 0;
-    const chunks = [];
-
-    while (true) {
-      const { done, value } = await reader.read();
-      if (done) break;
-      chunks.push(value);
-      received += value.length;
-      if (onProgress) {
-        const percent = Math.min(100, Math.round((received / total) * 100));
-        onProgress(percent);
+      // Fallback if ReadableStream is not supported or Content-Length is missing
+      if (!response.body || !total || typeof response.body.getReader !== 'function') {
+        if (onProgress) onProgress(50);
+        const blob = await response.blob();
+        if (onProgress) onProgress(100);
+        if (blob.size < 500) throw new Error('Ukuran file audio terlalu kecil.');
+        return blob;
       }
-    }
 
-    return new Blob(chunks, { type: 'audio/mpeg' });
+      try {
+        const reader = response.body.getReader();
+        let received = 0;
+        const chunks = [];
+
+        while (true) {
+          const { done, value } = await reader.read();
+          if (done) break;
+          chunks.push(value);
+          received += value.length;
+          if (onProgress && total > 0) {
+            const percent = Math.min(99, Math.round((received / total) * 100));
+            onProgress(percent);
+          }
+        }
+        if (onProgress) onProgress(100);
+        const resultBlob = new Blob(chunks, { type: 'audio/mpeg' });
+        if (resultBlob.size < 500) throw new Error('File hasil download tidak valid.');
+        return resultBlob;
+      } catch (streamErr) {
+        console.warn('Streaming download gagal, fallback ke direct blob:', streamErr);
+        if (onProgress) onProgress(60);
+        const fallbackRes = await fetch(url);
+        const fallbackBlob = await fallbackRes.blob();
+        if (onProgress) onProgress(100);
+        return fallbackBlob;
+      }
+    } catch (err) {
+      console.error('StorageManager downloadAudioFile error:', err);
+      throw err;
+    }
   }
 };
 

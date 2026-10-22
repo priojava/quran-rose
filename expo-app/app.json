@@ -2,13 +2,15 @@
   "expo": {
     "name": "Quran Rose",
     "slug": "quran-rose",
-    "version": "1.0.1",
-    "orientation": "portrait",
+    "version": "1.0.2",
+    "orientation": "default",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "dark",
     "android": {
       "package": "com.amaljariyah.quranrose",
-      "versionCode": 2,
+      "versionCode": 3,
+      "edgeToEdgeEnabled": true,
+      "resizeableActivity": true,
       "adaptiveIcon": {
         "foregroundImage": "./assets/icon.png",
         "backgroundColor": "#2e0e1d"
@@ -16,10 +18,29 @@
       "permissions": [
         "INTERNET",
         "ACCESS_NETWORK_STATE",
+        "ACCESS_FINE_LOCATION",
+        "ACCESS_COARSE_LOCATION",
         "WAKE_LOCK",
-        "MODIFY_AUDIO_SETTINGS"
+        "MODIFY_AUDIO_SETTINGS",
+        "POST_NOTIFICATIONS",
+        "READ_MEDIA_AUDIO",
+        "READ_EXTERNAL_STORAGE",
+        "WRITE_EXTERNAL_STORAGE",
+        "FOREGROUND_SERVICE",
+        "FOREGROUND_SERVICE_MEDIA_PLAYBACK"
       ]
     },
+    "plugins": [
+      [
+        "expo-build-properties",
+        {
+          "android": {
+            "enableMinifyInReleaseBuilds": true,
+            "enableShrinkResourcesInReleaseBuilds": true
+          }
+        }
+      ]
+    ],
     "web": {
       "favicon": "./assets/favicon.png"
     },

@@ -2,18 +2,20 @@ import React, { useRef, useState, useEffect } from 'react';
 import {
   StyleSheet,
   View,
-  StatusBar,
   BackHandler,
   ActivityIndicator,
   Text,
   TouchableOpacity,
-  Platform
+  Platform,
+  PermissionsAndroid,
+  ToastAndroid
 } from 'react-native';
+import { StatusBar } from 'expo-status-bar';
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 import { WebView } from 'react-native-webview';
 
 // URL Publik GitHub Pages Quran Rose (ditambahkan cache buster)
-const APP_URL = 'https://priojava.github.io/quran-rose/?v=3.1';
+const APP_URL = 'https://priojava.github.io/quran-rose/?v=3.2';
 
 export default function App() {
   const webViewRef = useRef(null);
@@ -21,22 +23,66 @@ export default function App() {
   const [loading, setLoading] = useState(true);
   const [hasError, setHasError] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
+  const [isDarkMode, setIsDarkMode] = useState(false);
+  const lastBackPressTime = useRef(0);
 
-  // Handle tombol Back fisik Android
+  // Minta Izin Android saat pertama kali aplikasi dibuka (Lokasi, Notifikasi, Media/Penyimpanan)
+  useEffect(() => {
+    async function requestPermissions() {
+      if (Platform.OS !== 'android') return;
+      try {
+        const permissions = [
+          PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
+          PermissionsAndroid.PERMISSIONS.ACCESS_COARSE_LOCATION
+        ];
+
+        if (Platform.Version >= 33) {
+          permissions.push(PermissionsAndroid.PERMISSIONS.POST_NOTIFICATIONS);
+          permissions.push('android.permission.READ_MEDIA_AUDIO');
+        } else {
+          permissions.push(PermissionsAndroid.PERMISSIONS.READ_EXTERNAL_STORAGE);
+          permissions.push(PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE);
+        }
+
+        await PermissionsAndroid.requestMultiple(permissions);
+      } catch (err) {
+        console.warn('Gagal meminta izin Android:', err);
+      }
+    }
+
+    requestPermissions();
+  }, []);
+
+  // Handle tombol Back fisik Android (ke daftar murottal dulu, tidak langsung keluar)
   useEffect(() => {
     if (Platform.OS !== 'android') return;
 
     const onBackPress = () => {
-      if (canGoBack && webViewRef.current) {
-        webViewRef.current.goBack();
-        return true;
+      if (webViewRef.current) {
+        // Tanyakan ke WebView apakah ada modal/pemutar murottal yang terbuka
+        webViewRef.current.injectJavaScript(`
+          (function() {
+            var handled = false;
+            if (typeof window.handleAppBackPress === 'function') {
+              handled = window.handleAppBackPress();
+            }
+            if (window.ReactNativeWebView) {
+              window.ReactNativeWebView.postMessage(JSON.stringify({
+                type: 'BACK_PRESS_RESULT',
+                handled: handled
+              }));
+            }
+          })();
+          true;
+        `);
+        return true; // Cegah aplikasi langsung keluar
       }
       return false;
     };
 
     const backHandler = BackHandler.addEventListener('hardwareBackPress', onBackPress);
     return () => backHandler.remove();
-  }, [canGoBack]);
+  }, []);
 
   const handleReload = () => {
     setHasError(false);
@@ -45,8 +91,6 @@ export default function App() {
       webViewRef.current.reload();
     }
   };
-
-  const [isDarkMode, setIsDarkMode] = useState(false);
 
   // Script untuk mendeteksi perubahan tema (light/dark) di WebView secara otomatis
   const themeObserverScript = `
@@ -76,18 +120,14 @@ export default function App() {
         ]}
         edges={['top', 'bottom', 'left', 'right']}
       >
-        <StatusBar
-          barStyle={isDarkMode ? 'light-content' : 'dark-content'}
-          backgroundColor="transparent"
-          translucent={true}
-        />
+        <StatusBar style={isDarkMode ? 'light' : 'dark'} />
 
         {hasError ? (
           <View style={styles.errorContainer}>
             <Text style={styles.errorIcon}>📡</Text>
             <Text style={styles.errorTitle}>Koneksi Gagal</Text>
             <Text style={styles.errorSub}>
-              Pastikan HP dan Komputer Anda terhubung di jaringan WiFi yang sama.
+              Pastikan perangkat terhubung dengan internet untuk memuat halaman awal.
             </Text>
             <Text style={styles.errorUrl}>Target: {APP_URL}</Text>
             {errorMessage ? <Text style={styles.errorDetail}>{errorMessage}</Text> : null}
@@ -104,6 +144,8 @@ export default function App() {
               injectedJavaScript={themeObserverScript}
               javaScriptEnabled={true}
               domStorageEnabled={true}
+              databaseEnabled={true}
+              geolocationEnabled={true}
               allowFileAccess={true}
               allowUniversalAccessFromFileURLs={true}
               allowsInlineMediaPlayback={true}
@@ -115,6 +157,17 @@ export default function App() {
                   const data = JSON.parse(event.nativeEvent.data);
                   if (data && data.type === 'THEME_CHANGE') {
                     setIsDarkMode(Boolean(data.isDark));
+                  } else if (data && data.type === 'BACK_PRESS_RESULT') {
+                    if (!data.handled) {
+                      // Tidak ada modal atau pemutar yang aktif di web, lakukan konfirmasi keluar (double back)
+                      const now = Date.now();
+                      if (now - lastBackPressTime.current < 2000) {
+                        BackHandler.exitApp();
+                      } else {
+                        lastBackPressTime.current = now;
+                        ToastAndroid.show('Tekan sekali lagi untuk keluar', ToastAndroid.SHORT);
+                      }
+                    }
                   }
                 } catch (e) {}
               }}

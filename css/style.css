@@ -642,25 +642,33 @@ html, body {
   flex-shrink: 0;
 }
 
-/* Bottom Mini Player Bar */
+/* Bottom Mini Player Bar - Floating Pink Glass */
 .mini-player-bar {
   position: fixed;
-  bottom: 64px;
-  left: 50%;
-  transform: translateX(-50%);
-  width: min(460px, calc(100% - 20px));
-  background: var(--bg-surface);
-  border: 1px solid var(--border-light);
-  border-radius: var(--radius-lg);
+  bottom: 80px;
+  left: 14px;
+  right: 14px;
+  max-width: 450px;
+  margin: 0 auto;
+  background: rgba(255, 245, 248, 0.94);
+  border: 1.5px solid rgba(244, 143, 177, 0.45);
+  border-radius: 24px;
   padding: 8px 12px;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  box-shadow: var(--shadow-player);
+  box-shadow: 0 10px 26px rgba(224, 40, 117, 0.16);
   z-index: 900;
   cursor: pointer;
   transition: var(--transition);
-  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  backdrop-filter: blur(20px) saturate(180%);
+}
+
+[data-theme="dark"] .mini-player-bar {
+  background: rgba(36, 14, 26, 0.94);
+  border: 1.5px solid rgba(255, 64, 129, 0.35);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.5);
 }
 
 .mini-player-bar.hidden {
@@ -741,21 +749,32 @@ html, body {
   transform: scale(0.9);
 }
 
-/* Bottom Tab Navigation Bar */
+/* Bottom Tab Navigation Bar - Floating Glassmorphic Pill (Kekinian & Menggantung) */
 .bottom-nav {
   position: fixed;
-  bottom: 0;
-  left: 50%;
-  transform: translateX(-50%);
-  width: min(480px, 100%);
-  background-color: var(--bg-surface);
-  border-top: 1px solid var(--border-light);
+  bottom: 14px;
+  left: 14px;
+  right: 14px;
+  max-width: 450px;
+  margin: 0 auto;
+  background: rgba(255, 245, 248, 0.90);
+  border: 1.5px solid rgba(244, 143, 177, 0.45);
+  border-radius: 34px;
   display: flex;
   align-items: center;
   justify-content: space-around;
-  padding: 8px 12px;
+  padding: 8px 10px;
   z-index: 850;
-  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  backdrop-filter: blur(20px) saturate(180%);
+  box-shadow: 0 10px 28px rgba(224, 40, 117, 0.15), 0 2px 8px rgba(0, 0, 0, 0.04);
+  transition: var(--transition);
+}
+
+[data-theme="dark"] .bottom-nav {
+  background: rgba(36, 14, 26, 0.90);
+  border: 1.5px solid rgba(255, 64, 129, 0.35);
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.45);
 }
 
 .nav-tab-btn {
@@ -765,29 +784,31 @@ html, body {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 4px;
+  gap: 3px;
   color: var(--text-muted);
   cursor: pointer;
-  padding: 6px 14px;
-  border-radius: var(--radius-sm);
-  transition: var(--transition);
+  padding: 6px 12px;
+  border-radius: 20px;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
   font-size: 0.72rem;
   font-weight: 600;
   font-family: inherit;
+  position: relative;
 }
 
 .nav-tab-btn svg {
   width: 22px;
   height: 22px;
-  transition: var(--transition);
+  transition: transform 0.25s ease;
 }
 
 .nav-tab-btn.active {
   color: var(--primary);
+  background: linear-gradient(135deg, rgba(255, 64, 129, 0.14) 0%, rgba(224, 40, 117, 0.22) 100%);
 }
 
 .nav-tab-btn.active svg {
-  transform: translateY(-2px);
+  transform: translateY(-2px) scale(1.08);
 }
 
 /* Empty State */
@@ -818,4 +839,110 @@ html, body {
 .empty-state-desc {
   font-size: 0.85rem;
   line-height: 1.5;
+}
+
+/* ========================================================
+   Custom Background Wallpaper & Pink Glassmorphism System
+   ======================================================== */
+body.has-custom-wallpaper {
+  background-size: cover !important;
+  background-position: center center !important;
+  background-repeat: no-repeat !important;
+  background-attachment: fixed !important;
+}
+
+body.has-custom-wallpaper .app-container {
+  background: rgba(255, 245, 248, 0.45) !important;
+  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
+}
+
+[data-theme="dark"] body.has-custom-wallpaper .app-container {
+  background: rgba(20, 7, 15, 0.55) !important;
+}
+
+body.has-custom-wallpaper .app-header {
+  background: rgba(255, 255, 255, 0.82) !important;
+  -webkit-backdrop-filter: blur(16px);
+  backdrop-filter: blur(16px);
+  border-bottom: 1px solid rgba(244, 143, 177, 0.35);
+}
+
+[data-theme="dark"] body.has-custom-wallpaper .app-header {
+  background: rgba(28, 10, 20, 0.85) !important;
+  border-bottom: 1px solid rgba(255, 64, 129, 0.3);
+}
+
+body.has-custom-wallpaper .surah-card,
+body.has-custom-wallpaper .dzikir-quick-card,
+body.has-custom-wallpaper .settings-card,
+body.has-custom-wallpaper .filter-chips-wrap,
+body.has-custom-wallpaper .prayer-hero,
+body.has-custom-wallpaper .prayer-card,
+body.has-custom-wallpaper .qibla-card,
+body.has-custom-wallpaper .asmaul-card,
+body.has-custom-wallpaper .sholawat-card {
+  background: rgba(255, 255, 255, 0.80) !important;
+  border: 1px solid rgba(244, 143, 177, 0.35) !important;
+  -webkit-backdrop-filter: blur(14px) saturate(160%) !important;
+  backdrop-filter: blur(14px) saturate(160%) !important;
+  box-shadow: 0 6px 20px rgba(224, 40, 117, 0.08) !important;
+}
+
+[data-theme="dark"] body.has-custom-wallpaper .surah-card,
+[data-theme="dark"] body.has-custom-wallpaper .dzikir-quick-card,
+[data-theme="dark"] body.has-custom-wallpaper .settings-card,
+[data-theme="dark"] body.has-custom-wallpaper .filter-chips-wrap,
+[data-theme="dark"] body.has-custom-wallpaper .prayer-hero,
+[data-theme="dark"] body.has-custom-wallpaper .prayer-card,
+[data-theme="dark"] body.has-custom-wallpaper .qibla-card,
+[data-theme="dark"] body.has-custom-wallpaper .asmaul-card,
+[data-theme="dark"] body.has-custom-wallpaper .sholawat-card {
+  background: rgba(34, 12, 24, 0.82) !important;
+  border: 1px solid rgba(255, 64, 129, 0.3) !important;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.35) !important;
+}
+
+/* Wallpaper Preset Picker Grid */
+.wallpaper-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.wallpaper-thumb {
+  position: relative;
+  aspect-ratio: 9 / 16;
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  border: 2px solid var(--border-light);
+  cursor: pointer;
+  background-size: cover;
+  background-position: center;
+  transition: var(--transition);
+}
+
+.wallpaper-thumb:hover {
+  transform: translateY(-2px);
+  border-color: var(--primary);
+  box-shadow: 0 4px 14px var(--primary-glow);
+}
+
+.wallpaper-thumb.active {
+  border-color: var(--primary);
+  border-width: 2.5px;
+  box-shadow: 0 0 0 3px var(--primary-glow);
+}
+
+.wallpaper-thumb-label {
+  position: absolute;
+  bottom: 0;
+  inset-inline: 0;
+  padding: 4px;
+  font-size: 0.65rem;
+  font-weight: 700;
+  color: #fff;
+  background: linear-gradient(transparent, rgba(0,0,0,0.7));
+  text-align: center;
 }

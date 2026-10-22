@@ -425,6 +425,60 @@
         </div>
       </div>
 
+      <!-- Tampilan & Tema Background Wallpaper -->
+      <div class="settings-group">
+        <div class="settings-group-title">Tampilan & Background Wallpaper</div>
+        <div class="settings-card">
+          <div class="settings-item" id="btnOpenWallpaperSettings">
+            <div class="settings-item-left">
+              <div class="settings-icon">🖼️</div>
+              <div class="settings-text">
+                <h4>Background Wallpaper Foto</h4>
+                <p id="currentWallpaperLabel">Tema Glass Pink Rose Default</p>
+              </div>
+            </div>
+            <span class="settings-action-text" style="color:var(--primary);">Pilih →</span>
+          </div>
+
+          <div id="wallpaperPickerContainer" style="display:none; padding:12px 16px 16px 16px; border-top:1px solid var(--border-subtle);">
+            <div style="font-size:0.8rem; color:var(--text-muted); margin-bottom:10px;">
+              Pilih foto background estetis dengan efek Glassmorphism Pink Rose:
+            </div>
+            <div class="wallpaper-grid">
+              <div class="wallpaper-thumb active" data-bg="default" style="background:#fff0f5; display:flex; align-items:center; justify-content:center; border:2px dashed var(--primary);">
+                <span style="font-size:1.5rem;">🌸</span>
+                <span class="wallpaper-thumb-label">Pink Rose</span>
+              </div>
+              <div class="wallpaper-thumb" data-bg="https://images.unsplash.com/photo-1591604466107-ec97de577aff?w=700&auto=format&fit=crop&q=80" style="background-image:url('https://images.unsplash.com/photo-1591604466107-ec97de577aff?w=400&auto=format&fit=crop&q=70');">
+                <span class="wallpaper-thumb-label">Soft Rose</span>
+              </div>
+              <div class="wallpaper-thumb" data-bg="https://images.unsplash.com/photo-1564769625905-50e93615e769?w=700&auto=format&fit=crop&q=80" style="background-image:url('https://images.unsplash.com/photo-1564769625905-50e93615e769?w=400&auto=format&fit=crop&q=70');">
+                <span class="wallpaper-thumb-label">Ka'bah</span>
+              </div>
+              <div class="wallpaper-thumb" data-bg="https://images.unsplash.com/photo-1542838132-92c53300491e?w=700&auto=format&fit=crop&q=80" style="background-image:url('https://images.unsplash.com/photo-1542838132-92c53300491e?w=400&auto=format&fit=crop&q=70');">
+                <span class="wallpaper-thumb-label">Masjid Nabawi</span>
+              </div>
+              <div class="wallpaper-thumb" data-bg="https://images.unsplash.com/photo-1519817650390-64a93db51149?w=700&auto=format&fit=crop&q=80" style="background-image:url('https://images.unsplash.com/photo-1519817650390-64a93db51149?w=400&auto=format&fit=crop&q=70');">
+                <span class="wallpaper-thumb-label">Langit Senja</span>
+              </div>
+              <div class="wallpaper-thumb" data-bg="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=700&auto=format&fit=crop&q=80" style="background-image:url('https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=400&auto=format&fit=crop&q=70');">
+                <span class="wallpaper-thumb-label">Pantai Pastel</span>
+              </div>
+            </div>
+
+            <div style="margin-top:14px; display:flex; gap:10px;">
+              <label style="flex:1; text-align:center; padding:10px; font-size:0.82rem; cursor:pointer; border-radius:var(--radius-md); background:var(--grad-pink); color:#fff; font-weight:600; display:inline-flex; align-items:center; justify-content:center; gap:6px;">
+                <span>📷 Upload Foto HP</span>
+                <input type="file" id="inputCustomBgPhoto" accept="image/*" style="display:none;">
+              </label>
+              <button id="btnResetWallpaper" style="padding:10px 14px; font-size:0.82rem; border-radius:var(--radius-md); border:1px solid var(--border-light); background:var(--bg-app); color:var(--text-secondary); cursor:pointer; font-weight:600;">
+                Reset Default
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
       <!-- Umum -->
       <div class="settings-group">
         <div class="settings-group-title">Umum</div>

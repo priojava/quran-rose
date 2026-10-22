@@ -449,14 +449,76 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
   });
 
-  // Open Fullscreen Player
+  // Open Fullscreen Player with History Push
   function openPlayerScreen() {
     playerScreen.classList.add('open');
+    try {
+      history.pushState({ screen: 'player' }, '');
+    } catch (e) {}
   }
 
   playerCloseBtn.addEventListener('click', () => {
     playerScreen.classList.remove('open');
   });
+
+  // Handle browser / Android back gesture via popstate
+  window.addEventListener('popstate', () => {
+    if (playerScreen && playerScreen.classList.contains('open')) {
+      playerScreen.classList.remove('open');
+      return;
+    }
+    const openSheets = document.querySelectorAll('.bottom-sheet.open, .modal.open');
+    if (openSheets.length > 0) {
+      closeAllModals();
+      return;
+    }
+  });
+
+  // Global handler invoked by Android hardware back button (via WebView bridge)
+  window.handleAppBackPress = function() {
+    // 1. Jika pemutar murottal sedang terbuka, tutup pemutar dan kembali ke daftar surat
+    if (playerScreen && playerScreen.classList.contains('open')) {
+      playerScreen.classList.remove('open');
+      return true;
+    }
+
+    // 2. Jika drawer sidebar terbuka, tutup drawer
+    if (drawerSidebar && drawerSidebar.classList.contains('open')) {
+      drawerSidebar.classList.remove('open');
+      if (modalBackdrop) modalBackdrop.classList.remove('open');
+      return true;
+    }
+
+    // 3. Jika sedang membuka sub-halaman lain (Pengaturan, Unduhan, Sholat, Kiblat, Asmaul Husna, dll.)
+    const activeViews = document.querySelectorAll('.page-view.active');
+    if (activeViews.length > 0) {
+      activeViews.forEach(v => v.classList.remove('active'));
+      const allTabs = document.querySelectorAll('.bottom-nav .nav-tab-btn');
+      allTabs.forEach(t => t.classList.remove('active'));
+      const homeTab = document.getElementById('btnNavHome');
+      if (homeTab) homeTab.classList.add('active');
+      return true;
+    }
+
+    // 4. Jika ada modal atau bottom sheet yang terbuka (Pilih Qari, Ayat, Timer, Doa, Notif Sholat, dll.)
+    const openSheets = document.querySelectorAll('.bottom-sheet.open, .modal.open');
+    if (openSheets.length > 0) {
+      closeAllModals();
+      return true;
+    }
+
+    // 5. Jika sedang mencari (search input terisi), kosongkan pencarian dulu
+    if (searchInput && searchInput.value) {
+      searchInput.value = '';
+      searchQuery = '';
+      searchClearBtn.classList.remove('active');
+      renderSurahList();
+      return true;
+    }
+
+    // Berada di layar utama daftar surat tanpa modal/filter pencarian -> konfirmasi keluar
+    return false;
+  };
 
   // Search Toggle Button Header
   const btnToggleSearch = document.getElementById('btnToggleSearch');
@@ -785,6 +847,91 @@ document.addEventListener('DOMContentLoaded', async () => {
   if (settingsBackBtn) {
     settingsBackBtn.addEventListener('click', () => {
       viewSettings.classList.remove('active');
+    });
+  }
+
+  // Background Wallpaper Theme Manager (Custom Photo & Presets)
+  const btnOpenWallpaperSettings = document.getElementById('btnOpenWallpaperSettings');
+  const wallpaperPickerContainer = document.getElementById('wallpaperPickerContainer');
+  const currentWallpaperLabel = document.getElementById('currentWallpaperLabel');
+  const inputCustomBgPhoto = document.getElementById('inputCustomBgPhoto');
+  const btnResetWallpaper = document.getElementById('btnResetWallpaper');
+  const wallpaperThumbs = document.querySelectorAll('.wallpaper-thumb');
+
+  function applyWallpaper(bgValue, labelText) {
+    if (!bgValue || bgValue === 'default') {
+      document.body.classList.remove('has-custom-wallpaper');
+      document.body.style.backgroundImage = '';
+      localStorage.removeItem('quran_rose_wallpaper');
+      localStorage.removeItem('quran_rose_wallpaper_label');
+      if (currentWallpaperLabel) currentWallpaperLabel.textContent = 'Tema Glass Pink Rose Default';
+    } else {
+      document.body.classList.add('has-custom-wallpaper');
+      document.body.style.backgroundImage = `url("${bgValue}")`;
+      localStorage.setItem('quran_rose_wallpaper', bgValue);
+      localStorage.setItem('quran_rose_wallpaper_label', labelText || 'Foto Wallpaper Aktif');
+      if (currentWallpaperLabel) currentWallpaperLabel.textContent = labelText || 'Foto Wallpaper Aktif';
+    }
+
+    wallpaperThumbs.forEach(thumb => {
+      thumb.classList.toggle('active', thumb.dataset.bg === bgValue);
+    });
+  }
+
+  // Restore saved wallpaper on startup
+  try {
+    const savedWallpaper = localStorage.getItem('quran_rose_wallpaper');
+    const savedWallpaperLabel = localStorage.getItem('quran_rose_wallpaper_label');
+    if (savedWallpaper) {
+      applyWallpaper(savedWallpaper, savedWallpaperLabel);
+    }
+  } catch(e) {}
+
+  if (btnOpenWallpaperSettings && wallpaperPickerContainer) {
+    btnOpenWallpaperSettings.addEventListener('click', () => {
+      const isHidden = wallpaperPickerContainer.style.display === 'none';
+      wallpaperPickerContainer.style.display = isHidden ? 'block' : 'none';
+    });
+  }
+
+  wallpaperThumbs.forEach(thumb => {
+    thumb.addEventListener('click', () => {
+      const bg = thumb.dataset.bg;
+      const label = thumb.querySelector('.wallpaper-thumb-label')?.textContent || 'Preset';
+      applyWallpaper(bg, bg === 'default' ? 'Tema Glass Pink Rose Default' : `Preset: ${label}`);
+      showToast(bg === 'default' ? 'Tema Pink Rose Default dipulihkan.' : `Wallpaper ${label} diterapkan!`, '🌸');
+    });
+  });
+
+  if (inputCustomBgPhoto) {
+    inputCustomBgPhoto.addEventListener('change', (e) => {
+      const file = e.target.files && e.target.files[0];
+      if (!file) return;
+
+      if (!file.type.startsWith('image/')) {
+        showToast('Pilih file gambar yang valid.');
+        return;
+      }
+
+      const reader = new FileReader();
+      reader.onload = (event) => {
+        const base64Data = event.target.result;
+        try {
+          applyWallpaper(base64Data, 'Foto Kustom Galeri HP');
+          showToast('Wallpaper foto kustom berhasil diterapkan!', '✓');
+        } catch (err) {
+          console.warn('Gagal menyimpan wallpaper foto ke localStorage:', err);
+          showToast('Foto terlalu besar. Silakan coba foto lain.');
+        }
+      };
+      reader.readAsDataURL(file);
+    });
+  }
+
+  if (btnResetWallpaper) {
+    btnResetWallpaper.addEventListener('click', () => {
+      applyWallpaper('default');
+      showToast('Background direset ke Tema Pink Rose Default.', '🌸');
     });
   }
 
