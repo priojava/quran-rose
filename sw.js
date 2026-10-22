@@ -2,7 +2,7 @@
 // Service Worker for Murottal Quran (Offline PWA) - Pink Edition
 // ========================================================
 
-const CACHE_NAME = 'quran-rose-v3.5-refined-glass';
+const CACHE_NAME = 'quran-rose-v3.6-sholawat-audio';
 const STATIC_ASSETS = [
   './',
   './index.html',

@@ -1,7 +1,7 @@
 // ========================================================
 // Data Sholawat Nabi - Quran Rose
 // Koleksi sholawat otentik & lantunan merdu berdasar Al-Qur'an, Hadis Shahih,
-// dan qasidah tradisi ulama nusantara dengan audio YouTube terintegrasi.
+// dan qasidah tradisi ulama nusantara dengan audio offline/lokal terintegrasi.
 // ========================================================
 
 window.SHOLAWAT_DATA = [
@@ -15,8 +15,7 @@ window.SHOLAWAT_DATA = [
     sumber: "HR. Bukhari (3370) dan Muslim (406), dari Ka'ab bin 'Ujrah radhiyallahu 'anhu",
     keterangan: "Sholawat Ibrahimiyah adalah sholawat yang paling lengkap dan utama, diajarkan langsung oleh Nabi Muhammad SAW. Dibaca dalam tasyahud akhir sholat.",
     statusVerifikasi: "terverifikasi",
-    youtubeId: null,
-    youtubeUrl: null,
+    audioUrl: null,
     hasAudio: false,
     favorit: false
   },
@@ -30,10 +29,9 @@ window.SHOLAWAT_DATA = [
     sumber: "Dinisbatkan pada amalan Malaikat Jibril kepada Nabi Adam AS, masyhur diamalkan para wali dan ulama nusantara.",
     keterangan: "Sholawat Jibril adalah salah satu amalan sholawat terpopuler untuk melapangkan rezeki, ketenangan hati, dan mempererat cinta kepada Rasulullah SAW.",
     statusVerifikasi: "teks-terverifikasi-bukan-hadis",
-    youtubeId: "DR2dsUjKt_c",
-    youtubeUrl: "https://www.youtube.com/watch?v=DR2dsUjKt_c",
+    audioUrl: "assets/audio/sholawat/sholawat-jibril.m4a",
     hasAudio: true,
-    penyanyi: "Sholawat Jibril Merdu",
+    penyanyi: "Lantunan Merdu Penyejuk Hati",
     favorit: false
   },
   {
@@ -46,10 +44,9 @@ window.SHOLAWAT_DATA = [
     sumber: "Disusun oleh Al-Imam Ja'far Ash-Shadiq (cicit Baginda Rasulullah SAW)",
     keterangan: "Sholawat perlindungan agar kaum mukminin diselamatkan dari kezaliman dan huru-hara.",
     statusVerifikasi: "teks-terverifikasi-bukan-hadis",
-    youtubeId: "fg314G7UlI0",
-    youtubeUrl: "https://www.youtube.com/watch?v=fg314G7UlI0",
+    audioUrl: "assets/audio/sholawat/sholawat-asyghil.m4a",
     hasAudio: true,
-    penyanyi: "Sholawat Asyghil Merdu",
+    penyanyi: "Lantunan Sholawat Asyghil Merdu",
     favorit: false
   },
   {
@@ -62,10 +59,9 @@ window.SHOLAWAT_DATA = [
     sumber: "Karya monumental ulama nusantara KH. Ali Manshur (Banyuwangi, 1960)",
     keterangan: "Syair sholawat perjuangan khas nusantara yang menggugah jiwa kecintaan kepada Baginda Nabi dan para sahabat Badar.",
     statusVerifikasi: "teks-terverifikasi-bukan-hadis",
-    youtubeId: "j4cGkfKt1xE",
-    youtubeUrl: "https://www.youtube.com/watch?v=j4cGkfKt1xE",
+    audioUrl: "assets/audio/sholawat/sholawat-badar.mp3",
     hasAudio: true,
-    penyanyi: "Sholawat Badar Lengkap",
+    penyanyi: "Majelis Rasulullah SAW",
     favorit: false
   },
   {
@@ -78,10 +74,9 @@ window.SHOLAWAT_DATA = [
     sumber: "Qasidah munajat dan doa permohonan kemudahan hidup karya para masyayikh",
     keterangan: "Lantunan doa merdu yang sangat menenangkan hati memohon kelapangan urusan kepada Allah Ta'ala.",
     statusVerifikasi: "teks-terverifikasi-bukan-hadis",
-    youtubeId: "U59EKWaapOc",
-    youtubeUrl: "https://www.youtube.com/watch?v=U59EKWaapOc",
+    audioUrl: "assets/audio/sholawat/yasir-lana.m4a",
     hasAudio: true,
-    penyanyi: "Yasir Lana (Ilahana)",
+    penyanyi: "Lantunan Doa Yasir Lana Merdu",
     favorit: false
   },
   {
@@ -94,10 +89,9 @@ window.SHOLAWAT_DATA = [
     sumber: "Qasidah Sirah Nabawiyah karya Habib Rizieq Shihab, masyhur di majelis sholawat nusantara",
     keterangan: "Mengisahkan riwayat kelahiran Baginda Nabi Muhammad SAW dari Siti Aminah, diasuh Halimah As-Sa'diyah, hingga masa kenabian.",
     statusVerifikasi: "teks-terverifikasi-bukan-hadis",
-    youtubeId: "CP755YH1Pjs",
-    youtubeUrl: "https://www.youtube.com/watch?v=CP755YH1Pjs",
+    audioUrl: "assets/audio/sholawat/kisah-sang-rasul.m4a",
     hasAudio: true,
-    penyanyi: "Kisah Sang Rasul (Rohatil)",
+    penyanyi: "Qasidah Kisah Sang Rasul",
     favorit: false
   },
   {
@@ -110,10 +104,9 @@ window.SHOLAWAT_DATA = [
     sumber: "Karya Al-Imam Al-Habib Abdullah bin Alawi Al-Haddad",
     keterangan: "Qasidah madah nabawiyah yang sangat masyhur dibaca dalam maulid dan majelis dzikir.",
     statusVerifikasi: "teks-terverifikasi-bukan-hadis",
-    youtubeId: "NS2ccQc1oJM",
-    youtubeUrl: "https://www.youtube.com/watch?v=NS2ccQc1oJM",
+    audioUrl: "assets/audio/sholawat/ya-rasulullah-salamun-alaik.mp3",
     hasAudio: true,
-    penyanyi: "Ya Rasulullah Salamun 'Alaik",
+    penyanyi: "Majelis Rasulullah SAW",
     favorit: false
   },
   {
@@ -126,8 +119,7 @@ window.SHOLAWAT_DATA = [
     sumber: "Kitab Dalailul Khairat karya Imam Muhammad al-Jazuli",
     keterangan: "Sholawat Nariyah populer di kalangan umat Islam untuk memohon kemudahan hajat dan keselamatan.",
     statusVerifikasi: "teks-terverifikasi-bukan-hadis",
-    youtubeId: null,
-    youtubeUrl: null,
+    audioUrl: null,
     hasAudio: false,
     favorit: false
   },
@@ -141,8 +133,7 @@ window.SHOLAWAT_DATA = [
     sumber: "Dinisbatkan kepada Syaikh Shalih Musa Ad-Dharir",
     keterangan: "Sholawat penyelamat dari mara bahaya dan bencana.",
     statusVerifikasi: "teks-terverifikasi-bukan-hadis",
-    youtubeId: null,
-    youtubeUrl: null,
+    audioUrl: null,
     hasAudio: false,
     favorit: false
   },
@@ -156,8 +147,7 @@ window.SHOLAWAT_DATA = [
     sumber: "HR. Bukhari (614), dari Jabir bin Abdillah radhiyallahu 'anhu",
     keterangan: "Nabi SAW bersabda: 'Barangsiapa membaca doa ini setelah adzan, maka syafaatku untuknya halal pada hari kiamat.'",
     statusVerifikasi: "terverifikasi",
-    youtubeId: null,
-    youtubeUrl: null,
+    audioUrl: null,
     hasAudio: false,
     favorit: false
   },
@@ -171,8 +161,7 @@ window.SHOLAWAT_DATA = [
     sumber: "QS Al-Ahzab (33): 56",
     keterangan: "Ayat Al-Qur'an yang menjadi dasar perintah bersholawat kepada Nabi Muhammad SAW.",
     statusVerifikasi: "terverifikasi",
-    youtubeId: null,
-    youtubeUrl: null,
+    audioUrl: null,
     hasAudio: false,
     favorit: false
   }

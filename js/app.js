@@ -492,6 +492,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     // 3. Jika sedang membuka sub-halaman lain (Pengaturan, Unduhan, Sholat, Kiblat, Asmaul Husna, dll.)
     const activeViews = document.querySelectorAll('.page-view.active');
     if (activeViews.length > 0) {
+      if (typeof window.stopSholawatAudio === 'function') window.stopSholawatAudio();
       activeViews.forEach(v => v.classList.remove('active'));
       const allTabs = document.querySelectorAll('.bottom-nav .nav-tab-btn');
       allTabs.forEach(t => t.classList.remove('active'));
@@ -2325,6 +2326,27 @@ document.addEventListener('DOMContentLoaded', async () => {
     });
   }
 
+  let sholawatAudio = null;
+  let currentlyPlayingSholawatId = null;
+
+  function stopSholawatAudio() {
+    if (sholawatAudio) {
+      sholawatAudio.pause();
+      sholawatAudio.currentTime = 0;
+      sholawatAudio = null;
+    }
+    currentlyPlayingSholawatId = null;
+    document.querySelectorAll('.sholawat-play-btn').forEach(btn => {
+      btn.classList.remove('playing');
+      const penyanyi = btn.getAttribute('data-penyanyi') || 'Merdu';
+      btn.innerHTML = `
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+        <span>Putar Lantunan Audio (${penyanyi})</span>
+      `;
+    });
+  }
+  window.stopSholawatAudio = stopSholawatAudio;
+
   function renderSholawatList() {
     const container = document.getElementById('sholawatListContainer');
     if (!container || !window.SHOLAWAT_DATA) return;
@@ -2349,6 +2371,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       const card = document.createElement('div');
       card.className = 'dzikir-card sholawat-card';
       const isFav = sholawatFavIds.has(item.id);
+      const isPlaying = currentlyPlayingSholawatId === item.id;
       const statusIcon = item.statusVerifikasi === 'terverifikasi' ? '✅' : item.statusVerifikasi === 'qurani' ? '📖' : '📜';
       card.innerHTML = `
         <div class="sholawat-card-header">
@@ -2358,22 +2381,23 @@ document.addEventListener('DOMContentLoaded', async () => {
           </div>
           <button class="sholawat-fav-btn ${isFav ? 'active' : ''}" data-id="${item.id}">${isFav ? '❤️' : '🤍'}</button>
         </div>
-        <div class="dzikir-arab-text" style="font-size:1.5rem;margin:10px 0;text-align:right;">${item.arab}</div>
+        <div class="dzikir-arab-text" style="font-size:1.55rem;margin:12px 0 8px;text-align:right;">${item.arab}</div>
         <div class="dzikir-latin-text">${item.latin}</div>
         <div class="dzikir-translation-text">"${item.terjemahan}"</div>
-        <div class="feature-referensi" style="margin-top:8px;">📚 ${item.sumber}</div>
+        <div class="feature-referensi" style="margin-top:10px;">📚 ${item.sumber}</div>
         ${item.catatan ? `<div class="feature-catatan-inline">ℹ️ ${item.catatan}</div>` : ''}
         <div class="sholawat-keterangan" style="margin-top:6px;font-size:0.82rem;color:var(--text-secondary);">${item.keterangan}</div>
-        ${item.hasAudio && item.youtubeId ? `
+        ${item.hasAudio && item.audioUrl ? `
           <div class="sholawat-audio-wrap">
-            <button class="sholawat-play-btn" data-videoid="${item.youtubeId}">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
-              <span>Putar Audio & Video (${item.penyanyi || 'Merdu'})</span>
+            <button class="sholawat-play-btn ${isPlaying ? 'playing' : ''}" data-id="${item.id}" data-audio="${item.audioUrl}" data-penyanyi="${item.penyanyi || 'Merdu'}">
+              ${isPlaying ? `
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><rect x="6" y="4" width="4" height="16"></rect><rect x="14" y="4" width="4" height="16"></rect></svg>
+                <span>⏸ Jeda Lantunan (${item.penyanyi || 'Merdu'})</span>
+              ` : `
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+                <span>▶ Putar Lantunan Audio (${item.penyanyi || 'Merdu'})</span>
+              `}
             </button>
-            <a href="${item.youtubeUrl}" target="_blank" rel="noopener noreferrer" class="sholawat-yt-link" title="Buka di YouTube">
-              <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M23.5 6.19a3.02 3.02 0 00-2.13-2.14C19.5 3.6 12 3.6 12 3.6s-7.5 0-9.37.44A3.02 3.02 0 00.5 6.19C.06 8.07 0 12 0 12s.06 3.93.5 5.81a3.02 3.02 0 002.13 2.13C4.5 20.4 12 20.4 12 20.4s7.5 0 9.37-.46a3.02 3.02 0 002.13-2.13C23.94 15.93 24 12 24 12s-.06-3.93-.5-5.81zM9.6 15.6V8.4l6.4 3.6-6.4 3.6z"></path></svg>
-              <span>YouTube</span>
-            </a>
           </div>
         ` : `<div class="sholawat-no-audio">📖 Khusus Bacaan Teks & Terjemahan</div>`}
       `;
@@ -2382,14 +2406,57 @@ document.addEventListener('DOMContentLoaded', async () => {
       if (playBtn) {
         playBtn.addEventListener('click', (e) => {
           e.stopPropagation();
-          if (window.KajianManager && window.KajianManager.openVideoPlayer) {
-            window.KajianManager.openVideoPlayer({
-              videoId: item.youtubeId,
-              judul: item.nama,
-              channelTitle: item.penyanyi || 'Lantunan Sholawat Merdu',
-              url: item.youtubeUrl
-            });
+          const audioSrc = item.audioUrl;
+          if (!audioSrc) return;
+
+          if (currentlyPlayingSholawatId === item.id && sholawatAudio) {
+            if (sholawatAudio.paused) {
+              sholawatAudio.play().catch(console.warn);
+              playBtn.classList.add('playing');
+              playBtn.innerHTML = `
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><rect x="6" y="4" width="4" height="16"></rect><rect x="14" y="4" width="4" height="16"></rect></svg>
+                <span>⏸ Jeda Lantunan (${item.penyanyi || 'Merdu'})</span>
+              `;
+            } else {
+              sholawatAudio.pause();
+              playBtn.classList.remove('playing');
+              playBtn.innerHTML = `
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+                <span>▶ Lanjutkan Lantunan (${item.penyanyi || 'Merdu'})</span>
+              `;
+            }
+            return;
           }
+
+          // Matikan sholawat sebelumnya jika ada
+          stopSholawatAudio();
+
+          // Matikan Murottal utama jika sedang berputar agar tidak tumpang tindih
+          if (window.AudioManager && window.AudioManager.pause) {
+            window.AudioManager.pause();
+          }
+
+          sholawatAudio = new Audio(audioSrc);
+          currentlyPlayingSholawatId = item.id;
+          playBtn.classList.add('playing');
+          playBtn.innerHTML = `
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><rect x="6" y="4" width="4" height="16"></rect><rect x="14" y="4" width="4" height="16"></rect></svg>
+            <span>⏸ Jeda Lantunan (${item.penyanyi || 'Merdu'})</span>
+          `;
+
+          sholawatAudio.play().catch(err => {
+            console.warn('Gagal memutar audio sholawat:', err);
+            stopSholawatAudio();
+          });
+
+          sholawatAudio.addEventListener('ended', () => {
+            stopSholawatAudio();
+          });
+
+          sholawatAudio.addEventListener('error', () => {
+            console.warn('Error saat memutar audio sholawat');
+            stopSholawatAudio();
+          });
         });
       }
 
@@ -2412,7 +2479,13 @@ document.addEventListener('DOMContentLoaded', async () => {
   }
 
   const sholawatBackBtn = document.getElementById('sholawatBackBtn');
-  if (sholawatBackBtn) sholawatBackBtn.addEventListener('click', () => { viewSholawat.classList.remove('active'); setActiveBottomNav('btnNavHome'); });
+  if (sholawatBackBtn) {
+    sholawatBackBtn.addEventListener('click', () => {
+      stopSholawatAudio();
+      viewSholawat.classList.remove('active');
+      setActiveBottomNav('btnNavHome');
+    });
+  }
 
   const sholawatSearchToggleBtn = document.getElementById('sholawatSearchToggleBtn');
   const sholawatSearchBar = document.getElementById('sholawatSearchBar');
