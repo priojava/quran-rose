@@ -456,30 +456,56 @@ html, body {
   flex-direction: column;
 }
 
-/* Surah List Item */
+/* Surah List Item - Frosted Glass Card */
 .surah-item {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 14px 16px;
-  background-color: var(--bg-card);
-  border-bottom: 1px solid var(--border-subtle);
+  padding: 12px 14px;
+  margin: 5px 12px;
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.78);
+  -webkit-backdrop-filter: blur(14px) saturate(160%);
+  backdrop-filter: blur(14px) saturate(160%);
+  border: 1px solid rgba(244, 143, 177, 0.32);
+  box-shadow: 0 3px 12px rgba(224, 40, 117, 0.05);
   cursor: pointer;
-  transition: var(--transition);
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
   position: relative;
 }
 
 .surah-item:hover {
-  background-color: var(--bg-card-hover);
+  background: rgba(255, 240, 246, 0.90);
+  border-color: rgba(224, 40, 117, 0.45);
+  transform: translateY(-1px);
+  box-shadow: 0 5px 16px rgba(224, 40, 117, 0.10);
 }
 
 .surah-item:active {
-  background-color: var(--primary-soft);
+  background: rgba(255, 225, 238, 0.95);
+  transform: scale(0.99);
 }
 
 .surah-item.playing-active {
-  background-color: var(--primary-soft);
-  border-left: 4px solid var(--primary);
+  background: rgba(255, 225, 238, 0.92);
+  border: 1.5px solid var(--primary);
+  box-shadow: 0 6px 20px rgba(224, 40, 117, 0.15);
+}
+
+[data-theme="dark"] .surah-item {
+  background: rgba(36, 14, 26, 0.78);
+  border: 1px solid rgba(255, 64, 129, 0.28);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.3);
+}
+
+[data-theme="dark"] .surah-item:hover {
+  background: rgba(45, 18, 33, 0.88);
+  border-color: rgba(255, 64, 129, 0.45);
+}
+
+[data-theme="dark"] .surah-item.playing-active {
+  background: rgba(48, 18, 35, 0.92);
+  border: 1.5px solid var(--primary);
 }
 
 .surah-left {
@@ -642,22 +668,23 @@ html, body {
   flex-shrink: 0;
 }
 
-/* Bottom Mini Player Bar - Floating Pink Glass */
+/* Bottom Mini Player Bar - Floating Compact Pink Glass */
 .mini-player-bar {
   position: fixed;
-  bottom: 80px;
-  left: 14px;
-  right: 14px;
-  max-width: 450px;
+  bottom: 64px;
+  left: 12px;
+  right: 12px;
+  max-width: 400px;
   margin: 0 auto;
-  background: rgba(255, 245, 248, 0.94);
-  border: 1.5px solid rgba(244, 143, 177, 0.45);
+  background: rgba(255, 245, 248, 0.88);
+  border: 1px solid rgba(244, 143, 177, 0.45);
   border-radius: 24px;
-  padding: 8px 12px;
+  padding: 4px 10px;
+  height: 46px;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  box-shadow: 0 10px 26px rgba(224, 40, 117, 0.16);
+  box-shadow: 0 6px 20px rgba(224, 40, 117, 0.12);
   z-index: 900;
   cursor: pointer;
   transition: var(--transition);
@@ -666,9 +693,9 @@ html, body {
 }
 
 [data-theme="dark"] .mini-player-bar {
-  background: rgba(36, 14, 26, 0.94);
-  border: 1.5px solid rgba(255, 64, 129, 0.35);
-  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.5);
+  background: rgba(30, 10, 22, 0.90);
+  border: 1px solid rgba(255, 64, 129, 0.35);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.45);
 }
 
 .mini-player-bar.hidden {
@@ -749,32 +776,33 @@ html, body {
   transform: scale(0.9);
 }
 
-/* Bottom Tab Navigation Bar - Floating Glassmorphic Pill (Kekinian & Menggantung) */
+/* Bottom Tab Navigation Bar - Floating Sleek Glass Dock (Rapi, Elegan & Menggantung) */
 .bottom-nav {
   position: fixed;
-  bottom: 14px;
-  left: 14px;
-  right: 14px;
-  max-width: 450px;
+  bottom: 10px;
+  left: 12px;
+  right: 12px;
+  max-width: 400px;
   margin: 0 auto;
-  background: rgba(255, 245, 248, 0.90);
-  border: 1.5px solid rgba(244, 143, 177, 0.45);
-  border-radius: 34px;
+  background: rgba(255, 245, 248, 0.86);
+  border: 1px solid rgba(244, 143, 177, 0.45);
+  border-radius: 26px;
   display: flex;
   align-items: center;
   justify-content: space-around;
-  padding: 8px 10px;
+  padding: 3px 6px;
+  height: 46px;
   z-index: 850;
-  -webkit-backdrop-filter: blur(20px) saturate(180%);
-  backdrop-filter: blur(20px) saturate(180%);
-  box-shadow: 0 10px 28px rgba(224, 40, 117, 0.15), 0 2px 8px rgba(0, 0, 0, 0.04);
+  -webkit-backdrop-filter: blur(24px) saturate(180%);
+  backdrop-filter: blur(24px) saturate(180%);
+  box-shadow: 0 8px 22px rgba(224, 40, 117, 0.12), 0 2px 6px rgba(0, 0, 0, 0.02);
   transition: var(--transition);
 }
 
 [data-theme="dark"] .bottom-nav {
-  background: rgba(36, 14, 26, 0.90);
-  border: 1.5px solid rgba(255, 64, 129, 0.35);
-  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.45);
+  background: rgba(30, 10, 22, 0.88);
+  border: 1px solid rgba(255, 64, 129, 0.35);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
 }
 
 .nav-tab-btn {
@@ -784,31 +812,44 @@ html, body {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 3px;
+  gap: 2px;
   color: var(--text-muted);
   cursor: pointer;
-  padding: 6px 12px;
-  border-radius: 20px;
-  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
-  font-size: 0.72rem;
-  font-weight: 600;
+  padding: 3px 2px;
+  border-radius: 14px;
+  transition: all 0.2s ease;
   font-family: inherit;
-  position: relative;
+  flex: 1;
+  min-width: 0;
 }
 
 .nav-tab-btn svg {
-  width: 22px;
-  height: 22px;
-  transition: transform 0.25s ease;
+  width: 17px;
+  height: 17px;
+  stroke-width: 2.1;
+  transition: transform 0.2s ease;
+  flex-shrink: 0;
+}
+
+.nav-tab-btn span,
+.nav-tab-btn .nav-label {
+  font-size: 0.58rem !important;
+  font-weight: 600;
+  letter-spacing: 0.1px;
+  white-space: nowrap !important;
+  line-height: 1.1;
+  display: block;
 }
 
 .nav-tab-btn.active {
   color: var(--primary);
-  background: linear-gradient(135deg, rgba(255, 64, 129, 0.14) 0%, rgba(224, 40, 117, 0.22) 100%);
+  font-weight: 700;
+  background: rgba(224, 40, 117, 0.12);
+  border-radius: 14px;
 }
 
 .nav-tab-btn.active svg {
-  transform: translateY(-2px) scale(1.08);
+  transform: scale(1.08);
 }
 
 /* Empty State */
@@ -909,12 +950,6 @@ body.has-custom-wallpaper .drawer-header {
   border-bottom: 1px solid rgba(244, 143, 177, 0.3) !important;
 }
 
-body.has-custom-wallpaper .drawer-item {
-  background: rgba(255, 255, 255, 0.45) !important;
-  border-radius: 12px !important;
-  margin: 3px 12px !important;
-}
-
 body.has-custom-wallpaper .drawer-footer {
   background: rgba(255, 235, 243, 0.65) !important;
   border-top: 1px solid rgba(244, 143, 177, 0.3) !important;
@@ -931,27 +966,99 @@ body.has-custom-wallpaper .player-screen {
   background: rgba(26, 8, 19, 0.92) !important;
 }
 
-/* Translucent Frosted Glass for Cards Across ALL Views (Al-Qur'an, Sholat, Kiblat, Sholawat, dll.) */
-body.has-custom-wallpaper .surah-card,
+/* Surah List Item Glassmorphic Cards when Wallpaper Active */
+body.has-custom-wallpaper .surah-item {
+  background: rgba(255, 255, 255, 0.72) !important;
+  -webkit-backdrop-filter: blur(14px) saturate(160%) !important;
+  backdrop-filter: blur(14px) saturate(160%) !important;
+  margin: 5px 12px !important;
+  border-radius: 16px !important;
+  border: 1px solid rgba(244, 143, 177, 0.40) !important;
+  box-shadow: 0 4px 14px rgba(224, 40, 117, 0.08) !important;
+}
+
+body.has-custom-wallpaper .surah-item:active {
+  background: rgba(255, 230, 240, 0.88) !important;
+  transform: scale(0.99);
+}
+
+body.has-custom-wallpaper .surah-item.playing-active {
+  background: rgba(255, 225, 238, 0.88) !important;
+  border-left: 4px solid var(--primary) !important;
+}
+
+[data-theme="dark"] body.has-custom-wallpaper .surah-item {
+  background: rgba(34, 12, 24, 0.74) !important;
+  border: 1px solid rgba(255, 64, 129, 0.32) !important;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.35) !important;
+}
+
+/* Search bar & filter pills Glassmorphism */
+body.has-custom-wallpaper .search-container {
+  background: transparent !important;
+}
+
+body.has-custom-wallpaper .search-input {
+  background: rgba(255, 255, 255, 0.76) !important;
+  -webkit-backdrop-filter: blur(14px) !important;
+  backdrop-filter: blur(14px) !important;
+  border: 1.5px solid rgba(244, 143, 177, 0.45) !important;
+  box-shadow: 0 4px 14px rgba(224, 40, 117, 0.08) !important;
+}
+
+body.has-custom-wallpaper .dzikir-banner-home {
+  background: transparent !important;
+}
+
+body.has-custom-wallpaper .filter-chips-wrap {
+  background: transparent !important;
+  border-bottom: none !important;
+}
+
+body.has-custom-wallpaper .chip-btn {
+  background: rgba(255, 255, 255, 0.76) !important;
+  -webkit-backdrop-filter: blur(12px) !important;
+  backdrop-filter: blur(12px) !important;
+  border: 1px solid rgba(244, 143, 177, 0.40) !important;
+}
+
+body.has-custom-wallpaper .chip-btn.active {
+  background: var(--grad-pink) !important;
+  color: #ffffff !important;
+  border-color: transparent !important;
+}
+
+/* Translucent Frosted Glass for Cards Across ALL Views (Sholat, Kiblat, Sholawat, dll.) */
 body.has-custom-wallpaper .dzikir-quick-card,
 body.has-custom-wallpaper .settings-card,
-body.has-custom-wallpaper .filter-chips-wrap,
 body.has-custom-wallpaper .prayer-hero,
 body.has-custom-wallpaper .prayer-card,
+body.has-custom-wallpaper .prayer-item-card,
 body.has-custom-wallpaper .prayer-time-item,
 body.has-custom-wallpaper .prayer-next-banner,
+body.has-custom-wallpaper .prayer-location-chip,
+body.has-custom-wallpaper .prayer-date-pill,
 body.has-custom-wallpaper .qibla-card,
+body.has-custom-wallpaper .qibla-container,
+body.has-custom-wallpaper .compass-visual-wrap,
+body.has-custom-wallpaper .compass-skin-selector-wrap,
+body.has-custom-wallpaper .qibla-pill-status,
 body.has-custom-wallpaper .qibla-compass-wrap,
 body.has-custom-wallpaper .qibla-stat-card,
 body.has-custom-wallpaper .asmaul-card,
+body.has-custom-wallpaper .asmaul-item-card,
 body.has-custom-wallpaper .sholawat-card,
 body.has-custom-wallpaper .dzikir-card,
+body.has-custom-wallpaper .dzikir-item-card,
 body.has-custom-wallpaper .salat-step-detail,
 body.has-custom-wallpaper .salat-step-card,
+body.has-custom-wallpaper .wudhu-step-card,
 body.has-custom-wallpaper .feature-summary-card,
 body.has-custom-wallpaper .feature-catatan-box,
 body.has-custom-wallpaper .kartun-hero-card,
 body.has-custom-wallpaper .kajian-video-card,
+body.has-custom-wallpaper .kajian-channel-card,
+body.has-custom-wallpaper .qari-item,
 body.has-custom-wallpaper .downloads-summary-bar {
   background: rgba(255, 255, 255, 0.74) !important;
   border: 1px solid rgba(244, 143, 177, 0.40) !important;
@@ -960,26 +1067,36 @@ body.has-custom-wallpaper .downloads-summary-bar {
   box-shadow: 0 6px 20px rgba(224, 40, 117, 0.08) !important;
 }
 
-[data-theme="dark"] body.has-custom-wallpaper .surah-card,
 [data-theme="dark"] body.has-custom-wallpaper .dzikir-quick-card,
 [data-theme="dark"] body.has-custom-wallpaper .settings-card,
-[data-theme="dark"] body.has-custom-wallpaper .filter-chips-wrap,
 [data-theme="dark"] body.has-custom-wallpaper .prayer-hero,
 [data-theme="dark"] body.has-custom-wallpaper .prayer-card,
+[data-theme="dark"] body.has-custom-wallpaper .prayer-item-card,
 [data-theme="dark"] body.has-custom-wallpaper .prayer-time-item,
 [data-theme="dark"] body.has-custom-wallpaper .prayer-next-banner,
+[data-theme="dark"] body.has-custom-wallpaper .prayer-location-chip,
+[data-theme="dark"] body.has-custom-wallpaper .prayer-date-pill,
 [data-theme="dark"] body.has-custom-wallpaper .qibla-card,
+[data-theme="dark"] body.has-custom-wallpaper .qibla-container,
+[data-theme="dark"] body.has-custom-wallpaper .compass-visual-wrap,
+[data-theme="dark"] body.has-custom-wallpaper .compass-skin-selector-wrap,
+[data-theme="dark"] body.has-custom-wallpaper .qibla-pill-status,
 [data-theme="dark"] body.has-custom-wallpaper .qibla-compass-wrap,
 [data-theme="dark"] body.has-custom-wallpaper .qibla-stat-card,
 [data-theme="dark"] body.has-custom-wallpaper .asmaul-card,
+[data-theme="dark"] body.has-custom-wallpaper .asmaul-item-card,
 [data-theme="dark"] body.has-custom-wallpaper .sholawat-card,
 [data-theme="dark"] body.has-custom-wallpaper .dzikir-card,
+[data-theme="dark"] body.has-custom-wallpaper .dzikir-item-card,
 [data-theme="dark"] body.has-custom-wallpaper .salat-step-detail,
 [data-theme="dark"] body.has-custom-wallpaper .salat-step-card,
+[data-theme="dark"] body.has-custom-wallpaper .wudhu-step-card,
 [data-theme="dark"] body.has-custom-wallpaper .feature-summary-card,
 [data-theme="dark"] body.has-custom-wallpaper .feature-catatan-box,
 [data-theme="dark"] body.has-custom-wallpaper .kartun-hero-card,
 [data-theme="dark"] body.has-custom-wallpaper .kajian-video-card,
+[data-theme="dark"] body.has-custom-wallpaper .kajian-channel-card,
+[data-theme="dark"] body.has-custom-wallpaper .qari-item,
 [data-theme="dark"] body.has-custom-wallpaper .downloads-summary-bar {
   background: rgba(34, 12, 24, 0.76) !important;
   border: 1px solid rgba(255, 64, 129, 0.32) !important;

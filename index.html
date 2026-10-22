@@ -23,9 +23,9 @@
   <title>Quran Rose - Murottal & Sholat</title>
 
   <!-- Stylesheets with version query -->
-  <link rel="stylesheet" href="css/style.css?v=3.4">
-  <link rel="stylesheet" href="css/player.css?v=3.4">
-  <link rel="stylesheet" href="css/extra.css?v=3.4">
+  <link rel="stylesheet" href="css/style.css?v=3.5">
+  <link rel="stylesheet" href="css/player.css?v=3.5">
+  <link rel="stylesheet" href="css/extra.css?v=3.5">
 </head>
 
 <body>
@@ -163,7 +163,7 @@
           <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
           <polyline points="9 22 9 12 15 12 15 22"></polyline>
         </svg>
-        <span>Al-Qur'an</span>
+        <span class="nav-label" style="white-space:nowrap;">Al-Qur'an</span>
       </button>
 
       <button class="nav-tab-btn" id="btnNavSalat">
@@ -1459,16 +1459,16 @@
   <script src="js/salat-data.js?v=2.3"></script>
   <script src="js/sholawat-data.js?v=2.3"></script>
   <script src="js/kartun-illustrations.js?v=2.3"></script>
-  <script src="js/storage.js?v=3.4"></script>
+  <script src="js/storage.js?v=3.5"></script>
   <script src="js/audio-manager.js?v=pink-v3"></script>
   <script src="js/kajian.js?v=2.6"></script>
-  <script src="js/app.js?v=3.4"></script>
+  <script src="js/app.js?v=3.5"></script>
 
   <!-- Service Worker Registration for Offline PWA -->
   <script>
     if ('serviceWorker' in navigator) {
       window.addEventListener('load', () => {
-        navigator.serviceWorker.register('./sw.js?v=3.4').then((reg) => {
+        navigator.serviceWorker.register('./sw.js?v=3.5').then((reg) => {
           reg.update();
           console.log('ServiceWorker registered & updated:', reg.scope);
         }).catch((err) => {

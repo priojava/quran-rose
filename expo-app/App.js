@@ -11,11 +11,12 @@ import {
   ToastAndroid
 } from 'react-native';
 import { StatusBar } from 'expo-status-bar';
+import * as NavigationBar from 'expo-navigation-bar';
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 import { WebView } from 'react-native-webview';
 
-// URL Publik GitHub Pages Quran Rose (ditambahkan cache buster v3.4)
-const APP_URL = 'https://priojava.github.io/quran-rose/?v=3.4';
+// URL Publik GitHub Pages Quran Rose (ditambahkan cache buster v3.5)
+const APP_URL = 'https://priojava.github.io/quran-rose/?v=3.5';
 
 export default function App() {
   const webViewRef = useRef(null);
@@ -25,6 +26,16 @@ export default function App() {
   const [errorMessage, setErrorMessage] = useState('');
   const [isDarkMode, setIsDarkMode] = useState(false);
   const lastBackPressTime = useRef(0);
+
+  // Atur Android Navigation Bar transparan & tombol gelap agar tidak muncul bayangan hitam di bawah
+  useEffect(() => {
+    if (Platform.OS === 'android') {
+      try {
+        NavigationBar.setBackgroundColorAsync('rgba(255, 255, 255, 0.001)');
+        NavigationBar.setButtonStyleAsync(isDarkMode ? 'light' : 'dark');
+      } catch (err) {}
+    }
+  }, [isDarkMode]);
 
   // Minta Izin Android saat pertama kali aplikasi dibuka (Lokasi, Notifikasi, Media/Penyimpanan)
   useEffect(() => {
